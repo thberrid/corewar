@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   op.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaz <marvin@42.fr>                         +#+  +:+       +#+        */
+/*   By: zaz <zaz@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:33:27 by zaz               #+#    #+#             */
-/*   Updated: 2013/11/06 14:21:46 by zaz              ###   ########.fr       */
+/*   Updated: 2019/10/14 15:28:18 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,16 @@
 ** On part du principe qu'un int fait 32 bits. Est-ce vrai chez vous ?
 */
 
+#include <inttypes.h>
+
 #define IND_SIZE				2
 #define REG_SIZE				4
 #define DIR_SIZE				REG_SIZE
+typedef uint16_t				t_ind;
+typedef uint32_t				t_reg;
+typedef t_reg					t_dir;
+
+typedef uint8_t					t_byte;
 
 
 # define REG_CODE				1
@@ -74,3 +81,19 @@ typedef struct		header_s
   unsigned int		prog_size;
   char				comment[COMMENT_LENGTH + 1];
 }					header_t;
+
+typedef struct		s_op
+{
+	char			*name;
+	int				arg_cnt;
+	char			args[4];
+	int				id;
+	int				cost;
+	char			*description;
+	char			ocp;
+	char			hdir;
+	char			(*func)(void)
+}					t_op;
+/*
+**	(t_proc *process, char *mem);
+*/
