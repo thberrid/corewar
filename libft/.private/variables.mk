@@ -59,8 +59,10 @@ ifeq ($(FANCY_MODE),TRUE)
 	@if [[ $(CMPT) -eq 0 ]]; then printf "$(TEXT)\n"; fi
 	$(eval FCNT	:= $(words $(LIBS)))
 	$(eval CMPT := $(shell echo $(CMPT) + 1 | bc))
-	@$(CC) $(basename $@) CFLAGS=$(CFLAGSTO) SUBID=$(CMPT) TOTAL_SIZE=$(FCNT) MAX_LEN=$(MAX_LEN)
+	@$(CC) $(basename $@)\
+		CFLAGS=$(CFLAGSTO) SUBID=$(CMPT) TOTAL_SIZE=$(FCNT) MAX_LEN=$(MAX_LEN)
 else
 %$(SUB_EXT):
-	$(CC) $(basename $@) CFLAGS=$(CFLAGSTO) SUBID=$(CMPT) TOTAL_SIZE=$(FCNT) MAX_LEN=$(MAX_LEN)
+	$(CC) $(basename $@)\
+		CFLAGS=$(CFLAGSTO) SUBID=$(CMPT) TOTAL_SIZE=$(FCNT) MAX_LEN=$(MAX_LEN)
 endif

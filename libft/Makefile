@@ -6,7 +6,7 @@
 #    By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/07/04 00:51:05 by abaurens          #+#    #+#              #
-#    Updated: 2019/10/14 17:10:37 by abaurens         ###   ########.fr        #
+#    Updated: 2019/10/14 17:20:24 by abaurens         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -111,7 +111,8 @@ fclean:
 	@$(foreach CMD,$(basename $(LIBS)),$(CC) $(CMD) fclean;)
 endif
 
-ifeq ($(LIB_MODE),$(or $(findstring DYNAMIC,$(LIB_MODE)),$(findstring SHARED,$(LIB_MODE))))
+ifeq ($(LIB_MODE),$(or $(findstring DYNAMIC,$(LIB_MODE)),\
+			$(findstring SHARED,$(LIB_MODE))))
 all:	$(SONM)
 else
 all:	$(NAME)
