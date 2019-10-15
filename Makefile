@@ -6,7 +6,7 @@
 #    By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/15 06:46:14 by abaurens          #+#    #+#              #
-#    Updated: 2019/10/15 10:13:54 by abaurens         ###   ########.fr        #
+#    Updated: 2019/10/15 10:41:25 by abaurens         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,8 @@ SRC_COM	:=	$(addprefix ops/,$(OPS))\
 #	Virtual Machine
 #
 SRC_COR	:=	\
-			corewar.c
+			corewar.c	\
+			cmd_parse.c
 
 #
 #	Compiler
@@ -101,10 +102,10 @@ fclean:
 	$(RM) $(COR)
 
 cleanl: clean
-	make -C $(dir $(LIB)) clean
+	@make -C $(dir $(LIB)) clean
 
 fcleanl: fclean
-	make -C $(dir $(LIB)) fclean
+	@make -C $(dir $(LIB)) fclean
 
 re:		fclean all
 

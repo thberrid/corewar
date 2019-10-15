@@ -1,19 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main_1.c                                           :+:      :+:    :+:   */
+/*   corewar.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 07:24:26 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/15 09:46:30 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/10/15 11:13:58 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ftio.h"
+#include "vm.h"
 
-int		main(void)
+int		main(int ac, char **av)
 {
 	ft_printf("Corewar\n");
+	parse_args(ac, av);
 	return (0);
 }
