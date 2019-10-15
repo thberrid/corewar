@@ -6,7 +6,7 @@
 #    By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/15 06:46:14 by abaurens          #+#    #+#              #
-#    Updated: 2019/10/15 08:51:56 by abaurens         ###   ########.fr        #
+#    Updated: 2019/10/15 10:10:12 by abaurens         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,9 +21,29 @@ SRCD	:=	srcs
 OBJD	:=	objs
 
 #
+#	Operators files
+#
+OPS		:=	\
+			op_or.c		\
+			op_ld.c		\
+			op_st.c		\
+			op_add.c	\
+			op_sub.c	\
+			op_and.c	\
+			op_xor.c	\
+			op_ldi.c	\
+			op_sti.c	\
+			op_lld.c	\
+			op_aff.c	\
+			op_lldi.c	\
+			op_live.c	\
+			op_zjmp.c	\
+			op_fork.c	\
+			op_lfork.c
+#
 #	Common sources
 #
-SRC_COM	:=	\
+SRC_COM	:=	$(addprefix ops/,$(OPS))\
 			op.c	\
 			endianes.c
 
