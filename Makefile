@@ -6,7 +6,7 @@
 #    By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/15 06:46:14 by abaurens          #+#    #+#              #
-#    Updated: 2019/10/15 10:10:12 by abaurens         ###   ########.fr        #
+#    Updated: 2019/10/15 10:13:54 by abaurens         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,13 +51,13 @@ SRC_COM	:=	$(addprefix ops/,$(OPS))\
 #	Virtual Machine
 #
 SRC_COR	:=	\
-			main_1.c
+			corewar.c
 
 #
 #	Compiler
 #
 SRC_ASM	:=	\
-			main_2.c
+			asm.c
 
 SRC_COR	:=	$(addprefix $(COR)/,$(SRC_COR)) $(SRC_COM)
 SRC_ASM	:=	$(addprefix $(ASM)/,$(SRC_ASM)) $(SRC_COM)
