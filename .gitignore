@@ -9,4 +9,6 @@
 *.test
 */*.test
 *.cor
+*.d
+clang_complete
 */*.cor
