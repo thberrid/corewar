@@ -6,7 +6,7 @@
 /*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 15:51:41 by baurens           #+#    #+#             */
-/*   Updated: 2019/10/14 15:59:37 by baurens          ###   ########.fr       */
+/*   Updated: 2019/10/15 08:24:54 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@
 # define IND_SIZE			2
 # define REG_SIZE			4
 # define DIR_SIZE			REG_SIZE
+
 typedef uint16_t			t_ind;
 typedef uint32_t			t_reg;
 typedef t_reg				t_dir;
@@ -63,10 +64,10 @@ typedef char				t_arg_type;
 
 typedef struct	s_header
 {
-  uint32_t		magic;
-  char			prog_name[PROG_NAME_LENGTH + 1];
-  uint32_t		prog_size;
-  char			comment[COMMENT_LENGTH + 1];
+	uint32_t	magic;
+	char		prog_name[PROG_NAME_LENGTH + 1];
+	uint32_t	prog_size;
+	char		comment[COMMENT_LENGTH + 1];
 }				t_header;
 
 typedef struct	s_op

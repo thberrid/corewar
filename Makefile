@@ -6,7 +6,7 @@
 #    By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/15 06:46:14 by abaurens          #+#    #+#              #
-#    Updated: 2019/10/15 07:37:36 by abaurens         ###   ########.fr        #
+#    Updated: 2019/10/15 08:51:56 by abaurens         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,8 @@ OBJD	:=	objs
 #	Common sources
 #
 SRC_COM	:=	\
-			common.c
+			op.c	\
+			endianes.c
 
 #
 #	Virtual Machine
@@ -69,7 +70,7 @@ $(OBJD)/%.o:	$(SRCD)/%.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 $(LIB):	$(dir $(LIB))Makefile
-	make -C $(dir $(LIB))
+	@make -C $(dir $(LIB))
 
 clean:
 	$(RM) $(OBJD)

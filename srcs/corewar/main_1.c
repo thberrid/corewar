@@ -6,16 +6,26 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 07:24:26 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/15 07:27:55 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/10/15 08:33:06 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "common.h"
+#define FT_DISABLE_WARNINGS
+
+#include "endianes.h"
 #include "ftio.h"
+#include "op.h"
 
 int		main(void)
 {
-	print_project();
+	int	i;
+
+	i = COREWAR_EXEC_MAGIC;
+	ft_printf("%#010x\n", i);
+	swap_endianes(&i, sizeof(i));
+	ft_printf("%#010x\n", i);
+	swap_endianes(&i, sizeof(i));
+	ft_printf("%#010x\n", i);
 	ft_printf("Corewar\n");
 	return (0);
 }
