@@ -10,5 +10,5 @@
 */*.test
 *.cor
 *.d
-clang_complete
+.clang_complete
 */*.cor
