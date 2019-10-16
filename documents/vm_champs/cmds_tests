@@ -1,0 +1,2 @@
+# display first line of a corewar dump
+./corewar -d 100 new.cor new.cor | head -n 4 | tail -n 1
