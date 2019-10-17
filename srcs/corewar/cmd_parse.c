@@ -6,12 +6,14 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:32:56 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/17 08:22:32 by baurens          ###   ########.fr       */
+/*   Updated: 2019/10/17 18:59:50 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ftio.h"
+#include <fcntl.h>
+#include <stdlib.h>
 #include "ftlib.h"
+#include "ftio.h"
 #include "vm.h"
 
 /*
@@ -24,47 +26,87 @@
 **	les nombres sont des unsigned int de 32 bit de long (uint32_t)
 */
 
-static void	*parse_dump(char **av)
+static char	**parse_file(t_vm *vm, char **av)
 {
-	char	e;
+	size_t		i;
+	uint32_t	max;
 
-	e = 0;
-	if (!e && (!av || !*av))
-		e = ft_print_error("missing argument for '"DUMP_FLG"' flag...\n");
-	if (e)
-		return (NULL);
-	ft_printf("dump value: %s\n", *av);
-	return (av);
+	if (!*av)
+		exit(ft_print_error("Missing player file.\n"));
+	if (vm->psize >= MAX_PLAYERS)
+		exit(ft_print_error("Can't add '%s': Too much players.\n", *av));
+	if (!match(*av, "*.cor"))
+		exit(ft_print_error("Invalid file: '%s'", *av));
+	if ((vm->players[vm->psize++].fd = open(*av, O_RDONLY)) < 0)
+		exit(ft_print_error("Can't open '%s': %m.\n", *av));
+	if (vm->psize < MAX_PLAYERS)
+	{
+		i = 0;
+		max = vm->players->pid;
+		while (++i < vm->psize)
+			if (max < vm->players[i].pid)
+				max = vm->players[i].pid;
+		vm->players[vm->psize].pid = max + 1;
+	}
+	return (av + 1);
 }
 
-static void	*parse_num(char **av)
+static char	**parse_num(t_vm *vm, char **av)
 {
-	ft_printf("forcing value '%s' for champ ", *av++);
-	ft_printf("\"%s\"\n", *av);
-	return (av);
+	size_t		i;
+	int64_t		v;
+	uint32_t	r;
+
+	i = 0;
+	if (!*av)
+		exit(ft_print_error("Missing value for %s.\n", av[-1]));
+	if (!ft_isnumber(*av) || (v = atol(*av)) <= 0 || v > 0xffffffff)
+		exit(ft_print_error("Invalid value for %s: '%s'", av[-1], *av));
+	r = (uint32_t)v;
+	while (i < vm->psize)
+		if (vm->players[i++].pid == r)
+			exit(ft_print_error("'%s %d' pid already taken.\n", av[-1], r));
+	if (vm->psize < MAX_PLAYERS)
+		vm->players[vm->psize].pid = r;
+	return (parse_file(vm, av + 1));
 }
 
-static void	*(*const g_f[2])(char **av) = {
-	&parse_dump,
-	&parse_num
+static char	**parse_dump(t_vm *vm, char **av)
+{
+	int64_t	v;
+
+	if (vm->dmp_bol)
+		exit(ft_print_error("Doubled dump cycle.\n"));
+	if (!*av)
+		exit(ft_print_error("Missing value for %s.\n", av[-1]));
+	if (!ft_isnumber(*av) || (v = atol(*av)) < 0 || v > 0xffffffff)
+		exit(ft_print_error("Invalid value for %s: '%s'", av[-1], *av));
+	vm->dmp_bol = 1;
+	vm->dump = (uint32_t)v;
+	return (av + 1);
+}
+
+static const t_dispatch	g_parser[] = {
+	{"-dump", parse_dump},
+	{"-n", parse_num},
+	{0, parse_file},
 };
 
-void	parse_args(int ac __attribute__((unused)), char **av)
+t_vm		parse_args(char **av)
 {
-	int			j;
-	const char	*t[2] = {
-		DUMP_FLG,
-		NUM_FLG
-	};
+	int		i;
+	t_vm	vm;
 
-	while (av && *++av)
+	i = 0;
+	ft_bzero(&vm, sizeof(vm));
+	vm.players[0].pid = 1;
+	while (av && *av)
 	{
-		j = 0;
-		while (j < 2 && !ft_strequ(t[j], *av))
-			++j;
-		if (j < 2)
-			av = g_f[j](++av);
-		else
-			ft_printf("champ path: \"%s\"\n", *av);
+		while (g_parser[i].opt && !ft_strequ(*av, g_parser[i].opt))
+			++i;
+		av = g_parser[i].callback(&vm, av + !!g_parser[i].opt);
 	}
+	if (!vm.psize)
+		exit(ft_print_error("No player.\n"));
+	return (vm);
 }

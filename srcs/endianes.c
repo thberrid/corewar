@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 07:23:53 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/17 07:43:56 by baurens          ###   ########.fr       */
+/*   Updated: 2019/10/17 19:03:56 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 **	*((uint8_t *)&v) => 0x01
 */
 
-__attribute__((always_inline)) static inline char	get_endianes(void)
+static inline char	get_endianes(void)
 {
 	volatile const uint16_t	v = 1;
 
