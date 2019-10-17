@@ -6,7 +6,7 @@
 #    By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/15 06:46:14 by abaurens          #+#    #+#              #
-#    Updated: 2019/10/15 10:41:25 by abaurens         ###   ########.fr        #
+#    Updated: 2019/10/17 07:21:29 by baurens          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,7 +68,7 @@ SRC_COR	:=	$(addprefix $(SRCD)/,$(SRC_COR))
 SRC_ASM	:=	$(addprefix $(SRCD)/,$(SRC_ASM))
 DEP		:=	$(OBJ_COR:.o=.d) $(OBJ_ASM:.o=.d)
 
-CFLAGS	:=	-I./includes -W -Wall -Wextra -Werror -MMD -MP
+CFLAGS	:=	-I./includes -MMD -MP -W -Wall -Wextra -Werror
 
 #
 #	libft
