@@ -6,7 +6,7 @@
 /*   By: smoreno- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 06:05:50 by smoreno-          #+#    #+#             */
-/*   Updated: 2019/10/18 06:13:27 by smoreno-         ###   ########.fr       */
+/*   Updated: 2019/10/19 05:18:56 by thberrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,11 @@ typedef struct 	s_instruc_head
 
 int		ft_read(t_instruct_head *head, char *path, t_header *header);
 int		check_instruct(char *line, t_instruct_head *head);
+
+/*
+**
+*/
+
+void	clean_struct(t_instruct_head *head);
 
 #endif

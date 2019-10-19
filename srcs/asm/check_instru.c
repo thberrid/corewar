@@ -6,7 +6,7 @@
 /*   By: smoreno- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 14:52:32 by smoreno-          #+#    #+#             */
-/*   Updated: 2019/10/18 14:53:11 by smoreno-         ###   ########.fr       */
+/*   Updated: 2019/10/19 23:16:37 by thberrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,16 @@ int		ft_getopcode(char **line, t_instruct *inst)
 	}
 	return (-1);
 }
+
 /*
 int		ft_getparams(char *line, t_instruct *inst)
 {
+	char	**param_raw;
 
-	return (-1);
+	if (!(param_raw = ft_strsplit(line, SEPARATOR_CHAR)))
+		return (-1);
+	
+	return (1);
 }
 */
 
@@ -76,7 +81,7 @@ t_instruct	*add_inst(t_instruct_head *head)
 		return (NULL);
 	new->next = head->head ? head->head : new;
 	new->prev = head->head ? head->head->prev : new;
-	if (head->slen== 0)
+	if (head->slen == 0)
 		head->head= new;
 	new->prev->next = new;
 	new->next->prev = new;
@@ -98,5 +103,7 @@ int		check_instruct(char *line, t_instruct_head *head)
 			return (-1);
 	if (ft_getopcode(&line, inst) < 0)
 		return (-1);
+//	if (ft_getparams(&line, inst) < 0)
+//		return (-1);
 	return (1);
 }
