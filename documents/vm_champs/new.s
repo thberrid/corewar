@@ -1,4 +1,9 @@
+.comment  "Multi?"
 .name	"Leeloo"
-.comment "Multipass"
-	
-begin:	ld %0,r6
+
+	ldbel: ld %1,r1
+	ld %2,r1
+aff r1
+
+
+

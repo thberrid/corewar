@@ -1,0 +1,32 @@
+// errors
+// - si 2 x name o comment apres les instru 
+- il s'arrete et fait le traitement de ce qu il a deja recu.//
+comment ou name peuvent etre sur plusieurs lignes //
+
+/*
+** header
+*/
+
+- verifier pour les name( NAME_CMD_STRING)/comment (COMMENT_CMD_STRING), intitue et
+longeur (PROG_NAME_LENGTH | COMMENT_LENGTH) si les caracteres sont autorise LABELCHARS.
+
+/*
+** Instru
+*/
+
+- check formatage de la ligne.
+- check instruc existe.
+- check si label existe/valide.
+
+- check params.
+ 	( fonction commune check T_DIR | T_REG | T_IND)
+   * live | fork | lfork | zjump
+   * ld | lld |
+   * add | sub
+   * and | or | xor
+   * ldi | lldi
+   * aff
+   * st
+   * sti
+ - check struct length total et ajout d un new maillon
+ - remplacer les labels par leur pointeur.

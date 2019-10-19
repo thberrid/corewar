@@ -10,9 +10,9 @@
 #                                                                              #
 # **************************************************************************** #
 
-CC		:=	gcc
+CC		:=	gcc -g
 RM		:=	rm -rf
-LINKER	:=	gcc -o
+LINKER	:=	gcc -g -o
 LIB		:=	libft/libft.a
 COR		:=	corewar
 ASM		:=	asm
@@ -58,7 +58,9 @@ SRC_COR	:=	\
 #	Compiler
 #
 SRC_ASM	:=	\
-			asm.c
+			asm.c \
+			read.c \
+			check_instru.c 
 
 SRC_COR	:=	$(addprefix $(COR)/,$(SRC_COR)) $(SRC_COM)
 SRC_ASM	:=	$(addprefix $(ASM)/,$(SRC_ASM)) $(SRC_COM)
@@ -66,7 +68,7 @@ OBJ_COR	:=	$(addprefix $(OBJD)/,$(SRC_COR:.c=.o))
 OBJ_ASM	:=	$(addprefix $(OBJD)/,$(SRC_ASM:.c=.o))
 SRC_COR	:=	$(addprefix $(SRCD)/,$(SRC_COR))
 SRC_ASM	:=	$(addprefix $(SRCD)/,$(SRC_ASM))
-DEP		:=	$(OBJ_COR:.o=.d) $(OBJ_ASM:.o=.d)
+DEP		:=	$(OBJ_ASM:.o=.d)
 
 CFLAGS	:=	-I./includes -MMD -MP -W -Wall -Wextra -Werror
 
@@ -76,7 +78,8 @@ CFLAGS	:=	-I./includes -MMD -MP -W -Wall -Wextra -Werror
 CFLAGS	:=	$(CFLAGS) -I./$(dir $(LIB))includes
 LDFLAGS	:=	-L./$(dir $(LIB)) -lft
 
-all:	$(ASM) $(COR)
+all:	$(ASM) 
+#$(COR)
 
 -include $(DEP)
 

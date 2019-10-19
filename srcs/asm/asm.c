@@ -10,10 +10,32 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ftio.h"
+#include "../../includes/asm.h"
+//#include "../../libft/includes/ftlib.h"
+//s#include "../../libft/includes/ftio.h"
+//#include "ftlib.h"
 
-int		main(void)
+int		main(int ac, char **av)
 {
-	ft_printf("Asm\n");
+	t_instruct_head head;
+	t_header		header;
+	size_t			i = 0;
+	t_instruct		*tmp;
+
+	if (ac != 2)
+		ft_printf("Error\n");
+	ft_printf("ret: %d\n", ft_read(&head,av[1], &header));
+	tmp = head.head;
+	while (i < head.slen)
+	{
+		ft_printf("Label : %s\n", tmp->label);
+		ft_printf("ID : %d\n", tmp->id);
+		i++;
+		tmp = tmp->next;
+	}
+//	get_next_line(1,av);
+
+//	ft_printf("header = %s\n", header.comment);
+//	ft_printf("name = %s\n", header.prog_name);
 	return (0);
 }
