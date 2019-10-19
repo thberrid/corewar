@@ -10,5 +10,7 @@
 */*.test
 *.cor
 *.d
+asm
+corewar
 .clang_complete
 */*.cor
