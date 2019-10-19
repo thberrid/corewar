@@ -6,7 +6,7 @@
 /*   By: smoreno- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 06:34:03 by smoreno-          #+#    #+#             */
-/*   Updated: 2019/10/18 06:34:30 by smoreno-         ###   ########.fr       */
+/*   Updated: 2019/10/19 23:23:31 by thberrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,9 @@ int		get_namecom(char *header, char *line, int fd)
 int		check_headder(t_header *header, char *line, int fd)
 {
 	int		i;
-
+	
+	if (ft_strlen(line) < 5)
+		return (0);
 	i = (ft_strncmp(line, NAME_CMD_STRING, 5) == 0) ? 5 : 0;
 	i = (i != 5 && ft_strncmp(line, COMMENT_CMD_STRING, 8) == 0) ? 8 : i;
 	if (i)
@@ -85,7 +87,10 @@ int		ft_read(t_instruct_head *head, char *path, t_header *header)
 	while ((ret = gnl(fd, &line)) > 0)
 	{
 		if (!*line)
+		{
+			ft_strdel(&line);
 			continue ;
+		}
 		if (!rethd)
 		{	
 			if ((rethd = check_headder(header, line, fd)) == -1)
@@ -93,7 +98,9 @@ int		ft_read(t_instruct_head *head, char *path, t_header *header)
 		}
 		else
 			if (check_instruct(line, head) < 0)
-				return (0);		
+				return (0);
+		ft_strdel(&line);
 	}
+	ft_strdel(&line);
 	return (1);
 }

@@ -6,7 +6,7 @@
 #    By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/15 06:46:14 by abaurens          #+#    #+#              #
-#    Updated: 2019/10/17 07:21:29 by baurens          ###   ########.fr        #
+#    Updated: 2019/10/19 06:36:34 by thberrid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,8 +59,9 @@ SRC_COR	:=	\
 #
 SRC_ASM	:=	\
 			asm.c \
-			read.c \
-			check_instru.c 
+			check_instru.c \
+			instruct_free.c \
+			read.c 
 
 SRC_COR	:=	$(addprefix $(COR)/,$(SRC_COR)) $(SRC_COM)
 SRC_ASM	:=	$(addprefix $(ASM)/,$(SRC_ASM)) $(SRC_COM)
