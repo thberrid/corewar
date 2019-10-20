@@ -6,7 +6,7 @@
 #    By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/15 06:46:14 by abaurens          #+#    #+#              #
-#    Updated: 2019/10/17 07:21:29 by baurens          ###   ########.fr        #
+#    Updated: 2019/10/20 21:07:08 by baurens          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,6 +51,7 @@ SRC_COM	:=	$(addprefix ops/,$(OPS))\
 #	Virtual Machine
 #
 SRC_COR	:=	\
+			arena.c		\
 			corewar.c	\
 			cmd_parse.c
 

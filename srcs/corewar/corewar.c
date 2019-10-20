@@ -6,15 +6,19 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 07:24:26 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/17 19:00:07 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/10/20 22:19:33 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
+#include "arena.h"
 #include "ftlib.h"
 #include "ftio.h"
 #include "vm.h"
 
+t_byte	g_map[MEM_SIZE];
+
+__attribute__((unused))
 static void	print_vm_state(t_vm *vm)
 {
 	size_t	i;

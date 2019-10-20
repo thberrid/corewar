@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:32:56 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/17 18:59:50 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/10/17 20:40:32 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ static char	**parse_file(t_vm *vm, char **av)
 	uint32_t	max;
 
 	if (!*av)
-		exit(ft_print_error("Missing player file.\n"));
+		exit(ft_print_error("Missing player file after '-n %u'.\n",
+			vm->players[vm->psize].pid));
 	if (vm->psize >= MAX_PLAYERS)
 		exit(ft_print_error("Can't add '%s': Too much players.\n", *av));
 	if (!match(*av, "*.cor"))
