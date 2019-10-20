@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/20 08:01:14 by abaurens          #+#    #+#             */
-/*   Updated: 2019/09/20 08:04:07 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/10/20 22:01:13 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ char	chtoa_base(register char *dest, unsigned char v, const char *b)
 	bl = ft_strlen(b);
 	while (v && (t[i++] = b[(v % bl)]))
 		v /= bl;
+	i += !i;
 	if (bl == 2 || bl == 16)
 		t[i++] = bl == 2 ? 'b' : 'x';
 	if (bl != 10)
