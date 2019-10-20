@@ -6,7 +6,7 @@
 /*   By: smoreno- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 14:52:32 by smoreno-          #+#    #+#             */
-/*   Updated: 2019/10/20 02:34:56 by thberrid         ###   ########.fr       */
+/*   Updated: 2019/10/20 07:37:27 by thberrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,33 +61,50 @@ int		ft_getopcode(char **line, t_instruct *inst)
 	return (-1);
 }
 
+int		get_paramlen(int opcode)
+{
+	int		i;
+
+	i = 0;
+	while (g_op_tab[i].name)
+	{
+		if (opcode == g_op_tab[i].id)
+			return (g_op_tab[i].arg_cnt);
+		i++;
+	}
+	return (-1);
+}
+
 int		ft_getparams(char *line, t_instruct *inst)
 {
 	char	**param_raw;
 	int		i;
+	int		j;
+	int		param_len;
 
 	while (ft_isspace(*line))
 		(line)++;
 	if (!(param_raw = ft_strsplit(line, SEPARATOR_CHAR)))
 		return (-1);
 	i = 0;
+	param_len = get_paramlen(inst->id);
 	while (param_raw[i])
 	{
-		if (param_raw[i][0] == 'r')
-			inst->ocp += ((REG_CODE ^ 3) << (i * 2));
+		j = 0;
+		while (ft_isspace(param_raw[i][j]))
+			j++;
+		if (param_raw[i][j] == 'r')
+			inst->ocp += ((REG_CODE << (param_len - i + 1) * 2));
 		else if (param_raw[i][0] == '%')
-			inst->ocp += ((DIR_CODE ^ 3) << (i * 2));
+			inst->ocp += ((DIR_CODE << (param_len - i + 1) * 2));
 		else
-			inst->ocp += ((IND_CODE) << (i * 2));
-		i++;	
+			inst->ocp += ((IND_CODE << (param_len - i + 1) * 2));
+		i++;
 	}
-	if (i > 3)
+	if (i != param_len)
 		return (-1);
-	ft_bprint(&(inst->ocp), sizeof(char) * 8);
-	ft_printf("\n");
 	return (1);
 }
-
 
 t_instruct	*add_inst(t_instruct_head *head)
 {
