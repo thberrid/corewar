@@ -6,7 +6,7 @@
 #    By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/15 06:46:14 by abaurens          #+#    #+#              #
-#    Updated: 2019/10/20 22:43:31 by baurens          ###   ########.fr        #
+#    Updated: 2019/10/21 01:00:38 by baurens          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,7 +59,7 @@ OBJ_COR	:=	$(addprefix $(OBJD)/,$(SRC_COR:.c=.o))
 OBJ_ASM	:=	$(addprefix $(OBJD)/,$(SRC_ASM:.c=.o))
 SRC_COR	:=	$(addprefix $(SRCD)/,$(SRC_COR))
 SRC_ASM	:=	$(addprefix $(SRCD)/,$(SRC_ASM))
-DEP		:=	$(OBJ_ASM:.o=.d)
+DEP		:=	$(OBJ_ASM:.o=.d) $(OBJ_COR:.o=.d)
 
 CFLAGS	:=	-I./includes -MMD -MP -W -Wall -Wextra -Werror
 
@@ -69,8 +69,7 @@ CFLAGS	:=	-I./includes -MMD -MP -W -Wall -Wextra -Werror
 CFLAGS	:=	$(CFLAGS) -I./$(dir $(LIB))includes
 LDFLAGS	:=	-L./$(dir $(LIB)) -lft
 
-all:	$(ASM)
-#$(COR)
+all:	$(ASM) $(COR)
 
 -include $(DEP)
 

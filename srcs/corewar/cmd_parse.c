@@ -6,12 +6,12 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:32:56 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/17 20:40:32 by baurens          ###   ########.fr       */
+/*   Updated: 2019/10/21 00:58:55 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <fcntl.h>
 #include <stdlib.h>
+#include <limits.h>
 #include "ftlib.h"
 #include "ftio.h"
 #include "vm.h"
@@ -37,9 +37,11 @@ static char	**parse_file(t_vm *vm, char **av)
 	if (vm->psize >= MAX_PLAYERS)
 		exit(ft_print_error("Can't add '%s': Too much players.\n", *av));
 	if (!match(*av, "*.cor"))
-		exit(ft_print_error("Invalid file: '%s'", *av));
-	if ((vm->players[vm->psize++].fd = open(*av, O_RDONLY)) < 0)
-		exit(ft_print_error("Can't open '%s': %m.\n", *av));
+		exit(ft_print_error("Invalid file: '%s'.\n", *av));
+	if (ft_strlen(*av) > PATH_MAX)
+		exit(ft_print_error("'%s': Path too long.\n", *av));
+	vm->players[vm->psize].id = vm->psize;
+	ft_strncpy(vm->players[vm->psize++].path, *av, PATH_MAX);
 	if (vm->psize < MAX_PLAYERS)
 	{
 		i = 0;
@@ -93,6 +95,18 @@ static const t_dispatch	g_parser[] = {
 	{0, parse_file},
 };
 
+void		load_players(t_vm *vm)
+{
+	uint32_t	i;
+
+	i = 0;
+	while (i < vm->psize)
+	{
+		load_file(vm, &vm->players[i]);
+		++i;
+	}
+}
+
 t_vm		parse_args(char **av)
 {
 	int		i;
@@ -109,5 +123,6 @@ t_vm		parse_args(char **av)
 	}
 	if (!vm.psize)
 		exit(ft_print_error("No player.\n"));
+	load_players(&vm);
 	return (vm);
 }

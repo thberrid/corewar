@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 07:24:26 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/20 22:19:33 by baurens          ###   ########.fr       */
+/*   Updated: 2019/10/21 00:54:03 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,6 @@ static void	print_vm_state(t_vm *vm)
 		ft_printf("champ[%zu]:\n", i);
 		ft_printf("  id:  %u\n", vm->players[i].id);
 		ft_printf("  pid: %08x (%u)\n", vm->players[i].pid, vm->players[i].pid);
-		ft_printf("  fd:  %d\n", vm->players[i].fd);
-		if (i < vm->psize)
-			close(vm->players[i].fd);
 		++i;
 	}
 }
@@ -44,5 +41,6 @@ int			main(int ac __attribute__((unused)), char **av)
 
 	vm = parse_args(av + 1);
 	print_vm_state(&vm);
+	vm_dump();
 	return (0);
 }
