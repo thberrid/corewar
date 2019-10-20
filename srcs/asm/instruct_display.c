@@ -6,7 +6,7 @@
 /*   By: thberrid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/20 02:52:22 by thberrid          #+#    #+#             */
-/*   Updated: 2019/10/20 02:53:15 by thberrid         ###   ########.fr       */
+/*   Updated: 2019/10/20 07:29:11 by thberrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ void	instruct_display(t_instruct *this)
 	ft_printf("Label : %s\n", this->label);
 	ft_printf("ID : %d\n", this->id);
 	ft_printf("OCP : ");
-	ft_bprint(&(this->ocp), 8);
+	ft_bprint_fd_rev(&(this->ocp), sizeof(this->ocp), 1);
+	ft_putchar('\n');
 }
 
 void	instruct_display_all(t_instruct_head *head)
@@ -36,5 +37,3 @@ void	instruct_display_all(t_instruct_head *head)
 		i++;
 	}
 }
-
-
