@@ -1,30 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   asm.c                                              :+:      :+:    :+:   */
+/*   ft_bprint.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: thberrid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/19 05:19:53 by thberrid          #+#    #+#             */
-/*   Updated: 2019/10/20 02:53:53 by thberrid         ###   ########.fr       */
+/*   Created: 2019/10/20 02:29:35 by thberrid          #+#    #+#             */
+/*   Updated: 2019/10/20 02:34:10 by thberrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "asm.h"
+#include "ftlib.h"
 
-int		main(int ac, char **av)
+void	ft_bprint(void *ptr, int nbits)
 {
-	t_instruct_head head;
-	t_header		header;
-	int				retrn;
+	int				i;
+	unsigned char 	value;
 
-	if (ac != 2)
-		ft_printf("Error\n");
-	ft_bzero(&header, sizeof(t_header));
-	ft_bzero(&head, sizeof(t_instruct_head));
-	retrn = ft_read(&head,av[1], &header);
-//	ft_printf("ret: %d\n", retrn);
-	instruct_display_all(&head);
-	instruct_free(&head);
-	return (0);
+	i = 0;
+	value = *((unsigned char *)ptr);
+	while (i < nbits)
+	{
+		ft_putnbr(((value & 1) ? 1 : 0));
+		value >>= 1;
+		i += 1;
+		if (!(i % 4))
+			ft_putchar(' ');
+	}
+	ft_putchar('\n');
 }
+

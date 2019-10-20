@@ -6,7 +6,7 @@
 /*   By: smoreno- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 14:52:32 by smoreno-          #+#    #+#             */
-/*   Updated: 2019/10/19 23:16:37 by thberrid         ###   ########.fr       */
+/*   Updated: 2019/10/20 02:34:56 by thberrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int		ft_getopcode(char **line, t_instruct *inst)
 		if (!ft_strncmp(g_op_tab[j].name, *line, i))
 		{
 			inst->id = g_op_tab[j].id;
-			ft_printf("id %d\n", inst->id);
+			*line += i;
 			return (1);
 		}
 		j++;
@@ -61,17 +61,33 @@ int		ft_getopcode(char **line, t_instruct *inst)
 	return (-1);
 }
 
-/*
 int		ft_getparams(char *line, t_instruct *inst)
 {
 	char	**param_raw;
+	int		i;
 
+	while (ft_isspace(*line))
+		(line)++;
 	if (!(param_raw = ft_strsplit(line, SEPARATOR_CHAR)))
 		return (-1);
-	
+	i = 0;
+	while (param_raw[i])
+	{
+		if (param_raw[i][0] == 'r')
+			inst->ocp += ((REG_CODE ^ 3) << (i * 2));
+		else if (param_raw[i][0] == '%')
+			inst->ocp += ((DIR_CODE ^ 3) << (i * 2));
+		else
+			inst->ocp += ((IND_CODE) << (i * 2));
+		i++;	
+	}
+	if (i > 3)
+		return (-1);
+	ft_bprint(&(inst->ocp), sizeof(char) * 8);
+	ft_printf("\n");
 	return (1);
 }
-*/
+
 
 t_instruct	*add_inst(t_instruct_head *head)
 {
@@ -103,7 +119,7 @@ int		check_instruct(char *line, t_instruct_head *head)
 			return (-1);
 	if (ft_getopcode(&line, inst) < 0)
 		return (-1);
-//	if (ft_getparams(&line, inst) < 0)
-//		return (-1);
+	if (ft_getparams(line, inst) < 0)
+		return (-1);
 	return (1);
 }

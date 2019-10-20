@@ -6,7 +6,7 @@
 #    By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/15 06:46:14 by abaurens          #+#    #+#              #
-#    Updated: 2019/10/19 06:36:34 by thberrid         ###   ########.fr        #
+#    Updated: 2019/10/20 02:53:43 by thberrid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,6 +60,8 @@ SRC_COR	:=	\
 SRC_ASM	:=	\
 			asm.c \
 			check_instru.c \
+			ft_bprint.c \
+			instruct_display.c \
 			instruct_free.c \
 			read.c 
 

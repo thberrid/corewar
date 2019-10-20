@@ -6,7 +6,7 @@
 /*   By: smoreno- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 06:05:50 by smoreno-          #+#    #+#             */
-/*   Updated: 2019/10/19 05:18:56 by thberrid         ###   ########.fr       */
+/*   Updated: 2019/10/20 02:52:40 by thberrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,25 @@ typedef struct 	s_instruc_head
 	size_t		slen;
 } 				t_instruct_head;
 
+/*
+** parsing
+*/
+
 int		ft_read(t_instruct_head *head, char *path, t_header *header);
 int		check_instruct(char *line, t_instruct_head *head);
 
 /*
-**
+** free
 */
 
-void	clean_struct(t_instruct_head *head);
+void	instruct_free(t_instruct_head *head);
+
+/*
+** tools
+*/
+
+void	ft_bprint(void *ptr, int nbits);
+void	instruct_display(t_instruct *this);
+void	instruct_display_all(t_instruct_head *head);
 
 #endif
