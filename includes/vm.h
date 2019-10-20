@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 09:47:24 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/17 18:59:23 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/10/20 22:07:39 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include <string.h>
 # include <limits.h>
 # include "op.h"
+
+# define DUMP_LEN	32
 
 /*
 **	fd:		filedescriptor to the opened file
