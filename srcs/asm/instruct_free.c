@@ -1,30 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   asm.c                                              :+:      :+:    :+:   */
+/*   instruct_free.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: thberrid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/19 05:19:53 by thberrid          #+#    #+#             */
-/*   Updated: 2019/10/20 02:53:53 by thberrid         ###   ########.fr       */
+/*   Created: 2019/10/19 05:10:47 by thberrid          #+#    #+#             */
+/*   Updated: 2019/10/20 02:42:12 by thberrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "asm.h"
+#include <asm.h>
 
-int		main(int ac, char **av)
+void	instruct_free(t_instruct_head *head)
 {
-	t_instruct_head head;
-	t_header		header;
-	int				retrn;
+	size_t		i;
+	t_instruct	*tmp;
+	t_instruct	*next;
 
-	if (ac != 2)
-		ft_printf("Error\n");
-	ft_bzero(&header, sizeof(t_header));
-	ft_bzero(&head, sizeof(t_instruct_head));
-	retrn = ft_read(&head,av[1], &header);
-//	ft_printf("ret: %d\n", retrn);
-	instruct_display_all(&head);
-	instruct_free(&head);
-	return (0);
+	i = 0;
+	tmp = head->head;
+	while (i < head->slen)
+	{
+		next = tmp->next;
+		ft_memdel((void **)&(tmp->label));
+		ft_memdel((void **)&tmp);
+		tmp = next;
+		i++;
+	}
 }
