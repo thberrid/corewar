@@ -6,7 +6,7 @@
 #    By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/15 06:46:14 by abaurens          #+#    #+#              #
-#    Updated: 2019/10/20 22:22:19 by baurens          ###   ########.fr        #
+#    Updated: 2019/10/20 22:26:25 by baurens          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,21 +50,12 @@ SRC_COM	:=	$(addprefix ops/,$(OPS))\
 #
 #	Virtual Machine
 #
-SRC_COR	:=	\
-			arena.c		\
-			corewar.c	\
-			cmd_parse.c
+include $(SRCD)/$(COR)/$(COR).mk
 
 #
 #	Compiler
 #
-SRC_ASM	:=	\
-			asm.c \
-			check_instru.c \
-			ft_bprint.c \
-			instruct_display.c \
-			instruct_free.c \
-			read.c
+include $(SRCD)/$(ASM)/$(ASM).mk
 
 SRC_COR	:=	$(addprefix $(COR)/,$(SRC_COR)) $(SRC_COM)
 SRC_ASM	:=	$(addprefix $(ASM)/,$(SRC_ASM)) $(SRC_COM)
