@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 07:26:33 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/17 19:04:00 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/10/20 21:00:04 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,14 @@
 
 # include <string.h>
 
-void	swap_endianes(void *const val, size_t ln);
+# define DEPRECATION_MSG	"use 'system_to_bin' or 'bin_to_system' instead"
+
+void	swap_endianes(void *const val,
+			size_t ln) __attribute__((deprecated(DEPRECATION_MSG)));
+static void	system_to_bin(void *const val,
+			size_t ln) __attribute__((weakref("swap_endianes")));
+static void	bin_to_system(void *const val,
+			size_t ln) __attribute__((weakref("swap_endianes")));
 
 enum	e_endianes
 {
