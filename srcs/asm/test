@@ -8,17 +8,17 @@ comment ou name peuvent etre sur plusieurs lignes //
 */
 
 - verifier pour les name( NAME_CMD_STRING)/comment (COMMENT_CMD_STRING), intitue et
-longeur (PROG_NAME_LENGTH | COMMENT_LENGTH) si les caracteres sont autorise LABELCHARS.
+longeur (PROG_NAME_LENGTH | COMMENT_LENGTH) si les caracteres sont autorise LABELCHARS. (fait)
 
 /*
 ** Instru
 */
 
 - check formatage de la ligne.
-- check instruc existe.
-- check si label existe/valide.
+- check instruc existe. (fait)
+- check si label existe/valide. (fait)
 
-- check params.
+- check params. (en cours : kevin)
  	( fonction commune check T_DIR | T_REG | T_IND)
    * live | fork | lfork | zjump
    * ld | lld |
@@ -28,5 +28,8 @@ longeur (PROG_NAME_LENGTH | COMMENT_LENGTH) si les caracteres sont autorise LABE
    * aff
    * st
    * sti
+   
  - check struct length total et ajout d un new maillon
  - remplacer les labels par leur pointeur.
+
+- imprimer
