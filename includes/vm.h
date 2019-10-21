@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 09:47:24 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/21 01:08:00 by baurens          ###   ########.fr       */
+/*   Updated: 2019/10/21 07:52:35 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,9 @@
 
 typedef struct	s_champ
 {
-	t_ind		pc;
+	t_byte		*pc;
 	uint32_t	id;
 	uint32_t	pid;
-	t_reg		regs[REG_NUMBER];
-	char		path[PATH_MAX + 1];
 }				t_champ;
 
 typedef struct	s_vm
@@ -50,6 +48,5 @@ typedef struct	s_dispatch
 }				t_dispatch;
 
 t_vm			parse_args(char **av);
-t_champ			load_file(t_vm *vm, t_champ *chmp);
 
 #endif

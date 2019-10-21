@@ -6,12 +6,16 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:32:56 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/21 00:58:55 by baurens          ###   ########.fr       */
+/*   Updated: 2019/10/21 07:53:16 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include <unistd.h>
 #include <limits.h>
+#include <fcntl.h>
+#include "endianes.h"
+#include "arena.h"
 #include "ftlib.h"
 #include "ftio.h"
 #include "vm.h"
@@ -38,10 +42,8 @@ static char	**parse_file(t_vm *vm, char **av)
 		exit(ft_print_error("Can't add '%s': Too much players.\n", *av));
 	if (!match(*av, "*.cor"))
 		exit(ft_print_error("Invalid file: '%s'.\n", *av));
-	if (ft_strlen(*av) > PATH_MAX)
-		exit(ft_print_error("'%s': Path too long.\n", *av));
 	vm->players[vm->psize].id = vm->psize;
-	ft_strncpy(vm->players[vm->psize++].path, *av, PATH_MAX);
+	vm->players[vm->psize++].pc = (t_byte *)*av;
 	if (vm->psize < MAX_PLAYERS)
 	{
 		i = 0;
@@ -95,22 +97,37 @@ static const t_dispatch	g_parser[] = {
 	{0, parse_file},
 };
 
-void		load_players(t_vm *vm)
+static void	load_file(t_vm *vm, t_champ *chmp, const char *path)
 {
-	uint32_t	i;
+	int			fd;
+	ssize_t		rd;
+	t_header	head;
 
-	i = 0;
-	while (i < vm->psize)
-	{
-		load_file(vm, &vm->players[i]);
-		++i;
-	}
+	chmp->pc = g_map + (MEM_SIZE / vm->psize * chmp->id);
+	if ((fd = open(path, O_RDONLY)) < 0)
+		exit(ft_print_error("Can't open '%s': %m.\n", path));
+	if ((rd = read(fd, &head, sizeof(head))) < 0 && (close(fd) | 1))
+		exit(ft_print_error("can't read '%s': %m.\n", path));
+	if ((size_t)rd < sizeof(head) && (close(fd) | 1))
+		exit(ft_print_error("'%s': Invalid or corrupted file.\n", path));
+	bin_to_system(&head.magic, sizeof(head.magic));
+	bin_to_system(&head.prog_size, sizeof(head.prog_size));
+	if (head.magic != COREWAR_EXEC_MAGIC && (close(fd) | 1))
+		exit(ft_print_error("'%s': Invalid or corrupted file.\n", path));
+	if (head.prog_size > CHAMP_MAX_SIZE && (close(fd) | 1))
+		exit(ft_print_error("'%s': File too big.\n", path));
+	if ((rd = read(fd, chmp->pc, head.prog_size)) < 0)
+		exit(ft_print_error("can't read '%s': %m.\n", path));
+	if (close(fd) < 0)
+		exit(ft_print_error("can't close fd '%d': %m.\n", fd));
+	if (rd < head.prog_size)
+		exit(ft_print_error("'%s': Invalid or corrupted file.\n", path));
 }
 
 t_vm		parse_args(char **av)
 {
-	int		i;
-	t_vm	vm;
+	uint32_t	i;
+	t_vm		vm;
 
 	i = 0;
 	ft_bzero(&vm, sizeof(vm));
@@ -123,6 +140,11 @@ t_vm		parse_args(char **av)
 	}
 	if (!vm.psize)
 		exit(ft_print_error("No player.\n"));
-	load_players(&vm);
+	i = 0;
+	while (i < vm.psize)
+	{
+		load_file(&vm, vm.players + i, (char *)vm.players[i].pc);
+		++i;
+	}
 	return (vm);
 }
