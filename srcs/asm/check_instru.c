@@ -14,6 +14,10 @@
 
 extern t_op	g_op_tab[17];
 
+/*
+** make a copy of a label: into a t_instruct
+*/
+
 int		ft_getlab(char **line, t_instruct *inst)
 {
 	int i;
@@ -34,6 +38,11 @@ int		ft_getlab(char **line, t_instruct *inst)
 	}
 	return (0);
 }
+
+/*
+** take the name of an instruction and 
+** return the op_code
+*/
 
 int		ft_getopcode(char **line, t_instruct *inst)
 {
@@ -61,6 +70,11 @@ int		ft_getopcode(char **line, t_instruct *inst)
 	return (-1);
 }
 
+/*
+** take the opcode,
+** return the nmbr of argument
+*/
+
 int		get_paramlen(int opcode)
 {
 	int		i;
@@ -75,6 +89,10 @@ int		get_paramlen(int opcode)
 	return (-1);
 }
 
+/*
+** ok lol kevin has got a problem with the leaks and valgrind and stuff
+*/
+
 void	free_split(char **params)
 {
 	int		i;
@@ -87,6 +105,11 @@ void	free_split(char **params)
 	}
 	free(params);
 }
+
+/*
+** return le nombre d'occurence d'un char dans une *str
+** est utilisé pour compter le nombre de ',' qui separent les parametres
+*/
 
 int		ft_strcountchar(char *str, char c)
 {
@@ -102,6 +125,16 @@ int		ft_strcountchar(char *str, char c)
 	return (sum);
 }
 
+/*
+** take an ocp (REG_CODE / DIR_CODE / IND_CODE)
+** and look in g_op_tab.args
+** en utilisant les bitwise operator
+** par exemple : par exemple pour `ld` on a {T_DIR | T_IND, T_REG} 
+** ce qui donne {2 | 4, 1}, en binaire {0010 | 0100, 0001}
+** et du coup le | il superpose tout c'est trop pratique et COMME PAR HASARD OUPS aucun bit ne se superpose
+** ça donne {0110 | 0001} et du coup on peut regarder facilement 
+*/
+
 int		is_paramtype_allowed(char param_type, t_instruct *inst, int i)
 {
 	if (param_type == IND_CODE)
@@ -110,6 +143,10 @@ int		is_paramtype_allowed(char param_type, t_instruct *inst, int i)
 		return (1);
 	return (0);
 }
+
+/*
+** ici on regarde le premier char pour savoir si rX ou si % ou si rien
+*/
 
 t_arg_type	get_ocp(char **param_raw, int param_len, t_instruct *inst)
 {
@@ -192,6 +229,10 @@ int		ft_getparams(char **line, t_instruct *inst)
 	return (1);
 }
 
+/*
+** ok go ask to the double-link-listed girl if you want really want to know
+*/
+
 t_instruct	*add_inst(t_instruct_head *head)
 {
 	t_instruct	*new;
@@ -207,6 +248,15 @@ t_instruct	*add_inst(t_instruct_head *head)
 	head->slen++;
 	return (new);
 }
+
+/*
+** ok the idea is
+** le op code is 1 octet
+** + 1 octet for the ocp, but he is optionnal so you have to check
+** + 1, 2 or 4 for each argument soooooo you have to check each one
+** with bitwise again 
+** et voila
+*/
 
 void	update_progsize(t_instruct_head *head, t_instruct *inst)
 {
@@ -235,6 +285,11 @@ void	update_progsize(t_instruct_head *head, t_instruct *inst)
 	inst->byt_index = head->length;
 	head->length += prog_size;
 }
+
+/*
+** just to see if there is no #blablabla at the end of the line
+** but that remind me that maybe if there is a #blabal,blab, it coulb be a problem
+*/
 
 int		check_endline(char *line)
 {
