@@ -6,7 +6,7 @@
 /*   By: smoreno- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 14:52:32 by smoreno-          #+#    #+#             */
-/*   Updated: 2019/10/21 06:53:20 by thberrid         ###   ########.fr       */
+/*   Updated: 2019/10/21 09:58:23 by thberrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,6 @@ t_arg_type	get_ocp(char **param_raw, int param_len, t_instruct *inst)
 			param_type = IND_CODE;
 		if (!is_paramtype_allowed(param_type, inst, i))
 			return (0);
-		//ocp += ((param_type << (param_len - i + 1) * 2));
 		ocp += ((param_type << (3 - i) * 2));
 		i++;
 	}
@@ -208,6 +207,33 @@ t_instruct	*add_inst(t_instruct_head *head)
 	return (new);
 }
 
+void	update_progsize(t_instruct_head *head, t_instruct *inst)
+{
+	int		prog_size;
+	int		i;
+	char	code;
+
+	prog_size = 1;
+	if (g_op_tab[inst->id - 1].ocp)
+		prog_size += 1;
+	i = 0;
+	while (i < 3)
+	{
+		code = 0;
+		code += (inst->ocp >> 2 * (3 - i)) & 2;
+		code += (inst->ocp >> (2 * (3 - i))) & 1;
+		if (code == 1)
+			prog_size += 1;
+		else if (code == 3)
+			prog_size += 2;
+		else if (code != 0) 
+			prog_size += (g_op_tab[inst->id - 1].hdir ? 2 : 4);
+		i++;
+	}
+	inst->len = prog_size;
+	head->length += prog_size;
+}
+
 int		check_instruct(char *line, t_instruct_head *head)
 {
 	int		i;
@@ -224,5 +250,6 @@ int		check_instruct(char *line, t_instruct_head *head)
 		return (-1);
 	if (ft_getparams(line, inst) < 0)
 		return (-1);
+	update_progsize(head, inst);
 	return (1);
 }

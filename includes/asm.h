@@ -6,7 +6,7 @@
 /*   By: smoreno- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 06:05:50 by smoreno-          #+#    #+#             */
-/*   Updated: 2019/10/21 04:49:13 by thberrid         ###   ########.fr       */
+/*   Updated: 2019/10/21 08:08:01 by thberrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 //#include "ftlib.h"
 #include "../../libft/includes/ftlib.h"
 #include "../../libft/includes/ftio.h"
+
+extern t_op	g_op_tab[17];
 
 typedef struct 	s_instruc
 {
