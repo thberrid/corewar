@@ -6,7 +6,7 @@
 /*   By: smoreno- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 14:52:32 by smoreno-          #+#    #+#             */
-/*   Updated: 2019/10/20 07:37:27 by thberrid         ###   ########.fr       */
+/*   Updated: 2019/10/21 04:24:19 by thberrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,34 +75,85 @@ int		get_paramlen(int opcode)
 	return (-1);
 }
 
-int		ft_getparams(char *line, t_instruct *inst)
+void	free_split(char **params)
 {
-	char	**param_raw;
 	int		i;
-	int		j;
-	int		param_len;
 
-	while (ft_isspace(*line))
-		(line)++;
-	if (!(param_raw = ft_strsplit(line, SEPARATOR_CHAR)))
-		return (-1);
 	i = 0;
-	param_len = get_paramlen(inst->id);
+	while (params[i])
+	{
+		ft_strdel(&(params[i]));
+		i += 1;
+	}
+	ft_strdel(params);
+}
+
+int		ft_strnc(char *str, char c)
+{
+	int		sum;
+
+	sum = 0;
+	while (*str)
+	{
+		if (*str == c)
+			sum += 1;
+		str += 1;
+	}
+	return (sum);
+}
+
+int		is_paramtype_allowed(char param_type, t_instruct *inst, int i)
+{
+	if (param_type == IND_CODE)
+		param_type = T_IND;
+	if ((!(g_op_tab[(int)inst->id].args[i] ^ param_type)) < g_op_tab[(int)inst->id].args[i])
+		return (1);
+	return (0);
+}
+
+t_arg_type	get_ocp(char **param_raw, int param_len, t_instruct *inst)
+{
+	t_arg_type	ocp;
+	int			i;
+	int			j;
+	char		param_type;
+
+	i = 0;
+	ocp = 0;
 	while (param_raw[i])
 	{
 		j = 0;
 		while (ft_isspace(param_raw[i][j]))
 			j++;
 		if (param_raw[i][j] == 'r')
-			inst->ocp += ((REG_CODE << (param_len - i + 1) * 2));
+			param_type = REG_CODE;
 		else if (param_raw[i][0] == '%')
-			inst->ocp += ((DIR_CODE << (param_len - i + 1) * 2));
+			param_type = DIR_CODE;
 		else
-			inst->ocp += ((IND_CODE << (param_len - i + 1) * 2));
+			param_type = IND_CODE;
+		if (!is_paramtype_allowed(param_type, inst, i))
+			return (0);
+		ocp += ((param_type << (param_len - i + 1) * 2));
 		i++;
 	}
-	if (i != param_len)
+	return (ocp);
+}
+
+int		ft_getparams(char *line, t_instruct *inst)
+{
+	char	**param_raw;
+	int		param_len;
+
+	param_len = get_paramlen(inst->id);
+	if (param_len != 1 + ft_strnc(line, SEPARATOR_CHAR))
 		return (-1);
+	if (!(param_raw = ft_strsplit(line, SEPARATOR_CHAR)))
+		return (-1);
+	if (!(inst->ocp = get_ocp(param_raw, param_len, inst)))
+		return (-1);
+	if (!param_to_inst(param_raw, inst))
+		return (-1);
+	free_split(param_raw);
 	return (1);
 }
 
@@ -126,6 +177,16 @@ int		check_instruct(char *line, t_instruct_head *head)
 {
 	int		i;
 	t_instruct	*inst;
+
+	/*
+	ft_putstr(">> ");
+	ft_bprint_fd(&(g_op_tab[1].args[1]), 1, 1);
+	ft_putchar('\n');
+	char tmp = g_op_tab[1].args[1] ^ 1;
+	ft_putstr(">> ");
+	ft_bprint_fd(&tmp, 1, 1);
+	ft_putchar('\n');
+*/
 
 	i = 0;
 	if (!(inst = add_inst(head)))

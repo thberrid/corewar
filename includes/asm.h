@@ -6,7 +6,7 @@
 /*   By: smoreno- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 06:05:50 by smoreno-          #+#    #+#             */
-/*   Updated: 2019/10/20 07:25:04 by thberrid         ###   ########.fr       */
+/*   Updated: 2019/10/21 04:26:17 by thberrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ typedef struct 	s_instruc
 	char				id;
 	uint32_t			plabel;
 	t_arg_type			ocp;
-	uint32_t			parms[3];
+	char				**params_str;
+	uint32_t			params_bits[3];
 	size_t				len;
 } 				t_instruct;
 
