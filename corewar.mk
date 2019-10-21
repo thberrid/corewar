@@ -8,4 +8,5 @@
 SRC_COR	:=	\
 			arena.c		\
 			corewar.c	\
+			process.c	\
 			cmd_parse.c

@@ -6,7 +6,7 @@
 /*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 15:51:41 by baurens           #+#    #+#             */
-/*   Updated: 2019/10/15 08:24:54 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/10/21 18:07:59 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 # define NAME_CMD_STRING	".name"
 # define COMMENT_CMD_STRING	".comment"
 
-# define REG_NUMBER			16
+# define REG_NUMBER			(16)
 
 # define CYCLE_TO_DIE		1536
 # define CYCLE_DELTA		50

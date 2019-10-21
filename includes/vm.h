@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 09:47:24 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/21 08:08:08 by baurens          ###   ########.fr       */
+/*   Updated: 2019/10/21 12:58:55 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,20 @@
 
 # define DUMP_LEN	32
 
-/*
-**	fd:		filedescriptor to the opened file
-**	id:		position in the champion tab
-**	num:	id number for the battle
-*/
+typedef struct s_champ	t_champ;
 
-typedef struct	s_champ
+/*
+**	pc:		startpoint of the player in the arena
+**	id:		position in the champion tab
+**	pid:	process id (used by live during the battle)
+*/
+struct			s_champ
 {
 	t_byte		*pc;
 	uint32_t	id;
 	uint32_t	pid;
-}				t_champ;
+	char		name[PROG_NAME_LENGTH + 1];
+};
 
 typedef struct	s_vm
 {
@@ -46,13 +48,6 @@ typedef struct	s_dispatch
 	const char	*opt;
 	char		**(*callback)(t_vm *vm, char **av);
 }				t_dispatch;
-
-typedef struct	s_proc
-{
-	t_byte		*pc;
-	t_byte		carry;
-	t_reg		regs[REG_NUMBER];
-}				t_proc;
 
 t_vm			parse_args(char **av);
 

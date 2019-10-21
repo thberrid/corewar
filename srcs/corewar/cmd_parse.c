@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:32:56 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/21 07:53:16 by baurens          ###   ########.fr       */
+/*   Updated: 2019/10/21 17:57:22 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <limits.h>
 #include <fcntl.h>
 #include "endianes.h"
+#include "process.h"
 #include "arena.h"
 #include "ftlib.h"
 #include "ftio.h"
@@ -122,12 +123,14 @@ static void	load_file(t_vm *vm, t_champ *chmp, const char *path)
 		exit(ft_print_error("can't close fd '%d': %m.\n", fd));
 	if (rd < head.prog_size)
 		exit(ft_print_error("'%s': Invalid or corrupted file.\n", path));
+	ft_strcpy(chmp->name, head.prog_name);
 }
 
 t_vm		parse_args(char **av)
 {
 	uint32_t	i;
 	t_vm		vm;
+	t_proc		*proc;
 
 	i = 0;
 	ft_bzero(&vm, sizeof(vm));
@@ -144,7 +147,16 @@ t_vm		parse_args(char **av)
 	while (i < vm.psize)
 	{
 		load_file(&vm, vm.players + i, (char *)vm.players[i].pc);
-		++i;
+		proc = add_process(vm.players[i].pc - g_map, NULL);
+		proc->regs[0] = -vm.players[i++].pid;
 	}
 	return (vm);
 }
+
+/*
+**	This is equivalent to invert the sign but slower.
+**	Keeping it here in case the linux compiler doesn't like
+**		to negate an unsigned value...
+**
+**	proc->regs[0] = 0xffffffffu - (vm.players[i++].pid - 1);
+*/
