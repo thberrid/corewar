@@ -6,7 +6,7 @@
 /*   By: thberrid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/20 02:52:22 by thberrid          #+#    #+#             */
-/*   Updated: 2019/10/21 06:55:18 by thberrid         ###   ########.fr       */
+/*   Updated: 2019/10/21 09:55:55 by thberrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	instruct_display(t_instruct *this)
 
 	ft_printf("Label -> %s\n", this->label);
 	ft_printf("ID -> %d\n", this->id);
+	ft_printf("Instr. size -> %lu\n", this->len);
 	ft_printf("OCP -> ");
 	ft_bprint_fd_rev(&(this->ocp), sizeof(this->ocp), 1);
 	i = 0;
@@ -36,7 +37,9 @@ void	instruct_display_all(t_instruct_head *head)
 
 	i = 0;
 	this = head->head;
-	ft_printf("LEN : %lu\n", head->slen);
+	ft_printf("Number of instructions ->  %lu\n", head->slen);
+	ft_printf("Size of the program ->  %lu\n", head->length);
+	ft_putendl("----------");
 	while (i < head->slen)
 	{
 		instruct_display(this);
