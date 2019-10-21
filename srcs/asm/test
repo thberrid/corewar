@@ -18,8 +18,8 @@ longeur (PROG_NAME_LENGTH | COMMENT_LENGTH) si les caracteres sont autorise LABE
 - check instruc existe. (fait)
 - check si label existe/valide. (fait)
 
-- check params. (en cours : kevin)
- 	( fonction commune check T_DIR | T_REG | T_IND)
+- check params. (done)
+ 	( fonction commune check T_DIR | T_REG | T_IND) >> LOOOL vive les bitwise XD
    * live | fork | lfork | zjump
    * ld | lld |
    * add | sub
@@ -29,7 +29,7 @@ longeur (PROG_NAME_LENGTH | COMMENT_LENGTH) si les caracteres sont autorise LABE
    * st
    * sti
    
- - check struct length total et ajout d un new maillon
+ - check struct length total et ajout d un new maillon (done)
  - remplacer les labels par leur pointeur.
 
 - imprimer
