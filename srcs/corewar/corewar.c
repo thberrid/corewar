@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 07:24:26 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/21 18:09:51 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/10/21 18:12:22 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int			main(int ac __attribute__((unused)), char **av)
 	ft_bzero(&g_procs, sizeof(t_lst));
 	vm = parse_args(av + 1);
 	print_vm_state(&vm);
-
-	/*vm_dump();*/
+	if (vm.dmp_bol)
+		vm_dump();
 	return (0);
 }
