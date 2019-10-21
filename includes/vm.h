@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 09:47:24 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/21 07:52:35 by baurens          ###   ########.fr       */
+/*   Updated: 2019/10/21 08:08:08 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,13 @@ typedef struct	s_dispatch
 	const char	*opt;
 	char		**(*callback)(t_vm *vm, char **av);
 }				t_dispatch;
+
+typedef struct	s_proc
+{
+	t_byte		*pc;
+	t_byte		carry;
+	t_reg		regs[REG_NUMBER];
+}				t_proc;
 
 t_vm			parse_args(char **av);
 
