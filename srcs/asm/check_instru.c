@@ -6,7 +6,7 @@
 /*   By: smoreno- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 14:52:32 by smoreno-          #+#    #+#             */
-/*   Updated: 2019/10/21 12:13:41 by thberrid         ###   ########.fr       */
+/*   Updated: 2019/10/21 12:24:21 by thberrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,6 +231,7 @@ void	update_progsize(t_instruct_head *head, t_instruct *inst)
 		i++;
 	}
 	inst->len = prog_size;
+	inst->byt_index = head->length;
 	head->length += prog_size;
 }
 
@@ -240,8 +241,6 @@ int		check_instruct(char *line, t_instruct_head *head)
 	t_instruct	*inst;
 
 	i = 0;
-	if (line[0] == COMMENT_CHAR)
-		return (1);
 	if (!(inst = add_inst(head)))
 		return (-1);
 	while (ft_isspace(*line))
