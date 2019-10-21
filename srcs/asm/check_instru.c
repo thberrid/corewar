@@ -6,7 +6,7 @@
 /*   By: smoreno- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 14:52:32 by smoreno-          #+#    #+#             */
-/*   Updated: 2019/10/21 12:24:21 by thberrid         ###   ########.fr       */
+/*   Updated: 2019/10/21 12:40:43 by thberrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ t_arg_type	get_ocp(char **param_raw, int param_len, t_instruct *inst)
 	return (ocp);
 }
 
-int		param_to_inst(char **param_raw, t_instruct *inst)
+int		param_to_inst(char **param_raw, t_instruct *inst, char **line)
 {
 	int		i;
 	int		j;
@@ -160,6 +160,7 @@ int		param_to_inst(char **param_raw, t_instruct *inst)
 		if (!(inst->params_str[i] = ft_strnew(len)))
 			return (0);
 		ft_strncpy(inst->params_str[i], &(param_raw[i][j]), len);
+		(*line) += (j + 1);
 		i += 1;
 	}
 	return (1);
@@ -173,19 +174,19 @@ int		param_to_inst(char **param_raw, t_instruct *inst)
 ** 5 make money
 */
 
-int		ft_getparams(char *line, t_instruct *inst)
+int		ft_getparams(char **line, t_instruct *inst)
 {
 	char	**param_raw;
 	int		param_len;
 
 	param_len = get_paramlen(inst->id);
-	if (param_len != 1 + ft_strcountchar(line, SEPARATOR_CHAR))
+	if (param_len != 1 + ft_strcountchar(*line, SEPARATOR_CHAR))
 		return (-1);
-	if (!(param_raw = ft_strsplit(line, SEPARATOR_CHAR)))
+	if (!(param_raw = ft_strsplit(*line, SEPARATOR_CHAR)))
 		return (-1);
 	if (!(inst->ocp = get_ocp(param_raw, param_len, inst)))
 		return (-1);
-	if (!param_to_inst(param_raw, inst))
+	if (!param_to_inst(param_raw, inst, line))
 		return (-1);
 	free_split(param_raw);
 	return (1);
@@ -235,6 +236,19 @@ void	update_progsize(t_instruct_head *head, t_instruct *inst)
 	head->length += prog_size;
 }
 
+int		check_endline(char *line)
+{
+	while (*line)
+	{
+		if (*line == COMMENT_CHAR)
+			return (1);
+		if (!ft_isspace(*line))
+			return (-1);
+		line += 1;
+	}
+	return (1);
+}
+
 int		check_instruct(char *line, t_instruct_head *head)
 {
 	int		i;
@@ -249,7 +263,9 @@ int		check_instruct(char *line, t_instruct_head *head)
 		return (-1);
 	if (ft_getopcode(&line, inst) < 0)
 		return (-1);
-	if (ft_getparams(line, inst) < 0)
+	if (ft_getparams(&line, inst) < 0)
+		return (-1);
+	if (check_endline(line) < 0)
 		return (-1);
 	update_progsize(head, inst);
 	return (1);
