@@ -6,7 +6,7 @@
 /*   By: smoreno- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 14:52:32 by smoreno-          #+#    #+#             */
-/*   Updated: 2019/10/21 04:24:19 by thberrid         ###   ########.fr       */
+/*   Updated: 2019/10/21 06:53:20 by thberrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,13 @@ void	free_split(char **params)
 	i = 0;
 	while (params[i])
 	{
-		ft_strdel(&(params[i]));
+		free(params[i]);
 		i += 1;
 	}
-	ft_strdel(params);
+	free(params);
 }
 
-int		ft_strnc(char *str, char c)
+int		ft_strcountchar(char *str, char c)
 {
 	int		sum;
 
@@ -106,7 +106,7 @@ int		is_paramtype_allowed(char param_type, t_instruct *inst, int i)
 {
 	if (param_type == IND_CODE)
 		param_type = T_IND;
-	if ((!(g_op_tab[(int)inst->id].args[i] ^ param_type)) < g_op_tab[(int)inst->id].args[i])
+	if ((g_op_tab[inst->id - 1].args[i] ^ param_type) < g_op_tab[inst->id - 1].args[i])
 		return (1);
 	return (0);
 }
@@ -120,6 +120,7 @@ t_arg_type	get_ocp(char **param_raw, int param_len, t_instruct *inst)
 
 	i = 0;
 	ocp = 0;
+	(void)param_len;
 	while (param_raw[i])
 	{
 		j = 0;
@@ -127,17 +128,51 @@ t_arg_type	get_ocp(char **param_raw, int param_len, t_instruct *inst)
 			j++;
 		if (param_raw[i][j] == 'r')
 			param_type = REG_CODE;
-		else if (param_raw[i][0] == '%')
+		else if (param_raw[i][j] == '%')
 			param_type = DIR_CODE;
 		else
 			param_type = IND_CODE;
 		if (!is_paramtype_allowed(param_type, inst, i))
 			return (0);
-		ocp += ((param_type << (param_len - i + 1) * 2));
+		//ocp += ((param_type << (param_len - i + 1) * 2));
+		ocp += ((param_type << (3 - i) * 2));
 		i++;
 	}
 	return (ocp);
 }
+
+int		param_to_inst(char **param_raw, t_instruct *inst)
+{
+	int		i;
+	int		j;
+	int		len;
+
+	i = 0;
+	while (param_raw[i])
+	{
+		j = 0;
+		while (ft_isspace(param_raw[i][j]))
+			j++;
+		if (param_raw[i][j] == DIRECT_CHAR || param_raw[i][j] == 'r')
+			j++;
+		len = 0;
+		while (param_raw[i][j + len] && !ft_isspace(param_raw[i][j + len]) && param_raw[i][j + len] != 'r')
+			len += 1;
+		if (!(inst->params_str[i] = ft_strnew(len)))
+			return (0);
+		ft_strncpy(inst->params_str[i], &(param_raw[i][j]), len);
+		i += 1;
+	}
+	return (1);
+}
+
+/*
+** 1 check if the number of arguments is correct
+** 2 then do str split (str ',')
+** 3 encode the ocp (and verify if each parameter has an allowed type)
+** 4 save it into the t_instruct
+** 5 make money
+*/
 
 int		ft_getparams(char *line, t_instruct *inst)
 {
@@ -145,7 +180,7 @@ int		ft_getparams(char *line, t_instruct *inst)
 	int		param_len;
 
 	param_len = get_paramlen(inst->id);
-	if (param_len != 1 + ft_strnc(line, SEPARATOR_CHAR))
+	if (param_len != 1 + ft_strcountchar(line, SEPARATOR_CHAR))
 		return (-1);
 	if (!(param_raw = ft_strsplit(line, SEPARATOR_CHAR)))
 		return (-1);
@@ -178,23 +213,13 @@ int		check_instruct(char *line, t_instruct_head *head)
 	int		i;
 	t_instruct	*inst;
 
-	/*
-	ft_putstr(">> ");
-	ft_bprint_fd(&(g_op_tab[1].args[1]), 1, 1);
-	ft_putchar('\n');
-	char tmp = g_op_tab[1].args[1] ^ 1;
-	ft_putstr(">> ");
-	ft_bprint_fd(&tmp, 1, 1);
-	ft_putchar('\n');
-*/
-
 	i = 0;
 	if (!(inst = add_inst(head)))
 		return (-1);
 	while (ft_isspace(*line))
 		line++;
 	if (ft_getlab(&line, inst) < 0)
-			return (-1);
+		return (-1);
 	if (ft_getopcode(&line, inst) < 0)
 		return (-1);
 	if (ft_getparams(line, inst) < 0)
