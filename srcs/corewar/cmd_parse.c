@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:32:56 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/21 17:57:22 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/10/22 12:28:10 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,11 +132,11 @@ t_vm		parse_args(char **av)
 	t_vm		vm;
 	t_proc		*proc;
 
-	i = 0;
 	ft_bzero(&vm, sizeof(vm));
 	vm.players[0].pid = 1;
 	while (av && *av)
 	{
+		i = 0;
 		while (g_parser[i].opt && !ft_strequ(*av, g_parser[i].opt))
 			++i;
 		av = g_parser[i].callback(&vm, av + !!g_parser[i].opt);
