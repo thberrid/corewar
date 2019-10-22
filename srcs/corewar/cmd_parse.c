@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:32:56 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/22 12:28:10 by baurens          ###   ########.fr       */
+/*   Updated: 2019/10/22 15:54:10 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <fcntl.h>
 #include "endianes.h"
 #include "process.h"
+#include "config.h"
 #include "arena.h"
 #include "ftlib.h"
 #include "ftio.h"

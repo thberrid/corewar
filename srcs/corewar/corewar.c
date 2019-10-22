@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 07:24:26 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/21 18:12:22 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/10/22 15:53:29 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	print_process()
 	cur = g_procs.head;
 	while (cur)
 	{
-		ft_printf("\33[35m[process %zu]\33[0m\n", i++);
+		ft_printf("\33[35m[process %zu]\33[0m\n", ++i);
 		ft_printf(" \33[31mpc:     %hu\33[0m\n", cur->pc);
 		ft_printf(" \33[33mcarry:  %d\33[0m\n", cur->carry);
 		l = 0;
@@ -72,7 +72,6 @@ static void	print_vm_state(t_vm *vm)
 	print_process();
 }
 
-__attribute__((destructor))
 void		destruct(void)
 {
 	clear_procs();
@@ -85,6 +84,7 @@ int			main(int ac __attribute__((unused)), char **av)
 	ft_bzero(&g_procs, sizeof(t_lst));
 	vm = parse_args(av + 1);
 	print_vm_state(&vm);
+	vm_loop(&vm);
 	if (vm.dmp_bol)
 		vm_dump();
 	return (0);

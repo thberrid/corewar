@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 09:47:24 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/21 12:58:55 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/10/22 15:51:10 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <inttypes.h>
 # include <string.h>
 # include <limits.h>
-# include "op.h"
+# include "config.h"
 
 # define DUMP_LEN	32
 
@@ -49,6 +49,8 @@ typedef struct	s_dispatch
 	char		**(*callback)(t_vm *vm, char **av);
 }				t_dispatch;
 
+void			vm_loop(t_vm *vm);
 t_vm			parse_args(char **av);
+void			destruct(void) __attribute__((destructor));
 
 #endif

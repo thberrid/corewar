@@ -1,16 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   op_sub.c                                           :+:      :+:    :+:   */
+/*   op_lfork.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:05:20 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/15 10:06:42 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/10/22 16:03:34 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-char	op_sub(void)
+#include "process.h"
+#include "config.h"
+#include "vm.h"
+
+char	op_lfork(t_vm *vm, t_proc *proc)
 {
+	(void)vm;
+	(void)proc;
 	return (0);
 }

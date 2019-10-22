@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 12:57:27 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/21 13:30:10 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/10/22 15:51:28 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define PROCESS_H
 
 # include <string.h>
-# include "op.h"
+# include "config.h"
 
 typedef struct s_proc	t_proc;
 typedef struct s_lst	t_lst;
