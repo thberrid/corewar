@@ -6,7 +6,7 @@
 /*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 15:51:41 by baurens           #+#    #+#             */
-/*   Updated: 2019/10/21 18:07:59 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/10/22 12:25:16 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,5 +85,7 @@ typedef struct	s_op
 /*
 **	(t_proc *process, char *mem);
 */
+
+extern const t_op	g_op_tab[];
 
 #endif
