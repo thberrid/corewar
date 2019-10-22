@@ -1,16 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   op_zjmp.c                                          :+:      :+:    :+:   */
+/*   op_ldi.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:05:20 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/15 10:06:54 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/10/22 16:03:32 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-char	op_zjmp(void)
+#include "process.h"
+#include "config.h"
+#include "vm.h"
+
+char	op_ldi(t_vm *vm, t_proc *proc)
 {
+	(void)vm;
+	(void)proc;
 	return (0);
 }

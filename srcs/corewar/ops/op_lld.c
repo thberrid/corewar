@@ -1,16 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   op_add.c                                           :+:      :+:    :+:   */
+/*   op_lld.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/15 10:04:56 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/15 10:05:14 by abaurens         ###   ########.fr       */
+/*   Created: 2019/10/15 10:05:20 by abaurens          #+#    #+#             */
+/*   Updated: 2019/10/22 16:03:39 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-char	op_add(void)
+#include "process.h"
+#include "config.h"
+#include "vm.h"
+
+char	op_lld(t_vm *vm, t_proc *proc)
 {
+	(void)vm;
+	(void)proc;
 	return (0);
 }

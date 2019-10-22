@@ -6,84 +6,111 @@
 /*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 15:51:41 by baurens           #+#    #+#             */
-/*   Updated: 2019/10/15 08:24:54 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/10/22 16:26:22 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef OP_H
 # define OP_H
 
-# include <inttypes.h>
+# include "process.h"
+# include "config.h"
+# include "vm.h"
 
-# define REG_CODE			1
-# define DIR_CODE			2
-# define IND_CODE			3
+typedef struct s_op	t_op;
 
-# define MAX_ARGS_NUMBER	4
-# define MAX_PLAYERS		4
-# define MEM_SIZE			(4*1024)
-# define IDX_MOD			(MEM_SIZE / 8)
-# define CHAMP_MAX_SIZE		(MEM_SIZE / 6)
-
-# define COMMENT_CHAR		'#'
-# define LABEL_CHAR			':'
-# define DIRECT_CHAR		'%'
-# define SEPARATOR_CHAR		','
-
-# define LABEL_CHARS		"abcdefghijklmnopqrstuvwxyz_0123456789"
-
-# define NAME_CMD_STRING	".name"
-# define COMMENT_CMD_STRING	".comment"
-
-# define REG_NUMBER			16
-
-# define CYCLE_TO_DIE		1536
-# define CYCLE_DELTA		50
-# define NBR_LIVE			21
-# define MAX_CHECKS			10
-
-# define T_REG				1
-# define T_DIR				2
-# define T_IND				4
-# define T_LAB				8
-
-# define PROG_NAME_LENGTH	(128)
-# define COMMENT_LENGTH		(2048)
-# define COREWAR_EXEC_MAGIC	0xea83f3
-
-# define IND_SIZE			2
-# define REG_SIZE			4
-# define DIR_SIZE			REG_SIZE
-
-typedef uint16_t			t_ind;
-typedef uint32_t			t_reg;
-typedef t_reg				t_dir;
-typedef t_ind				t_hdir;
-typedef uint8_t				t_byte;
-typedef char				t_arg_type;
-
-typedef struct	s_header
+struct		s_op
 {
-	uint32_t	magic;
-	char		prog_name[PROG_NAME_LENGTH + 1];
-	uint32_t	prog_size;
-	char		comment[COMMENT_LENGTH + 1];
-}				t_header;
+	char	*name;
+	int		arg_cnt;
+	char	args[4];
+	int		id;
+	int		cost;
+	char	*desc;
+	char	ocp;
+	char	hdir;
+	char	(*fnc)(t_vm *vm, t_proc *proc);
+};
 
-typedef struct	s_op
+# ifdef VM
+#  define OP_LIVE	op_live
+#  define OP_LD		op_ld
+#  define OP_ST		op_st
+#  define OP_ADD	op_add
+#  define OP_SUB	op_sub
+#  define OP_AND	op_and
+#  define OP_OR		op_or
+#  define OP_XOR	op_xor
+#  define OP_ZJMP	op_zjmp
+#  define OP_LDI	op_ldi
+#  define OP_STI	op_sti
+#  define OP_FORK	op_fork
+#  define OP_LLD	op_lld
+#  define OP_LLDI	op_lldi
+#  define OP_LFORK	op_lfork
+#  define OP_AFF	op_aff
+
+char		op_or(t_vm *vm, t_proc *proc);
+char		op_st(t_vm *vm, t_proc *proc);
+char		op_ld(t_vm *vm, t_proc *proc);
+char		op_add(t_vm *vm, t_proc *proc);
+char		op_sub(t_vm *vm, t_proc *proc);
+char		op_and(t_vm *vm, t_proc *proc);
+char		op_xor(t_vm *vm, t_proc *proc);
+char		op_aff(t_vm *vm, t_proc *proc);
+char		op_sti(t_vm *vm, t_proc *proc);
+char		op_ldi(t_vm *vm, t_proc *proc);
+char		op_lld(t_vm *vm, t_proc *proc);
+char		op_lldi(t_vm *vm, t_proc *proc);
+char		op_zjmp(t_vm *vm, t_proc *proc);
+char		op_live(t_vm *vm, t_proc *proc);
+char		op_fork(t_vm *vm, t_proc *proc);
+char		op_lfork(t_vm *vm, t_proc *proc);
+
+# else
+#  define OP_LIVE	0
+#  define OP_LD		0
+#  define OP_ST		0
+#  define OP_ADD	0
+#  define OP_SUB	0
+#  define OP_AND	0
+#  define OP_OR		0
+#  define OP_XOR	0
+#  define OP_ZJMP	0
+#  define OP_LDI	0
+#  define OP_STI	0
+#  define OP_FORK	0
+#  define OP_LLD	0
+#  define OP_LLDI	0
+#  define OP_LFORK	0
+#  define OP_AFF	0
+# endif
+
+static const t_op	g_op_tab[] __attribute__((unused)) =
 {
-	char		*name;
-	int			arg_cnt;
-	char		args[4];
-	int			id;
-	int			cost;
-	char		*desc;
-	char		ocp;
-	char		hdir;
-	char		(*fnc)(void);
-}				t_op;
-/*
-**	(t_proc *process, char *mem);
-*/
+	{"live", 1, {T_DIR}, 1, 10, "alive", 0, 0, OP_LIVE},
+	{"ld", 2, {T_DIR | T_IND, T_REG}, 2, 5, "load", 1, 0, OP_LD},
+	{"st", 2, {T_REG, T_IND | T_REG}, 3, 5, "store", 1, 0, OP_ST},
+	{"add", 3, {T_REG, T_REG, T_REG}, 4, 10, "addition", 1, 0, OP_ADD},
+	{"sub", 3, {T_REG, T_REG, T_REG}, 5, 10, "soustraction", 1, 0, OP_SUB},
+	{"and", 3, {T_REG | T_DIR | T_IND, T_REG | T_IND | T_DIR, T_REG}, 6, 6,
+		"et (and  r1, r2, r3   r1&r2 -> r3", 1, 0, OP_AND},
+	{"or", 3, {T_REG | T_IND | T_DIR, T_REG | T_IND | T_DIR, T_REG}, 7, 6,
+		"ou  (or   r1, r2, r3   r1 | r2 -> r3", 1, 0, OP_OR},
+	{"xor", 3, {T_REG | T_IND | T_DIR, T_REG | T_IND | T_DIR, T_REG}, 8, 6,
+		"ou (xor  r1, r2, r3   r1^r2 -> r3", 1, 0, OP_XOR},
+	{"zjmp", 1, {T_DIR}, 9, 20, "jump if zero", 0, 1, OP_ZJMP},
+	{"ldi", 3, {T_REG | T_DIR | T_IND, T_DIR | T_REG, T_REG}, 10, 25,
+		"load index", 1, 1, OP_LDI},
+	{"sti", 3, {T_REG, T_REG | T_DIR | T_IND, T_DIR | T_REG}, 11, 25,
+		"store index", 1, 1, OP_STI},
+	{"fork", 1, {T_DIR}, 12, 800, "fork", 0, 1, OP_FORK},
+	{"lld", 2, {T_DIR | T_IND, T_REG}, 13, 10, "long load", 1, 0, OP_LLD},
+	{"lldi", 3, {T_REG | T_DIR | T_IND, T_DIR | T_REG, T_REG}, 14, 50,
+		"long load index", 1, 1, OP_LLDI},
+	{"lfork", 1, {T_DIR}, 15, 1000, "long fork", 0, 1, OP_LFORK},
+	{"aff", 1, {T_REG}, 16, 2, "aff", 1, 0, OP_AFF},
+	{0, 0, {0}, 0, 0, 0, 0, 0, 0x0}
+};
 
 #endif
