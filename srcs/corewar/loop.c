@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 15:20:59 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/22 15:55:40 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/10/23 00:34:28 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,21 @@ static void	vm_check(void)
 
 static void	vm_exec(t_vm *vm, t_proc *proc)
 {
-	(void)vm;
-	if (g_map[proc->pc % MEM_SIZE] < sizeof(g_op_tab) / sizeof(t_op))
-		proc->carry = g_op_tab[g_map[proc->pc % MEM_SIZE]].fnc(vm, proc);
+	t_byte				cur;
+	register const t_op	*op;
+
+	op = g_op_tab;
+	cur = g_map[proc->pc % MEM_SIZE];
+	while (op->name && cur != op->id)
+		op++;
+	if (op->fnc)
+	{
+		if (++proc->time_to_wait >= op->cost)
+		{
+			proc->time_to_wait = 0;
+			proc->carry = op->fnc(vm, proc);
+		}
+	}
 	else
 		++proc->pc;
 }
@@ -42,7 +54,7 @@ void		vm_loop(t_vm *vm)
 	cycle_to_die = CYCLE_TO_DIE;
 	while (g_procs.size)
 	{
-		if (vm->dmp_bol && cycles > vm->dump)
+		if (vm->dmp_bol && cycles >= vm->dump)
 			return ;
 		if (++cycles >= CYCLE_TO_DIE)
 		{
@@ -56,5 +68,7 @@ void		vm_loop(t_vm *vm)
 			vm_exec(vm, proc);
 			proc = proc->next;
 		}
+		/*if (cycles == 2)
+			return ;*/
 	}
 }

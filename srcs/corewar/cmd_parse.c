@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:32:56 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/22 15:54:10 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/10/23 01:48:33 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static char	**parse_file(t_vm *vm, char **av)
 		exit(ft_print_error("Missing player file after '-n %u'.\n",
 			vm->players[vm->psize].pid));
 	if (vm->psize >= MAX_PLAYERS)
-		exit(ft_print_error("Can't add '%s': Too much players.\n", *av));
+		exit(ft_print_error("Can't add '%s': Too many players.\n", *av));
 	if (!match(*av, "*.cor"))
 		exit(ft_print_error("Invalid file: '%s'.\n", *av));
 	vm->players[vm->psize].id = vm->psize;
@@ -88,12 +88,13 @@ static char	**parse_dump(t_vm *vm, char **av)
 		exit(ft_print_error("Missing value for %s.\n", av[-1]));
 	if (!ft_isnumber(*av) || (v = atol(*av)) < 0 || v > 0xffffffff)
 		exit(ft_print_error("Invalid value for %s: '%s'", av[-1], *av));
-	vm->dmp_bol = 1;
+	vm->dmp_bol = 1 + (av[-1][1] == 'z');
 	vm->dump = (uint32_t)v;
 	return (av + 1);
 }
 
 static const t_dispatch	g_parser[] = {
+	{"-zdump", parse_dump},
 	{"-dump", parse_dump},
 	{"-n", parse_num},
 	{0, parse_file},
@@ -116,7 +117,7 @@ static void	load_file(t_vm *vm, t_champ *chmp, const char *path)
 	bin_to_system(&head.prog_size, sizeof(head.prog_size));
 	if (head.magic != COREWAR_EXEC_MAGIC && (close(fd) | 1))
 		exit(ft_print_error("'%s': Invalid or corrupted file.\n", path));
-	if (head.prog_size > CHAMP_MAX_SIZE && (close(fd) | 1))
+	if ((chmp->size = head.prog_size) > CHAMP_MAX_SIZE && (close(fd) | 1))
 		exit(ft_print_error("'%s': File too big.\n", path));
 	if ((rd = read(fd, chmp->pc, head.prog_size)) < 0)
 		exit(ft_print_error("can't read '%s': %m.\n", path));
@@ -124,6 +125,7 @@ static void	load_file(t_vm *vm, t_champ *chmp, const char *path)
 		exit(ft_print_error("can't close fd '%d': %m.\n", fd));
 	if (rd < head.prog_size)
 		exit(ft_print_error("'%s': Invalid or corrupted file.\n", path));
+	ft_strcpy(chmp->comm, head.comment);
 	ft_strcpy(chmp->name, head.prog_name);
 }
 

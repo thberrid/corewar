@@ -6,12 +6,13 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 12:40:34 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/21 13:28:40 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/10/23 02:57:02 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "process.h"
+#include "arena.h"
 #include "ftlib.h"
 #include "ftio.h"
 #include "vm.h"

@@ -26,7 +26,9 @@ OPS_COR	:=	$(addprefix ops/,$(OPS_COR))
 
 #	general source definitions
 SRC_COR	:=	$(OPS_COR)	\
+			ocp.c		\
 			loop.c		\
+			utils.c		\
 			arena.c		\
 			corewar.c	\
 			process.c	\

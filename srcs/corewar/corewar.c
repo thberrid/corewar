@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 07:24:26 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/22 15:53:29 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/10/23 08:08:18 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,13 +79,46 @@ void		destruct(void)
 
 int			main(int ac __attribute__((unused)), char **av)
 {
+	size_t	i;
 	t_vm	vm;
 
+	i = 0;
 	ft_bzero(&g_procs, sizeof(t_lst));
 	vm = parse_args(av + 1);
-	print_vm_state(&vm);
+	ft_putstr("Introducing contestants...\n");
+	while (i < vm.psize)
+	{
+		ft_printf("* Player %lu, weighing %zu bytes, \"%s\" (\"%s\") !\n",
+				i + 1, vm.players[i].size,
+				vm.players[i].name, vm.players[i].comm);
+		++i;
+	}
 	vm_loop(&vm);
 	if (vm.dmp_bol)
-		vm_dump();
+		vm_dump(DUMP_LEN * vm.dmp_bol);
 	return (0);
 }
+
+/*
+#include <stdio.h>
+int main(void)
+{
+	uint32_t	dir;
+
+	dir = 0xffffffffu;
+	printf("dir = %#010x = %u\n", dir, dir);
+	dir %= MEM_SIZE;
+	printf("dir = %#010x = %u\n", dir, dir);
+	dir %= IDX_MOD;
+	printf("dir = %#010x = %u\n\n", dir, dir);
+
+	dir = 0xffffffffu;
+	printf("dir = %#010x = %u\n", dir, dir);
+	dir &= 0xffff;
+	printf("dir = %#010x = %u\n", dir, dir);
+	dir %= MEM_SIZE;
+	printf("dir = %#010x = %u\n", dir, dir);
+	dir %= IDX_MOD;
+	printf("dir = %#010x = %u\n", dir, dir);
+}
+*/
