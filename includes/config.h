@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 15:50:02 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/22 15:54:48 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/10/23 05:28:19 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,10 @@
 
 # define MAX_ARGS_NUMBER	4
 # define MAX_PLAYERS		4
+
+/*
+**	# define MEM_SIZE			4096
+*/
 # define MEM_SIZE			(4*1024)
 # define IDX_MOD			(MEM_SIZE / 8)
 # define CHAMP_MAX_SIZE		(MEM_SIZE / 6)
@@ -47,6 +51,13 @@
 # define T_IND				4
 # define T_LAB				8
 
+/*
+**	# define T_REG			0b0001
+**	# define T_DIR			0b0010
+**	# define T_IND			0b0100
+**	# define T_LAB			0b1000
+*/
+
 # define PROG_NAME_LENGTH	(128)
 # define COMMENT_LENGTH		(2048)
 # define COREWAR_EXEC_MAGIC	0xea83f3
@@ -61,7 +72,6 @@ typedef t_reg				t_dir;
 typedef t_ind				t_hdir;
 typedef uint8_t				t_byte;
 typedef char				t_arg_type;
-
 
 typedef struct	s_header
 {
