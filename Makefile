@@ -6,7 +6,7 @@
 #    By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/15 06:46:14 by abaurens          #+#    #+#              #
-#    Updated: 2019/10/22 16:21:03 by abaurens         ###   ########.fr        #
+#    Updated: 2019/10/23 10:13:44 by abaurens         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,9 @@ ASM		:=	asm
 
 SRCD	:=	srcs
 OBJD	:=	objs
+
+#	default rule is all
+.DEFAULT_GOAL :=	all
 
 #
 #	Common sources
@@ -71,9 +74,11 @@ clean:
 	$(RM) $(OBJD)
 
 fclean:
+	$(RM) $(TESTER)
 	$(RM) $(OBJD)
 	$(RM) $(ASM)
 	$(RM) $(COR)
+	$(RM) tests
 
 cleanl: clean
 	@make -C $(dir $(LIB)) clean
