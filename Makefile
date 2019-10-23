@@ -6,7 +6,7 @@
 #    By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/15 06:46:14 by abaurens          #+#    #+#              #
-#    Updated: 2019/10/23 10:13:44 by abaurens         ###   ########.fr        #
+#    Updated: 2019/10/23 17:30:53 by abaurens         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,11 +55,9 @@ all:	$(ASM) $(COR)
 
 -include $(DEP)
 
-$(ASM):	CFLAGS += -DASM=1
 $(ASM):	$(LIB) $(OBJ_ASM)
 	$(LINKER) $(ASM) $(OBJ_ASM) $(LDFLAGS)
 
-$(COR):	CFLAGS += -DVM=0
 $(COR):	$(LIB) $(OBJ_COR)
 	$(LINKER) $(COR) $(OBJ_COR) $(LDFLAGS)
 

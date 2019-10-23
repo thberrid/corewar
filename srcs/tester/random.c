@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 11:22:58 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/23 11:24:40 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/10/23 17:21:12 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_dir	random_direct(void)
 
 t_byte	random_register(void)
 {
-	return ((t_byte)(rand() % REG_NUMBER));
+	return ((t_byte)((rand() % (REG_NUMBER - 1)) + 1 & 0xff));
 }
 
 t_byte	random_byte(void)

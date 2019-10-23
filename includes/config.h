@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 15:50:02 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/23 05:28:19 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/10/23 18:53:17 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@
 # define REG_SIZE			4
 # define DIR_SIZE			REG_SIZE
 
-typedef uint16_t			t_ind;
-typedef uint32_t			t_reg;
+typedef int16_t				t_ind;
+typedef int32_t				t_reg;
 typedef t_reg				t_dir;
 typedef t_ind				t_hdir;
 typedef uint8_t				t_byte;

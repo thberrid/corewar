@@ -43,13 +43,16 @@ SRC_TST	:=	\
 			main.c		\
 			random.c	\
 			file_gen.c
-SRC_TST	:=	$(addprefix $(TESTER)/,$(SRC_TST))
+SRC_TST	:=	$(addprefix $(TESTER)/,$(SRC_TST)) $(SRC_COM)
 
 OBJ_TST	:=	$(addprefix $(OBJD)/,$(SRC_TST:.c=.o))
 SRC_TST	:=	$(addprefix $(SRCD)/,$(SRC_TST))
 DEP_TST	:=	$(OBJ_TST:.o=.d)
 
+
 -include $(DEP_TST)
+
+$(COR):	CFLAGS += -ansi -pedantic -DVM
 
 $(TESTER):	CFLAGS += -DTESTER=2
 $(TESTER): $(OBJ_TST)

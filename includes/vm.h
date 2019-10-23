@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 09:47:24 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/23 03:06:49 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/10/23 14:45:12 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,11 @@
 # define DUMP_LEN	32
 
 typedef struct s_champ	t_champ;
-typedef enum e_dumpm	t_dumpm;
 
-enum			e_dumpm
+typedef enum	e_dumpm
 {
 	NONE, SUBJECT, ZAZ
-};
+}				t_dumpm;
 
 /*
 **	pc:		startpoint of the player in the arena

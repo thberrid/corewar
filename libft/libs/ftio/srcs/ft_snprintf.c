@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/10 14:15:20 by abaurens          #+#    #+#             */
-/*   Updated: 2019/01/30 23:23:46 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/10/23 13:26:01 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,7 @@ int			ft_vsnprintf(char *str, size_t size, const char *format, va_list ap)
 		return (-1);
 	if ((size_t)l >= size)
 		l = size - 1;
-	ft_bzero(str, size);
-	ft_memcpy(str, tmp, l);
+	ft_strcpy(str, tmp);
 	free(tmp);
 	return (l);
 }

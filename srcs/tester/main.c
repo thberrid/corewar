@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 09:40:35 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/23 11:29:43 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/10/23 19:15:06 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static const unsigned char	g_args[] = {
 	T_REG, T_DIR, T_IND
 };
 
-static void	gen_test_rec(const t_op *op, t_tst_case *t, int d, int *n)
+static void	gen_test_rec(const t_op *op, t_tst *t, int d, int *n)
 {
 	int	i;
 
@@ -46,12 +46,12 @@ static void	gen_test_rec(const t_op *op, t_tst_case *t, int d, int *n)
 	{
 		if ((op->args[d] & g_args[i]))
 		{
-			t[*n].argt[d] = i + 1;
+			t[*n].a[d] = i + 1;
 			if (d + 1 < op->arg_cnt)
 				gen_test_rec(op, t, d + 1, n);
 			else
 			{
-				ft_memcpy(t[*n + 1].argt, t[*n].argt, sizeof(t->argt));
+				ft_memcpy(t[*n + 1].a, t[*n].a, sizeof(t->a));
 				++(*n);
 			}
 		}
@@ -61,9 +61,10 @@ static void	gen_test_rec(const t_op *op, t_tst_case *t, int d, int *n)
 
 static void	gen_test_files(const char *dir, const t_op *op)
 {
-	int				i;
-	int				fcnt;
-	t_tst_case		tab[27];
+	int		i;
+	int		j;
+	int		fcnt;
+	t_tst	tab[27];
 
 	i = 0;
 	ft_bzero(tab, sizeof(tab));
@@ -76,9 +77,11 @@ static void	gen_test_files(const char *dir, const t_op *op)
 	i = 0;
 	while (i < fcnt)
 	{
-		ft_printf("%2d: {%d, %d, %d}\n", i,
-		tab[i].argt[0], tab[i].argt[1], tab[i].argt[2]);
-		gen_file(dir, op, i, tab + i);
+		j = 0;
+		ft_printf("%2d: {%d, %d, %d, %d}\n", i,
+		tab[i].a[0], tab[i].a[1], tab[i].a[2], tab[i].a[3]);
+		while (j < TEST_PER_CASES)
+			gen_file(dir, op, (i * TEST_PER_CASES) + ++j, tab + i);
 		++i;
 	}
 }
@@ -89,16 +92,14 @@ int			main(int ac, char **av)
 	char		testnm[25];
 
 	if (ac != 2)
-		return (0);
+		return (1);
 	srand(getpid() ^ getppid() ^ time(NULL));
 	cur = g_op_tab;
 	while (cur->name && !ft_strequ(cur->name, av[1]))
 		++cur;
 	if (!cur->name)
-		return (0);
-	ft_strcpy(testnm, TEST_DIR "/test_");
-	ft_strcat(testnm, cur->name);
-	ft_printf("%s\n", testnm);
+		return (1);
+	ft_sprintf(testnm, "%s/%s", TEST_DIR, cur->name);
 	mkdir(TEST_DIR, 0755);
 	mkdir(testnm, 0755);
 	gen_test_files(testnm, cur);

@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 07:23:53 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/17 19:03:56 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/10/23 14:46:36 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,14 @@
 **	*((uint8_t *)&v) => 0x01
 */
 
-static inline char	get_endianes(void)
+static char	get_endianes(void)
 {
 	volatile const uint16_t	v = 1;
 
 	return (*((uint8_t *)&v) == 0);
 }
 
-void				swap_endianes(void *const ptr, register size_t ln)
+void		swap_endianes(void *const ptr, register size_t ln)
 {
 	char *const		val = ptr;
 	register size_t	j;
