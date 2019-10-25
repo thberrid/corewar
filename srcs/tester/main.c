@@ -6,18 +6,18 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 09:40:35 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/23 19:15:06 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/10/25 02:57:38 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#define FT_DISABLE_WARNINGS
 
 #include <sys/stat.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <errno.h>
 #include <time.h>
 #include "tester.h"
 #include "ftlib.h"
+#include "ftio.h"
 #include "op.h"
 
 static int	cnt_cases(unsigned char var)
@@ -100,8 +100,10 @@ int			main(int ac, char **av)
 	if (!cur->name)
 		return (1);
 	ft_sprintf(testnm, "%s/%s", TEST_DIR, cur->name);
-	mkdir(TEST_DIR, 0755);
-	mkdir(testnm, 0755);
+	if (mkdir(TEST_DIR, 0755) < 0 && errno != EEXIST)
+		return (ft_print_error("%m\n"));
+	if (mkdir(testnm, 0755) < 0 && errno != EEXIST)
+		return (ft_print_error("%m\n"));
 	gen_test_files(testnm, cur);
 	return (0);
 }

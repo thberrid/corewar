@@ -18,14 +18,21 @@ print_usage()
 
 compare_corewar()
 {
-	echo "$YOUR_VM $DUMP_OPT $1 $2 > $YOUR_OUT_FILE"
-	echo "$ZAZ_VM -d $1 $2 > $ZAZ_OUT_FILE"
-	echo
+
+	printf "\e[36mtesting $2\e[0m: "
+	#echo "$YOUR_VM $DUMP_OPT $1 $2 > $YOUR_OUT_FILE"
+	#echo "$ZAZ_VM -d $1 $2 > $ZAZ_OUT_FILE"
+	diff --suppress-common-lines -y $YOUR_OUT_FILE $ZAZ_OUT_FILE 2>/dev/null
+	if [[ $? -ne 0 ]]; then
+		printf "\e[31mFAIL!\e[0m\n"
+	else
+		printf "\e[32mOK\e[0m\n"
+	fi
 }
 
 get_op_cost()
 {
-	cat includes/op.h | grep "{\"$1\", " | sed -E "s:(T_DIR|T_REG|T_IND)::g"| sed -E "s:\{[ |,]+\}::g" | sed -E "s:\{\".*\", [0-9]+, , [0-9]+, ::g"
+	cat includes/op.h|grep "{\"$1\", "|tr -d ' \t'|sed -E 's:\{(((T_IND|T_DIR|T_REG|0)\|?)+,?){1,3}\},::g'|cut -d',' -f4
 #	if [ $1 = "live" ]; then
 #		echo "10"
 #	elif [ $1 = "ld" ]; then
@@ -63,6 +70,21 @@ get_op_cost()
 #	fi
 }
 
+#sort -k
+#
+#	-k, --key=KEYDEF
+#	-t --field-separator=SEP
+#
+#	KEYDEF  is F[.C][OPTS][,F[.C][OPTS]] for start and stop position, where F is
+#			a field number and C a character position in the field; both are
+#			origin 1, and the stop position defaults to the line's end.
+#		If neither -t nor -b is in effect, characters in a field are counted
+#			from the  beginning  of  the  preceding whitespace.
+#		OPTS  is  one or more single-letter ordering options [bdfgiMhnRrV],
+#			which override global ordering options for that key.
+#		If no key is given, use the entire line as the key.
+#		Use --debug to diagnose incorrect key usage.
+
 if [[ -n $1 ]]; then
 	make tester > /dev/null
 	./tester $1 > /dev/null
@@ -71,10 +93,10 @@ if [[ -n $1 ]]; then
 		print_usage
 		exit
 	fi
-	for file in `find tests/$1 -type f -name "*.cor"`
+	for file in `find tests/$1 -type f -name "*.cor"|sort -n -t'/' -k3`
 	do
-		get_op_cost $1
-		#compare_corewar `get_op_cost $1` $file
+		#get_op_cost $1
+		compare_corewar `get_op_cost $1` $file
 	done
 else
 	print_usage

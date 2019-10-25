@@ -6,9 +6,11 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 12:40:34 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/23 02:57:02 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/10/25 01:36:50 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#define FT_DISABLE_WARNINGS
 
 #include <stdlib.h>
 #include "process.h"

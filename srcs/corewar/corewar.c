@@ -6,9 +6,11 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 07:24:26 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/23 08:08:18 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/10/25 01:36:57 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#define FT_DISABLE_WARNINGS
 
 #include <unistd.h>
 #include <stdlib.h>
@@ -18,7 +20,7 @@
 #include "ftio.h"
 #include "vm.h"
 
-# define REG_COLUMNS	8
+#define REG_COLUMNS	8
 
 t_byte	g_map[MEM_SIZE];
 t_lst	g_procs;

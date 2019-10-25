@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 15:20:59 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/23 00:34:28 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/10/25 01:34:35 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void		vm_loop(t_vm *vm)
 	uint32_t	cycle_to_die;
 
 	cycles = 0;
+	(void)cycle_to_die;
 	cycle_to_die = CYCLE_TO_DIE;
 	while (g_procs.size)
 	{

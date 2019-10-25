@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 02:51:55 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/23 18:59:00 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/10/25 01:35:51 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,9 @@ t_dir	get_ind(t_proc *proc, t_ind *off)
 {
 	t_ind	addr;
 
-	addr = (g_map[(proc->pc + (*off)++) % MEM_SIZE] << 8)
-		| g_map[(proc->pc + (*off)++) % MEM_SIZE];
+	addr = (g_map[(proc->pc + *off) % MEM_SIZE] << 8)
+		| g_map[(proc->pc + *off + 1) % MEM_SIZE];
+	(*off) += 2;
 	addr = (addr % IDX_MOD);
 	return (get_dir__(proc, &addr, 0));
 }
