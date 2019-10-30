@@ -12,4 +12,5 @@ corewar
 *.test
 */*.test
 *.d
+*.cor
 .clang_complete
