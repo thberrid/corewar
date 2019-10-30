@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 09:40:35 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/25 02:57:38 by baurens          ###   ########.fr       */
+/*   Updated: 2019/10/30 17:34:55 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ static void	gen_test_files(const char *dir, const t_op *op)
 			gen_file(dir, op, (i * TEST_PER_CASES) + ++j, tab + i);
 		++i;
 	}
+	if (op->fnc)
+		op->fnc();
 }
 
 int			main(int ac, char **av)

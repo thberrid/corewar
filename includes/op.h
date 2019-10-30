@@ -6,7 +6,7 @@
 /*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 15:51:41 by baurens           #+#    #+#             */
-/*   Updated: 2019/10/23 11:10:07 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/10/30 17:49:34 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ struct		s_op
 	char	*desc;
 	char	ocp;
 	char	hdir;
-	char	(*fnc)(t_vm *vm, t_proc *proc);
+	char	(*fnc)();
 };
 
 enum	e_opcode
@@ -90,22 +90,26 @@ char		op_fork(t_vm *vm, t_proc *proc);
 char		op_lfork(t_vm *vm, t_proc *proc);
 
 # else
-#  define OP_LIVE_F		0
-#  define OP_LD_F		0
-#  define OP_ST_F		0
-#  define OP_ADD_F		0
-#  define OP_SUB_F		0
-#  define OP_AND_F		0
-#  define OP_OR_F		0
-#  define OP_XOR_F		0
-#  define OP_ZJMP_F		0
-#  define OP_LDI_F		0
-#  define OP_STI_F		0
-#  define OP_FORK_F		0
-#  define OP_LLD_F		0
-#  define OP_LLDI_F		0
-#  define OP_LFORK_F	0
-#  define OP_AFF_F		0
+#  define	OP_LIVE_F	0
+#  define	OP_LD_F		0
+#  define	OP_ST_F		0
+#  define	OP_ADD_F	0
+#  define	OP_SUB_F	0
+#  define	OP_AND_F	0
+#  define	OP_OR_F		0
+#  define	OP_XOR_F	0
+#  define	OP_ZJMP_F	0
+#  define	OP_LDI_F	0
+#  define	OP_STI_F	0
+#  define	OP_FORK_F	0
+#  define	OP_LLD_F	0
+#  define	OP_LLDI_F	0
+#  define	OP_LFORK_F	0
+#  define	OP_AFF_F	0
+# endif
+
+# ifdef VM_TEST
+#  include "test_funcs.h"
 # endif
 
 static const t_op	g_op_tab[] __attribute__((unused)) =

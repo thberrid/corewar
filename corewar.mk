@@ -35,11 +35,36 @@ SRC_COR	:=	$(OPS_COR)	\
 			cmd_parse.c
 
 #
+#	vm compilation specific flags
+#
+$(COR):	CFLAGS += -ansi -pedantic -DVM
+
+#
 #	vm unit tests
 #
 TESTER	:=	tester
 
+SPEC	:=	\
+			or.c	\
+			st.c	\
+			ld.c	\
+			add.c	\
+			sub.c	\
+			and.c	\
+			xor.c	\
+			aff.c	\
+			sti.c	\
+			ldi.c	\
+			lld.c	\
+			lldi.c	\
+			zjmp.c	\
+			live.c	\
+			fork.c	\
+			lfork.c
+SPEC	:=	$(addprefix specific_tests/,$(SPEC))
+
 SRC_TST	:=	\
+			$(SPEC)		\
 			main.c		\
 			random.c	\
 			file_gen.c
@@ -49,11 +74,8 @@ OBJ_TST	:=	$(addprefix $(OBJD)/,$(SRC_TST:.c=.o))
 SRC_TST	:=	$(addprefix $(SRCD)/,$(SRC_TST))
 DEP_TST	:=	$(OBJ_TST:.o=.d)
 
-
 -include $(DEP_TST)
 
-$(COR):	CFLAGS += -ansi -pedantic -DVM
-
-$(TESTER):	CFLAGS += -DTESTER=2
+$(TESTER):	CFLAGS += -DVM_TEST
 $(TESTER): $(OBJ_TST)
 	$(LINKER) $(TESTER) $(OBJ_TST) $(LDFLAGS)

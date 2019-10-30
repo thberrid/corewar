@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 10:28:11 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/25 02:55:11 by baurens          ###   ########.fr       */
+/*   Updated: 2019/10/30 17:43:34 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@
 # include "config.h"
 # include "op.h"
 
-# define TEST_PER_CASES	(1)
-# define TEST_DIR		"tests"
+# define	TEST_PER_CASES	(1)
+# define	TEST_DIR		"tests"
 
-# define FT_DISABLE_WARNINGS
+# define	FT_DISABLE_WARNINGS
 
 typedef struct s_tst	t_tst;
 
