@@ -6,7 +6,7 @@
 /*   By: thberrid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/20 02:52:22 by thberrid          #+#    #+#             */
-/*   Updated: 2019/10/21 09:55:55 by thberrid         ###   ########.fr       */
+/*   Updated: 2019/10/21 12:25:22 by thberrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	instruct_display(t_instruct *this)
 	ft_printf("Label -> %s\n", this->label);
 	ft_printf("ID -> %d\n", this->id);
 	ft_printf("Instr. size -> %lu\n", this->len);
+	ft_printf("Instr. index -> %u\n", this->byt_index);
 	ft_printf("OCP -> ");
 	ft_bprint_fd_rev(&(this->ocp), sizeof(this->ocp), 1);
 	i = 0;

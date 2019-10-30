@@ -6,7 +6,7 @@
 /*   By: smoreno- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 06:05:50 by smoreno-          #+#    #+#             */
-/*   Updated: 2019/10/21 08:08:01 by thberrid         ###   ########.fr       */
+/*   Updated: 2019/10/21 12:23:08 by thberrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct 	s_instruc
 	char				*label;
 	char				id;
 	uint32_t			plabel;
+	uint32_t			byt_index;
 	t_arg_type			ocp;
 	char				*params_str[3];
 	uint32_t			params_bits[3];

@@ -6,7 +6,7 @@
 /*   By: smoreno- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 06:34:03 by smoreno-          #+#    #+#             */
-/*   Updated: 2019/10/19 23:23:31 by thberrid         ###   ########.fr       */
+/*   Updated: 2019/10/21 12:18:32 by thberrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,10 @@ int		ft_read(t_instruct_head *head, char *path, t_header *header)
 			ft_strdel(&line);
 			continue ;
 		}
+		if (line[0] == COMMENT_CHAR)
+			continue ;
 		if (!rethd)
-		{	
+		{
 			if ((rethd = check_headder(header, line, fd)) == -1)
 				return (0);
 		}
