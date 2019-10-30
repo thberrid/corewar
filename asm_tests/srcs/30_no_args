@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+ERROR_MSG=""
+SUCCESS=0
+RETURN=`$ASM_NEW $i | cut -d ' ' -f -1`
+if [ $RETURN = "usage:" ]; then
+	SUCCESS=1
+else
+	SUCCESS=0
+	ERROR_MSG="the asm didn't display the usage"
+fi
+print_result 1 "no arg" $SUCCESS $ERROR_MSG
