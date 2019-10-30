@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   asm.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smoreno- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: smoreno- <smoreno-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 06:05:50 by smoreno-          #+#    #+#             */
-/*   Updated: 2019/10/21 12:23:08 by thberrid         ###   ########.fr       */
+/*   Updated: 2019/10/30 16:40:06 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,8 @@
 
 #include <stdlib.h>
 #include "op.h"
-//#include "ftlib.h"
-#include "../../libft/includes/ftlib.h"
-#include "../../libft/includes/ftio.h"
 
-extern t_op	g_op_tab[17];
-
-typedef struct 	s_instruc
+typedef struct			s_instruc
 {
 	struct s_instruc 	*next;
 	struct s_instruc 	*prev;
@@ -33,35 +28,36 @@ typedef struct 	s_instruc
 	char				*params_str[3];
 	uint32_t			params_bits[3];
 	size_t				len;
-} 				t_instruct;
+}						t_instruct;
 
-typedef struct 	s_instruc_head
+typedef struct 			s_instruc_head
 {
-	t_instruct	*head;
-	size_t		length;
-	size_t		slen;
-} 				t_instruct_head;
+	t_instruct			*head;
+	size_t				length;
+	size_t				slen;
+} 						t_instruct_head;
 
 /*
 ** parsing
 */
 
-int		ft_read(t_instruct_head *head, char *path, t_header *header);
-int		check_instruct(char *line, t_instruct_head *head);
+int						ft_read(t_instruct_head *head, char *path,
+									t_header *header);
+int						check_instruct(char *line, t_instruct_head *head);
 
 /*
 ** free
 */
 
-void	instruct_free(t_instruct_head *head);
+void					instruct_free(t_instruct_head *head);
 
 /*
 ** tools
 */
 
-void	ft_bprint_fd(void *ptr, int nbits, int fd);
-void	ft_bprint_fd_rev(void *ptr, int nbits, int fd);
-void	instruct_display(t_instruct *this);
-void	instruct_display_all(t_instruct_head *head);
+void					ft_bprint_fd(void *ptr, int nbits, int fd);
+void					ft_bprint_fd_rev(void *ptr, int nbits, int fd);
+void					instruct_display(t_instruct *this);
+void					instruct_display_all(t_instruct_head *head);
 
 #endif

@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   instruct_display.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thberrid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: thberrid <thberrid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/20 02:52:22 by thberrid          #+#    #+#             */
-/*   Updated: 2019/10/21 12:25:22 by thberrid         ###   ########.fr       */
+/*   Updated: 2019/10/30 16:37:56 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "ftio.h"
 #include "asm.h"
 
 void	instruct_display(t_instruct *this)

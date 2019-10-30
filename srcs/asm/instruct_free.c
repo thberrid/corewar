@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   instruct_free.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thberrid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: thberrid <thberrid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/19 05:10:47 by thberrid          #+#    #+#             */
-/*   Updated: 2019/10/21 05:48:31 by thberrid         ###   ########.fr       */
+/*   Updated: 2019/10/30 16:39:16 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <asm.h>
+#include "ftlib.h"
+#include "asm.h"
 
 void	instruct_free(t_instruct_head *head)
 {

@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   read.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smoreno- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: smoreno- <smoreno-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 06:34:03 by smoreno-          #+#    #+#             */
-/*   Updated: 2019/10/21 12:18:32 by thberrid         ###   ########.fr       */
+/*   Updated: 2019/10/30 16:39:29 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
-#include "../../includes/asm.h"
 #include <fcntl.h>
+#include "ftlib.h"
+#include "ftio.h"
+#include "asm.h"
 
 
 int		get_namecom(char *header, char *line, int fd)
@@ -24,10 +25,10 @@ int		get_namecom(char *header, char *line, int fd)
 	{
 		header[i] = *line;
 		line++;
-		i++;	
+		i++;
 	}
 	if (*line == '"')
-	{ 
+	{
 		if (*(line + 1) == '\0')
 			return (1);
 		else
@@ -44,7 +45,7 @@ int		get_namecom(char *header, char *line, int fd)
 int		check_headder(t_header *header, char *line, int fd)
 {
 	int		i;
-	
+
 	if (ft_strlen(line) < 5)
 		return (0);
 	i = (ft_strncmp(line, NAME_CMD_STRING, 5) == 0) ? 5 : 0;
@@ -64,7 +65,7 @@ int		check_headder(t_header *header, char *line, int fd)
 		{
 			line++;
 			if (!get_namecom(header->comment, line, fd))
-				return (-1);	
+				return (-1);
 		}
 		if (header->prog_name[0] && header->comment[0])
 			return (1);
@@ -79,9 +80,9 @@ int		ft_read(t_instruct_head *head, char *path, t_header *header)
 	char	*line;
 	int		rethd;
 	int		ret;
-	
+
 	rethd = 0;
-	
+
 	if(!(fd = open(path, O_RDONLY)))
 		return (0);
 	while ((ret = gnl(fd, &line)) > 0)

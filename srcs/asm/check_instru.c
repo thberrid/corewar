@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   check_instru.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smoreno- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: smoreno- <smoreno-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 14:52:32 by smoreno-          #+#    #+#             */
-/*   Updated: 2019/10/21 12:40:43 by thberrid         ###   ########.fr       */
+/*   Updated: 2019/10/30 16:39:05 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/asm.h"
-
-extern t_op	g_op_tab[17];
+#include "ftlib.h"
+#include "asm.h"
 
 /*
 ** make a copy of a label: into a t_instruct
@@ -21,7 +20,7 @@ extern t_op	g_op_tab[17];
 int		ft_getlab(char **line, t_instruct *inst)
 {
 	int i;
-	
+
 	i = 0;
 	while ((*line)[i] && (*line)[i] != LABEL_CHAR && !(ft_isspace((*line)[i])))
 	{
@@ -40,7 +39,7 @@ int		ft_getlab(char **line, t_instruct *inst)
 }
 
 /*
-** take the name of an instruction and 
+** take the name of an instruction and
 ** return the op_code
 */
 
@@ -129,10 +128,10 @@ int		ft_strcountchar(char *str, char c)
 ** take an ocp (REG_CODE / DIR_CODE / IND_CODE)
 ** and look in g_op_tab.args
 ** en utilisant les bitwise operator
-** par exemple : par exemple pour `ld` on a {T_DIR | T_IND, T_REG} 
+** par exemple : par exemple pour `ld` on a {T_DIR | T_IND, T_REG}
 ** ce qui donne {2 | 4, 1}, en binaire {0010 | 0100, 0001}
 ** et du coup le | il superpose tout c'est trop pratique et COMME PAR HASARD OUPS aucun bit ne se superpose
-** ça donne {0110 | 0001} et du coup on peut regarder facilement 
+** ça donne {0110 | 0001} et du coup on peut regarder facilement
 */
 
 int		is_paramtype_allowed(char param_type, t_instruct *inst, int i)
@@ -254,7 +253,7 @@ t_instruct	*add_inst(t_instruct_head *head)
 ** le op code is 1 octet
 ** + 1 octet for the ocp, but he is optionnal so you have to check
 ** + 1, 2 or 4 for each argument soooooo you have to check each one
-** with bitwise again 
+** with bitwise again
 ** et voila
 */
 
@@ -277,7 +276,7 @@ void	update_progsize(t_instruct_head *head, t_instruct *inst)
 			prog_size += 1;
 		else if (code == 3)
 			prog_size += 2;
-		else if (code != 0) 
+		else if (code != 0)
 			prog_size += (g_op_tab[inst->id - 1].hdir ? 2 : 4);
 		i++;
 	}
@@ -310,6 +309,7 @@ int		check_instruct(char *line, t_instruct_head *head)
 	t_instruct	*inst;
 
 	i = 0;
+	(void)i;
 	if (!(inst = add_inst(head)))
 		return (-1);
 	while (ft_isspace(*line))

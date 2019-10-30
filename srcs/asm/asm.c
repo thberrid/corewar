@@ -3,13 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   asm.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thberrid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: thberrid <thberrid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/19 05:19:53 by thberrid          #+#    #+#             */
-/*   Updated: 2019/10/20 02:53:53 by thberrid         ###   ########.fr       */
+/*   Updated: 2019/10/30 16:38:52 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "ftlib.h"
+#include "ftio.h"
 #include "asm.h"
 
 int		main(int ac, char **av)
@@ -18,6 +20,7 @@ int		main(int ac, char **av)
 	t_header		header;
 	int				retrn;
 
+	(void)retrn;
 	if (ac != 2)
 		ft_printf("Error\n");
 	ft_bzero(&header, sizeof(t_header));
