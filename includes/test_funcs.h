@@ -6,29 +6,29 @@
 /*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 17:41:32 by baurens           #+#    #+#             */
-/*   Updated: 2019/10/30 17:54:05 by baurens          ###   ########.fr       */
+/*   Updated: 2019/10/30 18:08:15 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TEST_FUNCS_H
 # define TEST_FUNCS_H
 
-char		test_or();
-char		test_st();
-char		test_ld();
-char		test_add();
-char		test_sub();
-char		test_and();
-char		test_xor();
-char		test_aff();
-char		test_sti();
-char		test_ldi();
-char		test_lld();
-char		test_lldi();
-char		test_zjmp();
-char		test_live();
-char		test_fork();
-char		test_lfork();
+char		test_or(void);
+char		test_st(void);
+char		test_ld(void);
+char		test_add(void);
+char		test_sub(void);
+char		test_and(void);
+char		test_xor(void);
+char		test_aff(void);
+char		test_sti(void);
+char		test_ldi(void);
+char		test_lld(void);
+char		test_lldi(void);
+char		test_zjmp(void);
+char		test_live(void);
+char		test_fork(void);
+char		test_lfork(void);
 
 #  undef	OP_LIVE_F
 #  define	OP_LIVE_F	test_live
