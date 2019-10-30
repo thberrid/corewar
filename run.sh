@@ -15,52 +15,79 @@ ZAZ_OUT_FILE='zout.dump'
 #	when not on a real OSX system.
 OSX_CONTAINER='darling shell'
 
-can_run=true
-if [[ `uname` == "Darwin" ]]; then
-	OSX_CONTAINER=''
-else if [[ `uname` != "Linux" ]]; then
-		echo "This script works only on OSX or Linux"
+# path to op.h file (to gather the opcode list)
+op_h_file='./includes/op.h'
+
+# Check for dependencies and make them if possible
+init_tests()
+{
+	loop=1
+
+	if [[ ! -n $1 ]]; then
+		print_usage
 		exit
 	fi
-	command -v $OSX_CONTAINER
-	if [[ $? -ne 0 ]]; then
-		can_run=false
-		printf "\e[31merror:\e[0m `echo $OSX_CONTAINER | cut -d' ' -f1` does not exist.\n"
-	fi
-fi
-
-if [[ ! -f $TESTER ]]; then
-	echo "Compiling $TESTER ..."
-	make $TESTER
-	if [[ $? -ne 0 ]]; then
-		can_run=false
-	fi
-fi
-
-if [[ ! -f $YOUR_VM ]]; then
-	echo "Compiling $YOUR_VM ..."
-	make $YOUR_VM
-	if [[ $? -ne 0 ]]; then
-		can_run=false
+	can_run=true
+	if [[ `uname` == "Darwin" ]]; then
+		unset OSX_CONTAINER
+	else if [[ `uname` != "Linux" ]]; then
+			echo "This script works only on OSX or Linux"
+			exit
+		fi
+		command -v $OSX_CONTAINER > /dev/null
+		if [[ $? -ne 0 ]]; then
+			can_run=false
+			printf "\e[31merror:\e[0m command '`echo $OSX_CONTAINER | cut -d' ' -f1`' does not exist.\n"
+		fi
 	fi
 
-fi
+	if [[ ! -f $TESTER ]]; then
+		echo "Compiling $TESTER..."
+		make -s $TESTER
+		if [[ $? -ne 0 ]]; then
+			can_run=false
+		fi
+	fi
 
-if [[ ! -f $ZAZ_VM ]]; then
-	printf "\e[31merror:\e[0m $ZAZ_VM does not exist.\n"
-	can_run=false
-fi
+	if [[ ! -f $YOUR_VM ]]; then
+		echo "Compiling $YOUR_VM..."
+		make -s $YOUR_VM
+		if [[ $? -ne 0 ]]; then
+			can_run=false
+		fi
 
-if [[ $can_run = false ]]; then
-	exit
-fi
+	fi
 
-print_usage()
-{
-	echo "Usage:"
-	echo "  $0 instruction"
+	if [[ ! -f $ZAZ_VM ]]; then
+		printf "\e[31merror:\e[0m $ZAZ_VM does not exist.\n"
+		can_run=false
+	fi
+
+	if [[ $can_run = false ]]; then
+		exit
+	fi
+	unset can_run
 }
 
+# Print the help
+print_usage()
+{
+	coma=''
+	printf "Usage:\n  \e[32m$0\e[0m [[\e[36mnum\e[0m] \e[36mopcode\e[0m] ...\n"
+	printf "      \e[36mnum\e[0m: repeat the next test multiple times\n"
+	printf "      \e[36mopcode\e[0m: the opcode to be tested\n"
+	printf "valid opcodes are ("
+	for code in `cat $op_h_file|grep -Eo '\{\"[a-z]+\"'|grep -Eo "[a-z]+"|tr '\n' ' '|sed 's: $::g'`; do
+		printf "$coma\e[35m%s\e[0m" $code
+		coma=','
+	done
+	printf ")\n"
+	unset coma
+}
+
+# Run a comparaison.
+#	First argument is the number of cycles before dump.
+#	Second is the champion file used to test
 compare_corewar()
 {
 	printf "\e[36mtesting $2\e[0m: "
@@ -80,9 +107,10 @@ compare_corewar()
 	fi
 }
 
+# prints the number of cycles consumed by the opcode given as parameter
 get_op_cost()
 {
-	cat includes/op.h|grep "{\"$1\", "|tr -d ' \t'|sed -E 's:\{(((T_IND|T_DIR|T_REG|0)\|?)+,?){1,3}\},::g'|cut -d',' -f4
+	cat $op_h_file|grep "{\"$1\", "|tr -d ' \t'|sed -E 's:\{(((T_IND|T_DIR|T_REG|0)\|?)+,?){1,3}\},::g'|cut -d',' -f4
 #	if [ $1 = "live" ]; then
 #		echo "10"
 #	elif [ $1 = "ld" ]; then
@@ -120,22 +148,9 @@ get_op_cost()
 #	fi
 }
 
-#sort -k
-#
-#	-k, --key=KEYDEF
-#	-t --field-separator=SEP
-#
-#	KEYDEF  is F[.C][OPTS][,F[.C][OPTS]] for start and stop position, where F is
-#			a field number and C a character position in the field; both are
-#			origin 1, and the stop position defaults to the line's end.
-#		If neither -t nor -b is in effect, characters in a field are counted
-#			from the  beginning  of  the  preceding whitespace.
-#		OPTS  is  one or more single-letter ordering options [bdfgiMhnRrV],
-#			which override global ordering options for that key.
-#		If no key is given, use the entire line as the key.
-#		Use --debug to diagnose incorrect key usage.
-
-if [[ -n $1 ]]; then
+# Generate test files and test the vm with them
+test_opcode()
+{
 	./tester $1 > /dev/null
 	if [[ $? -ne 0 ]]; then
 		printf "\e[31merror:\e[0m '$1': invalid instruction\n"
@@ -163,6 +178,19 @@ if [[ -n $1 ]]; then
 		printf " Well done !"
 	fi
 	printf "\n"
-else
-	print_usage
-fi
+}
+
+# Startpoint
+init_tests $1
+
+for op in "$@"; do
+	if [[ $op =~ ^[0-9]+$ ]] ; then
+		loop=$op
+	else
+		while [[ $loop -gt 0 ]]; do
+			test_opcode $op
+			loop=$((loop-1))
+		done
+		loop=1
+	fi
+done
