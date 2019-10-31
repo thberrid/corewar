@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "ftlib.h"
+#include "ftio.h"
 #include "asm.h"
 
 /*
@@ -138,9 +139,20 @@ int		is_paramtype_allowed(char param_type, t_instruct *inst, int i)
 {
 	if (param_type == IND_CODE)
 		param_type = T_IND;
-	if ((g_op_tab[inst->id - 1].args[i] ^ param_type) < g_op_tab[inst->id - 1].args[i])
+	if ((g_op_tab[inst->id].args[i] ^ param_type) < g_op_tab[inst->id].args[i])
 		return (1);
 	return (0);
+}
+
+int		get_octet(t_byte id, char param_type)
+{
+	if (param_type == REG_CODE)
+		return (1);
+	if (param_type == IND_CODE)
+		return (2);
+	if (param_type == DIR_CODE && g_op_tab[id].hdir)
+		return (2);
+	return (4);	
 }
 
 /*
@@ -171,6 +183,15 @@ t_arg_type	get_ocp(char **param_raw, int param_len, t_instruct *inst)
 		if (!is_paramtype_allowed(param_type, inst, i))
 			return (0);
 		ocp += ((param_type << (3 - i) * 2));
+		inst->params_bits[i] = get_octet(inst->id, param_type);
+		/*
+		if (!(inst->params_str[i] = ft_memalloc(inst->params_bits[i])))
+			return (0);
+		j = ft_atoi(&param_raw[i][j]);
+		printf("%d\n", j);
+		ft_memcpy(&inst->params_str[i], &j, inst->params_bits[i]);
+		bin_to_system(&inst->params_str[i], inst->params_bits[i]);
+		*/
 		i++;
 	}
 	return (ocp);
@@ -185,7 +206,7 @@ int		param_to_inst(char **param_raw, t_instruct *inst, char **line)
 	i = 0;
 	while (param_raw[i])
 	{
-		j = 0;
+		j = 0; 
 		while (ft_isspace(param_raw[i][j]))
 			j++;
 		if (param_raw[i][j] == DIRECT_CHAR || param_raw[i][j] == 'r')
@@ -195,6 +216,7 @@ int		param_to_inst(char **param_raw, t_instruct *inst, char **line)
 			len += 1;
 		if (!(inst->params_str[i] = ft_strnew(len)))
 			return (0);
+		ft_bzero(inst->params_str[i], len);
 		ft_strncpy(inst->params_str[i], &(param_raw[i][j]), len);
 		(*line) += (j + 1);
 		i += 1;
@@ -257,14 +279,14 @@ t_instruct	*add_inst(t_instruct_head *head)
 ** et voila
 */
 
-void	update_progsize(t_instruct_head *head, t_instruct *inst)
+int		update_progsize(t_instruct_head *head, t_instruct *inst)
 {
 	int		prog_size;
 	int		i;
 	char	code;
 
 	prog_size = 1;
-	if (g_op_tab[inst->id - 1].ocp)
+	if (g_op_tab[inst->id].ocp)
 		prog_size += 1;
 	i = 0;
 	while (i < 3)
@@ -283,6 +305,9 @@ void	update_progsize(t_instruct_head *head, t_instruct *inst)
 	inst->len = prog_size;
 	inst->byt_index = head->length;
 	head->length += prog_size;
+	if (head->length > CHAMP_MAX_SIZE)
+		return (-1);
+	return (0);
 }
 
 /*
@@ -290,7 +315,7 @@ void	update_progsize(t_instruct_head *head, t_instruct *inst)
 ** but that remind me that maybe if there is a #blabal,blab, it coulb be a problem
 */
 
-int		check_endline(char *line)
+/*int		check_endline(char *line)
 {
 	while (*line)
 	{
@@ -301,7 +326,7 @@ int		check_endline(char *line)
 		line += 1;
 	}
 	return (1);
-}
+}*/
 
 int		check_instruct(char *line, t_instruct_head *head)
 {
@@ -320,8 +345,9 @@ int		check_instruct(char *line, t_instruct_head *head)
 		return (-1);
 	if (ft_getparams(&line, inst) < 0)
 		return (-1);
-	if (check_endline(line) < 0)
+///	if (check_endline(line) < 0)
+	//	return (-1);
+	if (update_progsize(head, inst) < 0)
 		return (-1);
-	update_progsize(head, inst);
 	return (1);
 }
