@@ -15,13 +15,16 @@
 
 #include <stdlib.h>
 #include "op.h"
+#include <endianes.h>
+
+# define REG_CHAR "0123456789 "
 
 typedef struct			s_instruc
 {
 	struct s_instruc 	*next;
 	struct s_instruc 	*prev;
 	char				*label;
-	char				id;
+	t_byte				id;
 	uint32_t			plabel;
 	uint32_t			byt_index;
 	t_arg_type			ocp;
