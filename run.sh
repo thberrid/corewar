@@ -22,6 +22,10 @@ op_h_file='./includes/op.h'
 init_tests()
 {
 	loop=1
+	TOTAL_OP=0
+	PASSED_OP=0
+	TOTAL_RUN=0
+	PASSED_RUN=0
 
 	if [ -t 1 ]; then
 		COL_NRM='\e[0m'
@@ -61,6 +65,7 @@ init_tests()
 		if [[ $? -ne 0 ]]; then
 			can_run=false
 		fi
+		make -s $TESTER
 	fi
 
 	if [[ ! -f `echo $YOUR_VM | cut -d' ' -f1` ]]; then
@@ -69,7 +74,7 @@ init_tests()
 		if [[ $? -ne 0 ]]; then
 			can_run=false
 		fi
-
+		make -s $YOUR_VM
 	fi
 
 	if [[ ! -f `echo $ZAZ_VM | cut -d' ' -f1` ]]; then
@@ -188,6 +193,8 @@ test_opcode()
 	else
 		printf "$COL_RED"
 	fi
+	TOTAL_RUN=$((TOTAL_RUN+$total))
+	PASSED_RUN=$((PASSED_RUN+$passed))
 	printf "passed %d/%d$COL_NRM" $passed $total
 	if [[ $passed -eq $total ]]; then
 		printf " Well done !"
@@ -206,6 +213,24 @@ for op in "$@"; do
 			test_opcode $op
 			loop=$((loop-1))
 		done
+		if [[ $TOTAL_RUN -eq $PASSED_RUN ]]; then
+			PASSED_OP=$((PASSED_OP+1))
+		fi
+		TOTAL_OP=$((TOTAL_OP+1))
 		loop=1
 	fi
 done
+if [[ $TOTAL_OP -eq $PASSED_OP ]]; then
+	printf "$COL_GRN"
+else
+	printf "$COL_RED"
+fi
+printf "%d/%d$COL_NRM(" $PASSED_OP $TOTAL_OP
+
+if [[ $TOTAL_RUN -eq $PASSED_RUN ]]; then
+	printf "$COL_CYA"
+else
+	printf "$COL_RED"
+fi
+
+printf "%d/%d$COL_NRM)\n" $PASSED_RUN $TOTAL_RUN
