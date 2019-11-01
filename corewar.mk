@@ -37,7 +37,7 @@ SRC_COR	:=	$(OPS_COR)	\
 #
 #	vm compilation specific flags
 #
-$(COR):	CFLAGS += -ansi -pedantic -DVM
+$(COR):	CFLAGS += -I./includes/corewar -ansi -pedantic -DVM
 
 #
 #	vm unit tests
@@ -76,6 +76,6 @@ DEP_TST	:=	$(OBJ_TST:.o=.d)
 
 -include $(DEP_TST)
 
-$(TESTER):	CFLAGS += -DVM_TEST
+$(TESTER):	CFLAGS += -I./includes/tester -DVM_TEST
 $(TESTER): $(OBJ_TST)
 	$(LINKER) $(TESTER) $(OBJ_TST) $(LDFLAGS)

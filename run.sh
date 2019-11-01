@@ -2,7 +2,7 @@
 
 TESTER='./tester'
 YOUR_VM='./corewar'
-ZAZ_VM='./documents/vm_champs/corewar'
+ZAZ_VM='./documents/vm_champs/corewar -v 4'
 
 # The option to make your vm dump the memory as zaz's one do it (same format).
 DUMP_OPT='-zdump'
@@ -49,7 +49,7 @@ init_tests()
 		fi
 	fi
 
-	if [[ ! -f $YOUR_VM ]]; then
+	if [[ ! -f `echo $YOUR_VM | cut -d' ' -f1` ]]; then
 		echo "Compiling $YOUR_VM..."
 		make -s $YOUR_VM
 		if [[ $? -ne 0 ]]; then
@@ -58,7 +58,7 @@ init_tests()
 
 	fi
 
-	if [[ ! -f $ZAZ_VM ]]; then
+	if [[ ! -f `echo $ZAZ_VM | cut -d' ' -f1` ]]; then
 		printf "\e[31merror:\e[0m $ZAZ_VM does not exist.\n"
 		can_run=false
 	fi
@@ -98,7 +98,6 @@ compare_corewar()
 	diff --suppress-common-lines -y $YOUR_OUT_FILE $ZAZ_OUT_FILE 2>/dev/null
 	if [[ $? -ne 0 ]]; then
 		printf "\e[31mFAIL!\e[0m\n"
-		mv $2 $2.fail
 		return 1
 	else
 		printf "\e[32mOK\e[0m\n"

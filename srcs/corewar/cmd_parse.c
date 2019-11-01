@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:32:56 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/25 01:37:09 by baurens          ###   ########.fr       */
+/*   Updated: 2019/11/01 20:22:00 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,7 @@ t_vm		parse_args(char **av)
 
 	ft_bzero(&vm, sizeof(vm));
 	vm.players[0].pid = 1;
+	vm.verbosity = VERBOSITY;
 	while (av && *av)
 	{
 		i = 0;

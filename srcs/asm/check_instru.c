@@ -6,13 +6,14 @@
 /*   By: smoreno- <smoreno-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 14:52:32 by smoreno-          #+#    #+#             */
-/*   Updated: 2019/10/30 16:39:05 by baurens          ###   ########.fr       */
+/*   Updated: 2019/11/01 20:12:31 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ftlib.h"
 #include "ftio.h"
 #include "asm.h"
+#include "op.h"
 
 /*
 ** make a copy of a label: into a t_instruct
@@ -108,7 +109,7 @@ void	free_split(char **params)
 
 /*
 ** return le nombre d'occurence d'un char dans une *str
-** est utilisé pour compter le nombre de ',' qui separent les parametres
+** est utilise pour compter le nombre de ',' qui separent les parametres
 */
 
 int		ft_strcountchar(char *str, char c)
@@ -131,8 +132,9 @@ int		ft_strcountchar(char *str, char c)
 ** en utilisant les bitwise operator
 ** par exemple : par exemple pour `ld` on a {T_DIR | T_IND, T_REG}
 ** ce qui donne {2 | 4, 1}, en binaire {0010 | 0100, 0001}
-** et du coup le | il superpose tout c'est trop pratique et COMME PAR HASARD OUPS aucun bit ne se superpose
-** ça donne {0110 | 0001} et du coup on peut regarder facilement
+** et du coup le | il superpose tout c'est trop pratique et
+** COMME PAR HASARD OUPS aucun bit ne se superpose
+** ca donne {0110 | 0001} et du coup on peut regarder facilement
 */
 
 int		is_paramtype_allowed(char param_type, t_instruct *inst, int i)
@@ -152,7 +154,7 @@ int		get_octet(t_byte id, char param_type)
 		return (2);
 	if (param_type == DIR_CODE && g_op_tab[id].hdir)
 		return (2);
-	return (4);	
+	return (4);
 }
 
 /*
@@ -166,8 +168,8 @@ int		ft_checkchar(char *str, char *type)
 	j = 0;
 	while (str[j])
 	{
-		if (ft_contains(str[j], type) != 1 &&  !ft_isspace(str[j]))
-			return (0);	
+		if (ft_contains(str[j], type) != 1 && !ft_isspace(str[j]))
+			return (0);
 		j++;
 	}
 	return (1);
@@ -225,7 +227,7 @@ int		param_to_inst(char **param_raw, t_instruct *inst, char **line)
 	i = 0;
 	while (param_raw[i])
 	{
-		j = 0; 
+		j = 0;
 		while (ft_isspace(param_raw[i][j]))
 			j++;
 		if (param_raw[i][j] == DIRECT_CHAR || param_raw[i][j] == 'r')

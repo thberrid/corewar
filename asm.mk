@@ -12,3 +12,5 @@ SRC_ASM	:=	\
 			instruct_display.c \
 			instruct_free.c \
 			read.c
+
+$(ASM):	CFLAGS += -I./includes/asm

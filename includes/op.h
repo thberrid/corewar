@@ -6,17 +6,21 @@
 /*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 15:51:41 by baurens           #+#    #+#             */
-/*   Updated: 2019/11/01 19:18:29 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/01 20:10:45 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef OP_H
 # define OP_H
 
-# include "test_funcs.h"
-# include "process.h"
+# ifdef VM_TEST
+#  include "test_funcs.h"
+# endif
+# ifdef VM
+#  include "process.h"
+#  include "vm.h"
+# endif
 # include "config.h"
-# include "vm.h"
 
 typedef struct s_op	t_op;
 
