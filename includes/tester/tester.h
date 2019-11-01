@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 10:28:11 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/01 20:44:58 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/01 21:07:48 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include "config.h"
 # include "op.h"
 
-# define TEST_PER_CASES	(100)
+# define TEST_PER_CASES	(1)
 # define TEST_DIR		"tests"
 
 # define FT_DISABLE_WARNINGS
