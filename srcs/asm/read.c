@@ -48,6 +48,18 @@ int		check_headder(t_header *header, char *line, int fd)
 
 	if (ft_strlen(line) < 5)
 		return (0);
+	if (!ft_strncmp(line, NAME_CMD_STRING, 5))
+	{	
+		header->name_done = 1;
+		if (!ft_contains('"', line))
+		return (-1);
+	}
+	if (!ft_strncmp(line, COMMENT_CMD_STRING, 8))
+	{	
+		header->comment_done = 1;
+		if (!ft_contains('"', line))
+		return (-1);
+	}
 	i = (ft_strncmp(line, NAME_CMD_STRING, 5) == 0) ? 5 : 0;
 	i = (i != 5 && ft_strncmp(line, COMMENT_CMD_STRING, 8) == 0) ? 8 : i;
 	if (i)
@@ -67,7 +79,8 @@ int		check_headder(t_header *header, char *line, int fd)
 			if (!get_namecom(header->comment, line, fd))
 				return (-1);
 		}
-		if (header->prog_name[0] && header->comment[0])
+	//	if (header->prog_name[0] && header->comment[0])
+		if (header->comment_done && header->name_done)
 			return (1);
 		return (0);
 	}
@@ -100,8 +113,15 @@ int		ft_read(t_instruct_head *head, char *path, t_header *header)
 				return (0);
 		}
 		else
+		{
+			if (!ft_strcmp(NAME_CMD_STRING, line) || !ft_strcmp(COMMENT_CMD_STRING, line))
+			{
+				ft_strdel(&line);
+				continue ;
+			}
 			if (check_instruct(line, head) < 0)
 				return (0);
+		}
 		ft_strdel(&line);
 	}
 	ft_strdel(&line);

@@ -138,7 +138,7 @@ int		main(int ac, char **av)
 	retrn = ft_read(&head,av[1], &header);
 	ft_printf("ret: %d\n", retrn);
 	header.prog_size = head.length;
-//	instruct_display_all(&head);
+	instruct_display_all(&head);
 	retrn = set_labels(&head);
 	ft_printf("ret: %d\n", retrn);
 	creat_file(&head, av[1], &header);

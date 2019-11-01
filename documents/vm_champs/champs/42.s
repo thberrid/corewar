@@ -151,7 +151,7 @@ tart:	sti	r1,%:p64li,%1
 	sub	r2,r4,r2
 	zjmp	%:p32
 	ld	%0,r2
-#	zjmp	%:infi
+	zjmp	%:infi
 
 tirvd2:	zjmp	%:tirdow
 

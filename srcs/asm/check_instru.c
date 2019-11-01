@@ -159,23 +159,42 @@ int		get_octet(t_byte id, char param_type)
 ** ici on regarde le premier char pour savoir si rX ou si % ou si rien
 */
 
+int		ft_checkchar(char *str, char *type)
+{
+	int		j;
+
+	j = 0;
+	while (str[j])
+	{
+		if (ft_contains(str[j], type) != 1 &&  !ft_isspace(str[j]))
+			return (0);	
+		j++;
+	}
+	return (1);
+}
+
 t_arg_type	get_ocp(char **param_raw, int param_len, t_instruct *inst)
 {
 	t_arg_type	ocp;
 	int			i;
 	int			j;
+	int			ret;
 	char		param_type;
 
 	i = 0;
 	ocp = 0;
 	(void)param_len;
+	ret = 1;
 	while (param_raw[i])
 	{
 		j = 0;
 		while (ft_isspace(param_raw[i][j]))
 			j++;
-		if (param_raw[i][j] == 'r')
+		if (param_raw[i][j] == 'r' && (ret = param_raw[i][j + 1])
+			&& (ret = ft_checkchar(&param_raw[i][j + 1], REG_CHAR)))
 			param_type = REG_CODE;
+		else if (ret == 0)
+			return (0);
 		else if (param_raw[i][j] == '%')
 			param_type = DIR_CODE;
 		else
@@ -299,13 +318,14 @@ int		update_progsize(t_instruct_head *head, t_instruct *inst)
 		else if (code == 3)
 			prog_size += 2;
 		else if (code != 0)
-			prog_size += (g_op_tab[inst->id - 1].hdir ? 2 : 4);
+			prog_size += (g_op_tab[inst->id].hdir ? 2 : 4);
 		i++;
 	}
 	inst->len = prog_size;
 	inst->byt_index = head->length;
 	head->length += prog_size;
-	if (head->length > CHAMP_MAX_SIZE)
+	//ft_printf("LAAA : %zu\n", inst->id, );
+	if (head->length > 2000)
 	{
 		ft_printf("LAAA : %zu\n", head->length);
 		return (-1);
@@ -318,18 +338,15 @@ int		update_progsize(t_instruct_head *head, t_instruct *inst)
 ** but that remind me that maybe if there is a #blabal,blab, it coulb be a problem
 */
 
-/*int		check_endline(char *line)
+void		check_endline(char *line)
 {
-	while (*line)
+	while (line && *line)
 	{
 		if (*line == COMMENT_CHAR)
-			return (1);
-		if (!ft_isspace(*line))
-			return (-1);
-		line += 1;
+			ft_bzero(line, ft_strlen(line));
+		line++;
 	}
-	return (1);
-}*/
+}
 
 int		check_instruct(char *line, t_instruct_head *head)
 {
@@ -338,6 +355,7 @@ int		check_instruct(char *line, t_instruct_head *head)
 
 	i = 0;
 	(void)i;
+	check_endline(line);
 	if (!(inst = add_inst(head)))
 		return (-1);
 	while (ft_isspace(*line))

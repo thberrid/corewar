@@ -17,6 +17,8 @@
 #include "op.h"
 #include <endianes.h>
 
+# define REG_CHAR "0123456789 "
+
 typedef struct			s_instruc
 {
 	struct s_instruc 	*next;
