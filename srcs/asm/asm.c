@@ -82,28 +82,45 @@ int		set_labels(t_instruct_head *head)
 {
 	t_instruct	*tmp;
 	t_instruct	*kev;
-	int 		i;
+	int			val;
+	size_t		i;
 	int			k;
-	int			v;
+	size_t		v;
 
 	tmp = head->head;
 	i = 0;
 	while (i < head->slen)
 	{
 		k = 0;
-		while (k < 3)
+		while (k < 3 && tmp->params_str[k])
 		{
 			if (tmp->params_str[k][0] == LABEL_CHAR)
 			{
 				v = 0;
 				kev = head->head;
-				while ()
+				while (v < head->slen)
+				{
+					if (kev->label &&ft_strcmp(kev->label, &(tmp->params_str[k][1])) == 0)
+					{
+						val = kev->byt_index - tmp->byt_index;
+						tmp->params_str[k] = ft_itoa(val);
+						break ;	
+					}
+					v++;
+					kev = kev->next;
+				}
+				if (v == head->slen)
+				{
+					ft_printf(" >>> %s\n", tmp->params_str[k]);
+					return (-1);
+				}
 			}
-			
-		}
+			k++;
+		}	
 		tmp = tmp->next;
 		i++;
 	}
+	return (1);
 }
 
 int		main(int ac, char **av)
@@ -121,7 +138,7 @@ int		main(int ac, char **av)
 	retrn = ft_read(&head,av[1], &header);
 	ft_printf("ret: %d\n", retrn);
 	header.prog_size = head.length;
-	instruct_display_all(&head);
+//	instruct_display_all(&head);
 	retrn = set_labels(&head);
 	ft_printf("ret: %d\n", retrn);
 	creat_file(&head, av[1], &header);

@@ -136,12 +136,12 @@ l7:	live	%1
 l8:	live	%1
 l9:	live	%1
 l10:	live	%1
+	zjmp	%:l0
 
-zjmp	%:l0
 
 p1:	zjmp	%:infi
 
-        live    %0
+        live    %0              # pour boucher l'entree
 copie:  ld      %1,r1
 
 
@@ -151,7 +151,8 @@ tart:	sti	r1,%:p64li,%1
 	sub	r2,r4,r2
 	zjmp	%:p32
 	ld	%0,r2
-#	zjmp	%:infi
+	zjmp	%:infi
+
 
 tirvd2:	zjmp	%:tirdow
 

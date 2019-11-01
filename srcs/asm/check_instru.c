@@ -212,7 +212,7 @@ int		param_to_inst(char **param_raw, t_instruct *inst, char **line)
 		if (param_raw[i][j] == DIRECT_CHAR || param_raw[i][j] == 'r')
 			j++;
 		len = 0;
-		while (param_raw[i][j + len] && !ft_isspace(param_raw[i][j + len]) && param_raw[i][j + len] != 'r')
+		while (param_raw[i][j + len] && !ft_isspace(param_raw[i][j + len]))
 			len += 1;
 		if (!(inst->params_str[i] = ft_strnew(len)))
 			return (0);
@@ -306,7 +306,10 @@ int		update_progsize(t_instruct_head *head, t_instruct *inst)
 	inst->byt_index = head->length;
 	head->length += prog_size;
 	if (head->length > CHAMP_MAX_SIZE)
+	{
+		ft_printf("LAAA : %zu\n", head->length);
 		return (-1);
+	}
 	return (0);
 }
 
