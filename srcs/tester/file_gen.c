@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 11:26:20 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/25 02:57:13 by baurens          ###   ########.fr       */
+/*   Updated: 2019/11/01 19:13:01 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static t_byte	gen_arg(t_byte *tmp_mem, const t_op *op, t_byte ocp)
 	return (DIR_SIZE);
 }
 
-static void	set_name(char *buf, t_tst *p)
+static void		set_name(char *buf, t_tst *p)
 {
 	ft_sprintf(buf, "%s, %s, %s, %s",
 		g_names[p->a[0]],

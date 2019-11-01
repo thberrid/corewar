@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 07:24:26 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/25 01:36:57 by baurens          ###   ########.fr       */
+/*   Updated: 2019/11/01 19:16:03 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 t_byte	g_map[MEM_SIZE];
 t_lst	g_procs;
 
-static void	print_process()
+static void	print_process(void)
 {
 	size_t		v;
 	size_t		l;
@@ -54,7 +54,6 @@ static void	print_process()
 	}
 }
 
-__attribute__((unused))
 static void	print_vm_state(t_vm *vm)
 {
 	size_t	i;
@@ -66,7 +65,8 @@ static void	print_vm_state(t_vm *vm)
 	{
 		ft_printf("champ[%zu]:\n", i);
 		ft_printf("  id:   %u\n", vm->players[i].id);
-		ft_printf("  pid:  %08x (%u)\n", vm->players[i].pid, vm->players[i].pid);
+		ft_printf("  pid:  %08x (%u)\n", vm->players[i].pid,
+											vm->players[i].pid);
 		ft_printf("  name: \"%s\"\n", vm->players[i].name);
 		++i;
 	}
@@ -95,6 +95,8 @@ int			main(int ac __attribute__((unused)), char **av)
 				vm.players[i].name, vm.players[i].comm);
 		++i;
 	}
+	if (0)
+		print_vm_state(&vm);
 	vm_loop(&vm);
 	if (vm.dmp_bol)
 		vm_dump(DUMP_LEN * vm.dmp_bol);
@@ -102,25 +104,25 @@ int			main(int ac __attribute__((unused)), char **av)
 }
 
 /*
-#include <stdio.h>
-int main(void)
-{
-	uint32_t	dir;
-
-	dir = 0xffffffffu;
-	printf("dir = %#010x = %u\n", dir, dir);
-	dir %= MEM_SIZE;
-	printf("dir = %#010x = %u\n", dir, dir);
-	dir %= IDX_MOD;
-	printf("dir = %#010x = %u\n\n", dir, dir);
-
-	dir = 0xffffffffu;
-	printf("dir = %#010x = %u\n", dir, dir);
-	dir &= 0xffff;
-	printf("dir = %#010x = %u\n", dir, dir);
-	dir %= MEM_SIZE;
-	printf("dir = %#010x = %u\n", dir, dir);
-	dir %= IDX_MOD;
-	printf("dir = %#010x = %u\n", dir, dir);
-}
+**	#include <stdio.h>
+**	int main(void)
+**	{
+**		uint32_t	dir;
+**
+**		dir = 0xffffffffu;
+**		printf("dir = %#010x = %u\n", dir, dir);
+**		dir %= MEM_SIZE;
+**		printf("dir = %#010x = %u\n", dir, dir);
+**		dir %= IDX_MOD;
+**		printf("dir = %#010x = %u\n\n", dir, dir);
+**
+**		dir = 0xffffffffu;
+**		printf("dir = %#010x = %u\n", dir, dir);
+**		dir &= 0xffff;
+**		printf("dir = %#010x = %u\n", dir, dir);
+**		dir %= MEM_SIZE;
+**		printf("dir = %#010x = %u\n", dir, dir);
+**		dir %= IDX_MOD;
+**		printf("dir = %#010x = %u\n", dir, dir);
+**	}
 */

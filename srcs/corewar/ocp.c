@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 17:54:53 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/23 02:27:04 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/01 19:12:10 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,25 +57,26 @@ t_ind	check_ocp(t_byte ocp, uint32_t opid)
 }
 
 /*
-t_dir	get_value(t_proc *proc, t_ind off, t_byte ocp)
-{
-	t_dir	res;
-	t_ind	ind;
-
-	res = 0;
-	ocp &= 3;
-	if (g_ocpc[ocp] == T_REG)
-	{
-		get_reg(proc, off, &res);
-	}
-	if (g_ocpc[ocp] == T_IND || g_op_tab[g_map[proc->pc % MEM_SIZE]].hdir)
-	{
-		get_dir(proc, off, &ind, 1);
-		res = ind;
-	}
-	else
-		get_dir(proc, off, &res, 0);
-	if (g_ocpc[ocp] == T_IND)
-		get_dir(proc, ind, &res, 0);
-	return (0);
-}*/
+**	t_dir	get_value(t_proc *proc, t_ind off, t_byte ocp)
+**	{
+**		t_dir	res;
+**		t_ind	ind;
+**
+**		res = 0;
+**		ocp &= 3;
+**		if (g_ocpc[ocp] == T_REG)
+**		{
+**			get_reg(proc, off, &res);
+**		}
+**		if (g_ocpc[ocp] == T_IND || g_op_tab[g_map[proc->pc % MEM_SIZE]].hdir)
+**		{
+**			get_dir(proc, off, &ind, 1);
+**			res = ind;
+**		}
+**		else
+**			get_dir(proc, off, &res, 0);
+**		if (g_ocpc[ocp] == T_IND)
+**			get_dir(proc, ind, &res, 0);
+**		return (0);
+**	}
+*/

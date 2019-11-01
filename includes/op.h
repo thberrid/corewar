@@ -6,13 +6,14 @@
 /*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 15:51:41 by baurens           #+#    #+#             */
-/*   Updated: 2019/10/30 17:49:34 by baurens          ###   ########.fr       */
+/*   Updated: 2019/11/01 19:18:29 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef OP_H
 # define OP_H
 
+# include "test_funcs.h"
 # include "process.h"
 # include "config.h"
 # include "vm.h"
@@ -90,26 +91,41 @@ char		op_fork(t_vm *vm, t_proc *proc);
 char		op_lfork(t_vm *vm, t_proc *proc);
 
 # else
-#  define	OP_LIVE_F	0
-#  define	OP_LD_F		0
-#  define	OP_ST_F		0
-#  define	OP_ADD_F	0
-#  define	OP_SUB_F	0
-#  define	OP_AND_F	0
-#  define	OP_OR_F		0
-#  define	OP_XOR_F	0
-#  define	OP_ZJMP_F	0
-#  define	OP_LDI_F	0
-#  define	OP_STI_F	0
-#  define	OP_FORK_F	0
-#  define	OP_LLD_F	0
-#  define	OP_LLDI_F	0
-#  define	OP_LFORK_F	0
-#  define	OP_AFF_F	0
-# endif
-
-# ifdef VM_TEST
-#  include "test_funcs.h"
+#  ifdef VM_TEST
+#   define OP_LIVE_F	test_live
+#   define OP_LD_F		test_ld
+#   define OP_ST_F		test_st
+#   define OP_ADD_F		test_add
+#   define OP_SUB_F		test_sub
+#   define OP_AND_F		test_and
+#   define OP_OR_F		test_or
+#   define OP_XOR_F		test_xor
+#   define OP_ZJMP_F	test_zjmp
+#   define OP_LDI_F		test_ldi
+#   define OP_STI_F		test_sti
+#   define OP_FORK_F	test_fork
+#   define OP_LLD_F		test_lld
+#   define OP_LLDI_F	test_lldi
+#   define OP_LFORK_F	test_lfork
+#   define OP_AFF_F		test_aff
+#  else
+#   define OP_LIVE_F	0
+#   define OP_LD_F		0
+#   define OP_ST_F		0
+#   define OP_ADD_F		0
+#   define OP_SUB_F		0
+#   define OP_AND_F		0
+#   define OP_OR_F		0
+#   define OP_XOR_F		0
+#   define OP_ZJMP_F	0
+#   define OP_LDI_F		0
+#   define OP_STI_F		0
+#   define OP_FORK_F	0
+#   define OP_LLD_F		0
+#   define OP_LLDI_F	0
+#   define OP_LFORK_F	0
+#   define OP_AFF_F		0
+#  endif
 # endif
 
 static const t_op	g_op_tab[] __attribute__((unused)) =
