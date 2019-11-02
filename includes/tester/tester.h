@@ -6,7 +6,11 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 10:28:11 by abaurens          #+#    #+#             */
+<<<<<<< HEAD:includes/tester.h
 /*   Updated: 2019/11/02 01:11:44 by abaurens         ###   ########.fr       */
+=======
+/*   Updated: 2019/11/01 22:10:12 by abaurens         ###   ########.fr       */
+>>>>>>> f77611cdb0240567508e2488db067cd15ba0991c:includes/tester/tester.h
 /*                                                                            */
 /* ************************************************************************** */
 

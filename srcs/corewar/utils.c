@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 02:51:55 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/25 01:35:51 by baurens          ###   ########.fr       */
+/*   Updated: 2019/11/01 21:49:54 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,4 @@ t_dir	get_ind(t_proc *proc, t_ind *off)
 	(*off) += 2;
 	addr = (addr % IDX_MOD);
 	return (get_dir__(proc, &addr, 0));
-}
-
-t_dir	get_val(t_proc *proc, t_ind *off, char hdir)
-{
-	if (0)
-		return (get_reg(proc, off));
-	else if (0)
-		return (get_ind(proc, off));
-	return (get_dir__(proc, off, hdir));
 }

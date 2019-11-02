@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 09:47:24 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/23 14:45:12 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/01 20:22:45 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,17 @@
 # include <limits.h>
 # include "config.h"
 
+# define VERBOSITY	4
 # define DUMP_LEN	32
 
 typedef struct s_champ	t_champ;
+
+# define V_NONE			0
+# define V_LIVES		1
+# define V_CYCLES		2
+# define V_OPERATONS	4
+# define V_DEATHS		8
+# define V_PC			16
 
 typedef enum	e_dumpm
 {
@@ -48,6 +56,7 @@ typedef struct	s_vm
 	uint32_t	dump;
 	size_t		psize;
 	t_champ		players[MAX_PLAYERS];
+	t_byte		verbosity;
 }				t_vm;
 
 typedef struct	s_dispatch

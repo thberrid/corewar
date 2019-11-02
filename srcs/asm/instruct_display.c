@@ -17,7 +17,8 @@ void	instruct_display(t_instruct *this)
 {
 	int		i;
 
-	ft_printf("Label -> %s\n", this->label);
+	if (this->label)
+		ft_printf("Label -> %s\n", this->label);
 	ft_printf("ID -> %d\n", this->id);
 	ft_printf("Instr. size -> %lu\n", this->len);
 	ft_printf("Instr. index -> %u\n", this->byt_index);
@@ -25,7 +26,7 @@ void	instruct_display(t_instruct *this)
 	ft_bprint_fd_rev(&(this->ocp), sizeof(this->ocp), 1);
 	i = 0;
 	ft_putchar('\n');
-	while (this->params_str[i])
+	while (i < 3)
 	{
 		ft_printf("P%d -> %s\n", i + 1, this->params_str[i]);
 		i += 1;

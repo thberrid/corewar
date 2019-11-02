@@ -6,16 +6,21 @@
 /*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 15:51:41 by baurens           #+#    #+#             */
-/*   Updated: 2019/10/23 11:10:07 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/01 20:10:45 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef OP_H
 # define OP_H
 
-# include "process.h"
+# ifdef VM_TEST
+#  include "test_funcs.h"
+# endif
+# ifdef VM
+#  include "process.h"
+#  include "vm.h"
+# endif
 # include "config.h"
-# include "vm.h"
 
 typedef struct s_op	t_op;
 
@@ -29,7 +34,7 @@ struct		s_op
 	char	*desc;
 	char	ocp;
 	char	hdir;
-	char	(*fnc)(t_vm *vm, t_proc *proc);
+	char	(*fnc)();
 };
 
 enum	e_opcode
@@ -90,22 +95,41 @@ char		op_fork(t_vm *vm, t_proc *proc);
 char		op_lfork(t_vm *vm, t_proc *proc);
 
 # else
-#  define OP_LIVE_F		0
-#  define OP_LD_F		0
-#  define OP_ST_F		0
-#  define OP_ADD_F		0
-#  define OP_SUB_F		0
-#  define OP_AND_F		0
-#  define OP_OR_F		0
-#  define OP_XOR_F		0
-#  define OP_ZJMP_F		0
-#  define OP_LDI_F		0
-#  define OP_STI_F		0
-#  define OP_FORK_F		0
-#  define OP_LLD_F		0
-#  define OP_LLDI_F		0
-#  define OP_LFORK_F	0
-#  define OP_AFF_F		0
+#  ifdef VM_TEST
+#   define OP_LIVE_F	test_live
+#   define OP_LD_F		test_ld
+#   define OP_ST_F		test_st
+#   define OP_ADD_F		test_add
+#   define OP_SUB_F		test_sub
+#   define OP_AND_F		test_and
+#   define OP_OR_F		test_or
+#   define OP_XOR_F		test_xor
+#   define OP_ZJMP_F	test_zjmp
+#   define OP_LDI_F		test_ldi
+#   define OP_STI_F		test_sti
+#   define OP_FORK_F	test_fork
+#   define OP_LLD_F		test_lld
+#   define OP_LLDI_F	test_lldi
+#   define OP_LFORK_F	test_lfork
+#   define OP_AFF_F		test_aff
+#  else
+#   define OP_LIVE_F	0
+#   define OP_LD_F		0
+#   define OP_ST_F		0
+#   define OP_ADD_F		0
+#   define OP_SUB_F		0
+#   define OP_AND_F		0
+#   define OP_OR_F		0
+#   define OP_XOR_F		0
+#   define OP_ZJMP_F	0
+#   define OP_LDI_F		0
+#   define OP_STI_F		0
+#   define OP_FORK_F	0
+#   define OP_LLD_F		0
+#   define OP_LLDI_F	0
+#   define OP_LFORK_F	0
+#   define OP_AFF_F		0
+#  endif
 # endif
 
 static const t_op	g_op_tab[] __attribute__((unused)) =

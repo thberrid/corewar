@@ -2,7 +2,7 @@
 
 TESTER='./tester'
 YOUR_VM='./corewar'
-ZAZ_VM='./documents/vm_champs/corewar'
+ZAZ_VM='./documents/vm_champs/corewar -v 4'
 
 # The option to make your vm dump the memory as zaz's one do it (same format).
 DUMP_OPT='-zdump'
@@ -22,6 +22,24 @@ op_h_file='./includes/op.h'
 init_tests()
 {
 	loop=1
+	TOTAL_OP=0
+	PASSED_OP=0
+	TOTAL_RUN=0
+	PASSED_RUN=0
+
+	if [ -t 1 ]; then
+		COL_NRM='\e[0m'
+		COL_RED='\e[31m'
+		COL_GRN='\e[32m'
+		COL_CYA='\e[36m'
+		COL_MAG='\e[35m'
+	else
+		COL_NRM=''
+		COL_RED=''
+		COL_GRN=''
+		COL_MAG=''
+		COL_CYA=''
+	fi
 
 	if [[ ! -n $1 ]]; then
 		print_usage
@@ -31,13 +49,13 @@ init_tests()
 	if [[ `uname` == "Darwin" ]]; then
 		unset OSX_CONTAINER
 	else if [[ `uname` != "Linux" ]]; then
-			echo "This script works only on OSX or Linux"
+			echo "This script works only on OSX or Linux" >2
 			exit
 		fi
 		command -v $OSX_CONTAINER > /dev/null
 		if [[ $? -ne 0 ]]; then
 			can_run=false
-			printf "\e[31merror:\e[0m command '`echo $OSX_CONTAINER | cut -d' ' -f1`' does not exist.\n"
+			printf "\e[31merror:\e[0m command '`echo $OSX_CONTAINER | cut -d' ' -f1`' does not exist.\n" >&2
 		fi
 	fi
 
@@ -47,19 +65,20 @@ init_tests()
 		if [[ $? -ne 0 ]]; then
 			can_run=false
 		fi
+		make -s $TESTER
 	fi
 
-	if [[ ! -f $YOUR_VM ]]; then
+	if [[ ! -f `echo $YOUR_VM | cut -d' ' -f1` ]]; then
 		echo "Compiling $YOUR_VM..."
 		make -s $YOUR_VM
 		if [[ $? -ne 0 ]]; then
 			can_run=false
 		fi
-
+		make -s $YOUR_VM
 	fi
 
-	if [[ ! -f $ZAZ_VM ]]; then
-		printf "\e[31merror:\e[0m $ZAZ_VM does not exist.\n"
+	if [[ ! -f `echo $ZAZ_VM | cut -d' ' -f1` ]]; then
+		printf "\e[31merror:\e[0m $ZAZ_VM does not exist.\n" >&2
 		can_run=false
 	fi
 
@@ -73,12 +92,12 @@ init_tests()
 print_usage()
 {
 	coma=''
-	printf "Usage:\n  \e[32m$0\e[0m [[\e[36mnum\e[0m] \e[36mopcode\e[0m] ...\n"
-	printf "      \e[36mnum\e[0m: repeat the next test multiple times\n"
-	printf "      \e[36mopcode\e[0m: the opcode to be tested\n"
+	printf "Usage:\n  $COL_GRN$0$COL_NRM [[""$COL_CYA""num$COL_NRM] ""$COL_CYA""opcode$COL_NRM] ...\n"
+	printf "      ""$COL_CYA""num$COL_NRM: repeat the next test multiple times\n"
+	printf "      ""$COL_CYA""opcode$COL_NRM: the opcode to be tested\n"
 	printf "valid opcodes are ("
 	for code in `cat $op_h_file|grep -Eo '\{\"[a-z]+\"'|grep -Eo "[a-z]+"|tr '\n' ' '|sed 's: $::g'`; do
-		printf "$coma\e[35m%s\e[0m" $code
+		printf "$coma$COL_MAG%s$COL_NRM" $code
 		coma=','
 	done
 	printf ")\n"
@@ -90,18 +109,17 @@ print_usage()
 #	Second is the champion file used to test
 compare_corewar()
 {
-	printf "\e[36mtesting $2\e[0m: "
+	printf "$COL_MAG$2$COL_NRM: "
 	$YOUR_VM $DUMP_OPT $1 $2 > $YOUR_OUT_FILE && $OSX_CONTAINER $ZAZ_VM -d $1 $2 > $ZAZ_OUT_FILE
 	if [[ $? -ne 0 ]]; then
 		exit
 	fi
 	diff --suppress-common-lines -y $YOUR_OUT_FILE $ZAZ_OUT_FILE 2>/dev/null
 	if [[ $? -ne 0 ]]; then
-		printf "\e[31mFAIL!\e[0m\n"
-		mv $2 $2.fail
+		printf "$COL_RED""FAIL!$COL_NRM\n"
 		return 1
 	else
-		printf "\e[32mOK\e[0m\n"
+		printf "$COL_GRN""OK$COL_NRM\n"
 		mv $2 $2.ok
 		return 0
 	fi
@@ -153,7 +171,7 @@ test_opcode()
 {
 	./tester $1 > /dev/null
 	if [[ $? -ne 0 ]]; then
-		printf "\e[31merror:\e[0m '$1': invalid instruction\n"
+		printf "\e[31merror:\e[0m '$1': invalid instruction\n" >&2
 		print_usage
 		exit
 	fi
@@ -171,9 +189,13 @@ test_opcode()
 	rm -f $ZAZ_OUT_FILE
 	rm -f $YOUR_OUT_FILE
 	if [[ $passed -eq $total ]]; then
-		printf "\e[32m"
+		printf "$COL_GRN"
+	else
+		printf "$COL_RED"
 	fi
-	printf "passed %d/%d\e[0m" $passed $total
+	TOTAL_RUN=$((TOTAL_RUN+$total))
+	PASSED_RUN=$((PASSED_RUN+$passed))
+	printf "passed %d/%d$COL_NRM" $passed $total
 	if [[ $passed -eq $total ]]; then
 		printf " Well done !"
 	fi
@@ -191,6 +213,24 @@ for op in "$@"; do
 			test_opcode $op
 			loop=$((loop-1))
 		done
+		if [[ $TOTAL_RUN -eq $PASSED_RUN ]]; then
+			PASSED_OP=$((PASSED_OP+1))
+		fi
+		TOTAL_OP=$((TOTAL_OP+1))
 		loop=1
 	fi
 done
+if [[ $TOTAL_OP -eq $PASSED_OP ]]; then
+	printf "$COL_GRN"
+else
+	printf "$COL_RED"
+fi
+printf "%d/%d$COL_NRM(" $PASSED_OP $TOTAL_OP
+
+if [[ $TOTAL_RUN -eq $PASSED_RUN ]]; then
+	printf "$COL_CYA"
+else
+	printf "$COL_RED"
+fi
+
+printf "%d/%d$COL_NRM)\n" $PASSED_RUN $TOTAL_RUN

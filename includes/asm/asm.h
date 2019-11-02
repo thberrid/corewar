@@ -6,22 +6,25 @@
 /*   By: smoreno- <smoreno-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 06:05:50 by smoreno-          #+#    #+#             */
-/*   Updated: 2019/10/30 16:40:06 by baurens          ###   ########.fr       */
+/*   Updated: 2019/11/01 20:07:27 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ASM_H
 # define ASM_H
 
-#include <stdlib.h>
-#include "op.h"
+# include <stdlib.h>
+# include "endianes.h"
+# include "config.h"
+
+# define REG_CHAR "0123456789 "
 
 typedef struct			s_instruc
 {
-	struct s_instruc 	*next;
-	struct s_instruc 	*prev;
+	struct s_instruc	*next;
+	struct s_instruc	*prev;
 	char				*label;
-	char				id;
+	t_byte				id;
 	uint32_t			plabel;
 	uint32_t			byt_index;
 	t_arg_type			ocp;
@@ -30,12 +33,12 @@ typedef struct			s_instruc
 	size_t				len;
 }						t_instruct;
 
-typedef struct 			s_instruc_head
+typedef struct			s_instruc_head
 {
 	t_instruct			*head;
 	size_t				length;
 	size_t				slen;
-} 						t_instruct_head;
+}						t_instruct_head;
 
 /*
 ** parsing

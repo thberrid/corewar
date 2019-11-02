@@ -1,9 +1,7 @@
 .comment  "Multi?"
-.name	"Leeloo"
 
-	ldbel: ld %1,r1
-	ld %2,r1
-aff r1
+.name ""
 
-
-
+live %1
+ld 99999999999999999999999,r5 #lol
+	ld 99999999999999999999999,r #lol5
