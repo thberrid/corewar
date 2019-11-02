@@ -79,8 +79,6 @@ typedef struct	s_header
 	char		prog_name[PROG_NAME_LENGTH + 1];
 	uint32_t	prog_size;
 	char		comment[COMMENT_LENGTH + 1];
-	char		name_done;
-	char		comment_done;
 }				t_header;
 
 #endif
