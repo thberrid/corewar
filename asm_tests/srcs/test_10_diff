@@ -16,23 +16,27 @@ for filename in inputs/*.s; do
 		$ASM_NEW $filename > /dev/null
 		COR_NEW=`echo $filename | cut -d . -f 1`".cor"
 		if [ -e $COR_NEW ]; then
-			DIFF=`diff $COR_NEW $COR_ORIGINAL`
+			hexdump -C $COR_ORIGINAL > "tmp/diff_original"
+			hexdump -C $COR_NEW > "tmp/diff_your"
+			DIFF=`diff tmp/diff_original tmp/diff_your`
+			rm "tmp/diff_original"
+			rm "tmp/diff_your"
 			if [ "$DIFF" != "" ]; then
 				SUCCESS=0
-				ERROR_MSG="diff delta between the .cor files"
+				ERROR_MSG="diff error between the .cor files \n $DIFF"
 			else
 				SUCCESS=1
 			fi
 		else
 			SUCCESS=0
-			ERROR_MSG="the .asm didn't compile"
+			ERROR_MSG="your .asm didn't compile"
 		fi
 	else	# else : the original ASM didn't compile
 		$ASM_NEW $filename > /dev/null
 		COR_NEW=`echo $filename | cut -d . -f 1`".cor"
 		if [ -e $COR_NEW ]; then
 			SUCCESS=0
-			ERROR_MSG="the .asm shouldn't had compile"
+			ERROR_MSG="your .asm shouldn't had compile"
 		else
 			SUCCESS=1
 		fi

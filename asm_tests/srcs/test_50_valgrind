@@ -29,4 +29,5 @@ for i in $VALGRINDS; do
 	grep_logs $INDEX $i $VALG_LOGS "possibly lost" 9 "8,840" 
 	grep_logs $INDEX $i $VALG_LOGS "still reachable" 7 "10,449"
 	let "INDEX+=1"
+	echo ""
 done
