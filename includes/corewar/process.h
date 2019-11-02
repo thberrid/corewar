@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 12:57:27 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/23 01:51:53 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/02 18:26:58 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ typedef struct s_lst	t_lst;
 struct			s_proc
 {
 	t_ind		pc;
+	uint32_t	pid;
 	t_byte		carry;
 	uint32_t	lives;
 	int			time_to_wait;

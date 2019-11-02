@@ -6,11 +6,12 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 02:51:55 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/01 21:49:54 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/02 17:59:46 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "endianes.h"
+#include "process.h"
 #include "arena.h"
 #include "op.h"
 #include "ftio.h"
@@ -57,4 +58,10 @@ t_dir	get_ind(t_proc *proc, t_ind *off)
 	(*off) += 2;
 	addr = (addr % IDX_MOD);
 	return (get_dir__(proc, &addr, 0));
+}
+
+void	dir_to_map(t_proc *proc, t_ind off, t_dir val)
+{
+	system_to_bin(&val, sizeof(val));
+	var_to_map(&val, (proc->pc + off), sizeof(val));
 }

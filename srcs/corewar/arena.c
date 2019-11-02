@@ -6,7 +6,7 @@
 /*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/20 21:01:15 by baurens           #+#    #+#             */
-/*   Updated: 2019/10/23 03:27:45 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/02 17:59:30 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,4 @@ void	var_to_map(void *src, t_ind pos, register size_t size)
 {
 	while (size-- > 0)
 		g_map[(pos + size) % MEM_SIZE] = ((t_byte *)src)[size];
-}
-
-void	dir_to_map(t_proc *proc, t_ind off, t_dir val)
-{
-	system_to_bin(&val, sizeof(val));
-	var_to_map(&val, (proc->pc + off), sizeof(val));
 }

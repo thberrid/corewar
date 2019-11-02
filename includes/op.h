@@ -6,7 +6,7 @@
 /*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 15:51:41 by baurens           #+#    #+#             */
-/*   Updated: 2019/11/02 16:53:06 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/02 17:14:28 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,22 +136,22 @@ char		op_lfork(t_vm *vm, t_proc *proc);
 **	CARRY CHANGER
 **		with values labeled as opcode [v1[, v2[, v3[, v4]]]]
 **
-**		live	no
-**		ld		yes : carry = !v1
-**		st		no
-**		add		yes : carry = !(v1 + v2)
-**		sub		yes : carry = !(v1 - v2)
-**		and		yes : carry = !(v1 & v2)
-**		or		yes : carry = !(v1 | v2)
-**		xor		yes : carry = !(v1 ^ v2)
-**		zjmp	no
-**		ldi		no
-**		sti		no
-**		fork	no
-**		lld		yes : carry = !(v1)
-**		lldi	no
-**		lfork	no
-**		aff		no
+**			live	no
+**			ld		yes : carry = !v1
+**			st		no
+**			add		yes : carry = !(v1 + v2)
+**			sub		yes : carry = !(v1 - v2)
+**			and		yes : carry = !(v1 & v2)
+**			or		yes : carry = !(v1 | v2)
+**			xor		yes : carry = !(v1 ^ v2)
+**			zjmp	no
+**			ldi		no
+**			sti		no
+**			fork	no
+**			lld		yes : carry = !(v1)
+**			lldi	no
+**			lfork	no
+**			aff		no
 */
 
 static const t_op	g_op_tab[] __attribute__((unused)) =

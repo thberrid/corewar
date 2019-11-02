@@ -6,17 +6,15 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:05:20 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/02 16:45:19 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/02 18:39:18 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "process.h"
-#include "config.h"
 #include "arena.h"
 #include "utils.h"
+#include "ftio.h"
 #include "vm.h"
 #include "op.h"
-#include "ftio.h"
 
 char	op_or(t_vm *vm, t_proc *proc)
 {
@@ -34,6 +32,7 @@ char	op_or(t_vm *vm, t_proc *proc)
 	v2 = (g_getter[((ocp >> 4) & 3)](proc, &off));
 	reg = g_map[(proc->pc + off++) % MEM_SIZE];
 	if (vm->verbosity == V_OPERATONS)
-		ft_printf("P    1 | or %d %d r%d\n", v1, v2, reg);
+		ft_printf("P %4d | or %d %d r%d\n", proc->pid, v1, v2, reg);
+	proc->pc += off;
 	return (!(proc->regs[reg] = (v1 | v2)));
 }

@@ -6,15 +6,15 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:05:20 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/01 20:48:48 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/02 18:38:51 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
 #include "arena.h"
+#include "utils.h"
+#include "ftio.h"
 #include "vm.h"
 #include "op.h"
-#include "ftio.h"
 
 char	op_sti(t_vm *vm, t_proc *proc)
 {
@@ -33,7 +33,7 @@ char	op_sti(t_vm *vm, t_proc *proc)
 	v2 = (g_getter[((ocp >> 2) & 3)](proc, &off));
 	if (vm->verbosity == V_OPERATONS)
 	{
-		ft_printf("P    1 | sti r%d %d %d\n",
+		ft_printf("P %4d | sti r%d %d %d\n", proc->pid,
 			g_map[(proc->pc + 2) % MEM_SIZE], v1, v2);
 		ft_printf("       | -> store to %d + %d = %d (with pc and mod %d)\n",
 			v1, v2, (v1 + v2), ((proc->pc + v1 + v2) % MEM_SIZE) % IDX_MOD);
