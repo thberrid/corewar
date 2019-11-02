@@ -25,6 +25,7 @@ for filename in inputs/*.s; do
 				SUCCESS=0
 				ERROR_MSG="diff error between the .cor files \n $DIFF"
 			else
+				ERROR_MSG="(comp. required)"
 				SUCCESS=1
 			fi
 		else
@@ -39,6 +40,7 @@ for filename in inputs/*.s; do
 			ERROR_MSG="your .asm shouldn't had compile"
 		else
 			SUCCESS=1
+			ERROR_MSG="(comp. NOT required)"
 		fi
 	fi
 	print_result $INDEX $BTCODE_NAME $SUCCESS $ERROR_MSG
