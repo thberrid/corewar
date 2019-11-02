@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 10:28:11 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/01 22:10:12 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/02 01:15:50 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@
 
 # define TEST_PER_CASES	(1)
 # define TEST_DIR		"tests"
-
-# define FT_DISABLE_WARNINGS
 
 typedef struct s_tst	t_tst;
 

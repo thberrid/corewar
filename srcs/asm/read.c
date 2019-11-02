@@ -42,7 +42,7 @@ int		get_namecom(char *header, char *line, int fd)
 	return (0);
 }
 
-int		check_headder(t_header *header, char *line, int fd)
+int		check_headder(t_header *header, char *line, int fd, int *rethd)
 {
 	int		i;
 
@@ -50,13 +50,13 @@ int		check_headder(t_header *header, char *line, int fd)
 		return (0);
 	if (!ft_strncmp(line, NAME_CMD_STRING, 5))
 	{	
-		header->name_done = 1;
+		*rethd |= 1;
 		if (!ft_contains('"', line))
 		return (-1);
 	}
 	if (!ft_strncmp(line, COMMENT_CMD_STRING, 8))
 	{	
-		header->comment_done = 1;
+		*rethd |= 2;
 		if (!ft_contains('"', line))
 		return (-1);
 	}
@@ -80,7 +80,7 @@ int		check_headder(t_header *header, char *line, int fd)
 				return (-1);
 		}
 	//	if (header->prog_name[0] && header->comment[0])
-		if (header->comment_done && header->name_done)
+		if (*rethd == 3)
 			return (1);
 		return (0);
 	}
@@ -107,14 +107,14 @@ int		ft_read(t_instruct_head *head, char *path, t_header *header)
 		}
 		if (line[0] == COMMENT_CHAR)
 			continue ;
-		if (!rethd)
+		if (rethd != 3)
 		{
-			if ((rethd = check_headder(header, line, fd)) == -1)
+			if (check_headder(header, line, fd, &rethd) == -1)
 				return (0);
 		}
 		else
 		{
-			if (!ft_strcmp(NAME_CMD_STRING, line) || !ft_strcmp(COMMENT_CMD_STRING, line))
+			if (!ft_strncmp(NAME_CMD_STRING, line, 5) || !ft_strncmp(COMMENT_CMD_STRING, line, 8))
 			{
 				ft_strdel(&line);
 				continue ;

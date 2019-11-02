@@ -18,15 +18,15 @@ grep_logs ()
 	print_result $1 "$2 $4" $SUCCESS "($RETURN)"
 }
 
-declare -a VALGRINDS=("01" "fake02")
 declare -l VALG_LOGS="tmp/valgrind_logs"
 INDEX=1
-for i in $VALGRINDS; do
+for i in inputs/*.s; do
 	valgrind --log-file=$VALG_LOGS ./$ASM_NEW "inputs/$i.s" > /dev/null
 	# prototype : grep_logs index, .s filename, log_file, leak type {indirectly, etc}, field number {for cut -f N}, correct value 
 	grep_logs $INDEX $i $VALG_LOGS "definitely lost" 7 "0"
 	grep_logs $INDEX $i $VALG_LOGS "indirectly lost" 7 "0"
 	grep_logs $INDEX $i $VALG_LOGS "possibly lost" 9 "8,840" 
-	grep_logs $INDEX $i $VALG_LOGS "still reachable" 7 "10,449"
+	grep_logs $INDEX $i $VALG_LOGS "still reachable" 7 "10,442"
 	let "INDEX+=1"
+	echo ""
 done
