@@ -114,7 +114,7 @@ int		ft_read(t_instruct_head *head, char *path, t_header *header)
 		}
 		else
 		{
-			if (!ft_strcmp(NAME_CMD_STRING, line) || !ft_strcmp(COMMENT_CMD_STRING, line))
+			if (!ft_strncmp(NAME_CMD_STRING, line, 5) || !ft_strncmp(COMMENT_CMD_STRING, line, 8))
 			{
 				ft_strdel(&line);
 				continue ;
