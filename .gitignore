@@ -13,4 +13,6 @@ corewar
 */*.test
 *.d
 *.cor
+zasm
+zcorewar
 .clang_complete

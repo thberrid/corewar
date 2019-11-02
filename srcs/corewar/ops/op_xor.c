@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:05:20 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/01 21:57:22 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/02 16:45:31 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	op_xor(t_vm *vm, t_proc *proc)
 	t_dir	v2;
 
 	ocp = g_map[proc->pc + 1 % MEM_SIZE];
-	if ((off = check_ocp(ocp, OP_OR)) && (proc->pc += off))
+	if ((off = check_ocp(ocp, OP_XOR)) && (proc->pc += off))
 		return (proc->carry);
 	off = 2;
 	v1 = (g_getter[((ocp >> 6) & 3)](proc, &off));
@@ -35,6 +35,5 @@ char	op_xor(t_vm *vm, t_proc *proc)
 	reg = g_map[(proc->pc + off++) % MEM_SIZE];
 	if (vm->verbosity == V_OPERATONS)
 		ft_printf("P    1 | xor %d %d r%d\n", v1, v2, reg);
-	proc->regs[reg] = (v1 | v2);
-	return (!v1);
+	return (!(proc->regs[reg] = (v1 ^ v2)));
 }

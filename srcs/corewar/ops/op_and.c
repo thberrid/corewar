@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:05:20 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/01 21:56:59 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/02 16:45:03 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,5 @@ char	op_and(t_vm *vm, t_proc *proc)
 	reg = g_map[(proc->pc + off++) % MEM_SIZE];
 	if (vm->verbosity == V_OPERATONS)
 		ft_printf("P    1 | and %d %d r%d\n", v1, v2, reg);
-	proc->regs[reg] = (v1 & v2);
-	return (!v1);
+	return (!(proc->regs[reg] = (v1 & v2)));
 }

@@ -65,6 +65,7 @@ init_tests()
 		if [[ $? -ne 0 ]]; then
 			can_run=false
 		fi
+	else
 		make -s $TESTER
 	fi
 
@@ -74,6 +75,7 @@ init_tests()
 		if [[ $? -ne 0 ]]; then
 			can_run=false
 		fi
+	else
 		make -s $YOUR_VM
 	fi
 
@@ -120,7 +122,6 @@ compare_corewar()
 		return 1
 	else
 		printf "$COL_GRN""OK$COL_NRM\n"
-		mv $2 $2.ok
 		return 0
 	fi
 }
