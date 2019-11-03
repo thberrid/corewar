@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 15:20:59 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/02 17:57:43 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/03 20:49:35 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,31 @@
 #include "op.h"
 #include "vm.h"
 
-static void	vm_check(void)
+static void	vm_check(t_vm *vm)
 {
-	ft_printf("check\n");
-	exit(0);
+	uint64_t	total_live;
+	t_proc		*proc;
+
+	total_live = 0;
+	proc = g_procs.head;
+	while (proc)
+	{
+		if (!proc->lives)
+		{
+			ft_printf("Process %d hasn't lived for %d cycles (CTD %lld)\n",
+				proc->pid, vm->cycles - proc->last_live, vm->cycle_to_die);
+			kill_process(proc);
+		}
+		total_live += proc->lives;
+		proc->lives = 0;
+		proc = proc->next;
+	}
+	if (total_live >= NBR_LIVE || ++vm->last_dec >= MAX_CHECKS)
+	{
+		vm->last_dec = 0;
+		vm->cycle_to_die -= CYCLE_DELTA;
+		ft_printf("Cycle to die is now %lld\n", vm->cycle_to_die);
+	}
 }
 
 static void	vm_exec(t_vm *vm, t_proc *proc)
@@ -47,27 +68,29 @@ static void	vm_exec(t_vm *vm, t_proc *proc)
 void		vm_loop(t_vm *vm)
 {
 	t_proc		*proc;
-	uint32_t	cycles;
-	uint32_t	cycle_to_die;
+	uint32_t	last_check;
 
-	cycles = 0;
-	(void)(cycle_to_die);
-	cycle_to_die = CYCLE_TO_DIE;
+	last_check = 0;
+	vm->cycles = 0;
+	vm->cycle_to_die = CYCLE_TO_DIE;
+	vm->verbosity = V_CYCLES | V_LIVES | V_OPERATONS;
 	while (g_procs.size)
 	{
-		if (vm->dmp_bol && cycles >= vm->dump)
+		if (vm->dmp_bol && vm->cycles >= vm->dump)
 			return ;
-		if (++cycles >= CYCLE_TO_DIE)
-		{
-			vm_check();
-			vm->dump -= (vm->dmp_bol * cycles);
-			cycles = 0;
-		}
+		++vm->cycles;
+		if (vm->verbosity & V_CYCLES)
+			ft_printf("It is now cycle %d\n", vm->cycles);
 		proc = g_procs.head;
 		while (proc)
 		{
 			vm_exec(vm, proc);
 			proc = proc->next;
+		}
+		if ((vm->cycles - last_check) >= vm->cycle_to_die)
+		{
+			vm_check(vm);
+			last_check = vm->cycles;
 		}
 	}
 }
