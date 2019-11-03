@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 10:28:11 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/02 18:37:12 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/03 18:13:13 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include "config.h"
 # include "op.h"
 
-# define TEST_PER_CASES	(80)
+# define TEST_PER_CASES	(100)
 # define TEST_DIR		"tests"
 
 typedef struct s_tst	t_tst;
