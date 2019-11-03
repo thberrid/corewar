@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:05:20 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/03 18:11:18 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/03 23:29:47 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ char	op_sti(t_vm *vm, t_proc *proc)
 		ft_printf("P %4d | sti r%d %d %d\n", proc->pid,
 			reg, v1, v2);
 		ft_printf("       | -> store to %d + %d = %d (with pc and mod %d)\n",
-			v1, v2, (v1 + v2), ((proc->pc + v1 + v2) % MEM_SIZE) % IDX_MOD);
+			v1, v2, (v1 + v2), (proc->pc + ((v1 + v2) % IDX_MOD)) % MEM_SIZE);
 	}
-	dir_to_map(proc, ((v1 + v2) % MEM_SIZE) % IDX_MOD, proc->regs[reg - 1]);
+	dir_to_map(proc, ((v1 + v2)) % IDX_MOD, proc->regs[reg - 1]);
 	proc->pc += off;
 	return (proc->carry);
 }

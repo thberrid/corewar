@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 07:24:26 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/01 19:16:03 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/03 23:30:26 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,9 @@ int			main(int ac __attribute__((unused)), char **av)
 	vm_loop(&vm);
 	if (vm.dmp_bol)
 		vm_dump(DUMP_LEN * vm.dmp_bol);
+	else
+		ft_printf("Contestant %d, \"%s\", has won !\n",
+			vm.players[vm.winer].pid, vm.players[vm.winer].name);
 	return (0);
 }
 

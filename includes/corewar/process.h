@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 12:57:27 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/03 20:18:50 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/03 23:05:02 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ struct			s_lst
 };
 
 t_proc			*add_process(t_ind pc, t_proc *copy);
-void			kill_process(t_proc *proc);
+t_proc			*kill_process(t_proc *proc);
 void			clear_procs(void);
 
 extern t_lst	g_procs;

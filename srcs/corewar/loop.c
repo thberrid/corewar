@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 15:20:59 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/03 20:49:35 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/03 23:05:17 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 #include "ftio.h"
 #include "op.h"
 #include "vm.h"
+
+
 
 static void	vm_check(t_vm *vm)
 {
@@ -28,9 +30,10 @@ static void	vm_check(t_vm *vm)
 	{
 		if (!proc->lives)
 		{
-			ft_printf("Process %d hasn't lived for %d cycles (CTD %lld)\n",
+			ft_printf("Process %d hasn't lived for %d cycles (CTD %ld)\n",
 				proc->pid, vm->cycles - proc->last_live, vm->cycle_to_die);
-			kill_process(proc);
+			proc = kill_process(proc);
+			continue ;
 		}
 		total_live += proc->lives;
 		proc->lives = 0;
@@ -40,7 +43,7 @@ static void	vm_check(t_vm *vm)
 	{
 		vm->last_dec = 0;
 		vm->cycle_to_die -= CYCLE_DELTA;
-		ft_printf("Cycle to die is now %lld\n", vm->cycle_to_die);
+		ft_printf("Cycle to die is now %ld\n", vm->cycle_to_die);
 	}
 }
 

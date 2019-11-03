@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 09:47:24 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/03 20:19:32 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/03 23:10:23 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # define DUMP_LEN	32
 # define VERBOSITY	(4 | 32)
 
+typedef signed long		t_scycle;
+typedef unsigned int	t_cycle;
 typedef struct s_champ	t_champ;
 
 # define V_LIVES		1
@@ -55,11 +57,12 @@ typedef struct	s_vm
 	t_dumpm		dmp_bol;
 	uint32_t	dump;
 	size_t		psize;
+	uint32_t	winer;
 	t_champ		players[MAX_PLAYERS];
 	t_byte		verbosity;
-	int64_t		last_dec;
-	int64_t		cycle_to_die;
-	uint32_t	cycles;
+	t_scycle	last_dec;
+	t_scycle	cycle_to_die;
+	t_cycle		cycles;
 }				t_vm;
 
 typedef struct	s_dispatch

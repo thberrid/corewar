@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 12:40:34 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/25 01:36:50 by baurens          ###   ########.fr       */
+/*   Updated: 2019/11/03 23:18:33 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,13 @@
 #include "ftio.h"
 #include "vm.h"
 
+/*
+**	TOTO:
+**		pass proces id to add_process or make a singelton (or other way) to
+**			get next available pid
+**		add a function to sort the process list or to add a process in
+**			the right place
+*/
 t_proc	*add_process(t_ind pc, t_proc *copy)
 {
 	t_proc	*new;
@@ -36,8 +43,11 @@ t_proc	*add_process(t_ind pc, t_proc *copy)
 	return (new);
 }
 
-void	kill_process(t_proc *proc)
+t_proc	*kill_process(register t_proc *proc)
 {
+	register t_proc	*res;
+
+	res = proc->next;
 	if (proc == g_procs.head)
 		g_procs.head = proc->next;
 	if (proc->prev)
@@ -46,6 +56,7 @@ void	kill_process(t_proc *proc)
 		proc->next->prev = proc->prev;
 	g_procs.size--;
 	free(proc);
+	return ((t_proc *)res);
 }
 
 void	clear_procs(void)

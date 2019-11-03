@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:05:20 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/03 20:41:58 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/03 22:46:14 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	op_zjmp(t_vm *vm, t_proc *proc)
 	val = get_dir(proc, &off);
 	if (vm->verbosity & V_OPERATONS)
 		ft_printf("P %4d | zjmp %d %s\n", proc->pid, val,
-			proc->carry ? "OK" : "FAIL");
+			proc->carry ? "OK" : "FAILED");
 	if (proc->carry)
 		off = val;
 	proc->pc += off;

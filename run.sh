@@ -2,7 +2,7 @@
 
 TESTER='./tester'
 YOUR_VM='./corewar'
-ZAZ_VM='./documents/vm_champs/corewar -a -v 4'
+ZAZ_VM='./documents/vm_champs/corewar -a -v 15'
 
 # The option to make your vm dump the memory as zaz's one do it (same format).
 DUMP_OPT='-zdump'
