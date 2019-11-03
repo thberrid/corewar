@@ -10,10 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ftlib.h"
-#include "ftio.h"
 #include "asm.h"
-#include "op.h"
 
 /*
 ** make a copy of a label: into a t_instruct
@@ -175,6 +172,22 @@ int		ft_checkchar(char *str, char *type)
 	return (1);
 }
 
+int			is_str_valid(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!*str)
+		return (0);
+	if (*str == LABEL_CHAR)
+	{
+		str++;
+		return (ft_checkchar(str, LABEL_CHARS));
+	} else
+		return (ft_checkchar(str, REG_CHAR));
+	return (0);
+}
+
 t_arg_type	get_ocp(char **param_raw, int param_len, t_instruct *inst)
 {
 	t_arg_type	ocp;
@@ -197,22 +210,18 @@ t_arg_type	get_ocp(char **param_raw, int param_len, t_instruct *inst)
 			param_type = REG_CODE;
 		else if (ret == 0)
 			return (0);
-		else if (param_raw[i][j] == '%')
+		else if (param_raw[i][j] == '%' && (ret = is_str_valid(&(param_raw[i][j + 1]))))
 			param_type = DIR_CODE;
-		else
+		else if (ret == 0)
+			return (0);
+		else if ((ret = is_str_valid(&(param_raw[i][j]))))
 			param_type = IND_CODE;
+		else if (ret == 0)
+			return (0);
 		if (!is_paramtype_allowed(param_type, inst, i))
 			return (0);
 		ocp += ((param_type << (3 - i) * 2));
 		inst->params_bits[i] = get_octet(inst->id, param_type);
-		/*
-		if (!(inst->params_str[i] = ft_memalloc(inst->params_bits[i])))
-			return (0);
-		j = ft_atoi(&param_raw[i][j]);
-		printf("%d\n", j);
-		ft_memcpy(&inst->params_str[i], &j, inst->params_bits[i]);
-		bin_to_system(&inst->params_str[i], inst->params_bits[i]);
-		*/
 		i++;
 	}
 	return (ocp);
@@ -235,6 +244,8 @@ int		param_to_inst(char **param_raw, t_instruct *inst, char **line)
 		len = 0;
 		while (param_raw[i][j + len] && !ft_isspace(param_raw[i][j + len]))
 			len += 1;
+		if (!len)
+			return (0);
 		if (!(inst->params_str[i] = ft_strnew(len)))
 			return (0);
 		ft_bzero(inst->params_str[i], len);
@@ -352,25 +363,37 @@ void		check_endline(char *line)
 
 int		check_instruct(char *line, t_instruct_head *head)
 {
-	int		i;
+	size_t	i;
 	t_instruct	*inst;
 
-	i = 0;
-	(void)i;
+	i = 1;
 	check_endline(line);
-	if (!(inst = add_inst(head)))
+	inst = head->head;
+	if (!inst)
+		inst = add_inst(head);
+	else
+	{
+		i = head->slen;
+		inst = (inst->prev->label && !inst->prev->id) ? inst->prev : add_inst(head); 
+	}
+	if (!inst)
 		return (-1);
+	inst->line_n = head->line;
 	while (ft_isspace(*line))
 		line++;
-	if (ft_getlab(&line, inst) < 0)
+	if (i <= head->slen && ft_getlab(&line, inst) < 0)
 		return (-1);
+while (ft_isspace(*line))
+		line++;	
+	if (!*line)
+		return (1);
 	if (ft_getopcode(&line, inst) < 0)
-		return (-1);
+		return (-5);
 	if (ft_getparams(&line, inst) < 0)
-		return (-1);
+		return (-3);
 ///	if (check_endline(line) < 0)
 	//	return (-1);
 	if (update_progsize(head, inst) < 0)
-		return (-1);
+		return (-4);
 	return (1);
 }

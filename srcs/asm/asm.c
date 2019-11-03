@@ -47,7 +47,8 @@ int		printinst(t_instruct_head *head, int fd)
 	while (i < head->slen)
 	{
 		j = 0;
-		write(fd, &tmp->id, 1);
+		if (tmp->id)
+			write(fd, &tmp->id, 1);
 		if (g_op_tab[tmp->id].ocp)
 			write(fd, &(tmp->ocp), 1);
 		while (j < g_op_tab[tmp->id].arg_cnt)
@@ -68,9 +69,18 @@ int		creat_file(t_instruct_head *head, char *av, t_header *header)
 	int		fd;
 
 	(void)head;
-	npos = ft_strrchr(av, '.');
-	name = ft_strnew(npos - av + 4);
-	name = ft_strncpy(name, av, npos - av);
+
+	if ((npos = ft_strrchr(av, '.')) > 0)
+	{	
+		name = ft_strnew(npos - av + 4);
+		name = ft_strncpy(name, av, npos - av);
+	}
+	else
+	{
+		npos = av + ft_strlen(av);
+		name = ft_strnew(ft_strlen(av) + 4);
+	}
+	//name = ft_strncpy(name, av, npos - av);
 	ft_strlcat(name, ".cor", npos - av + 5);
 	fd = open(name, O_CREAT | O_WRONLY | O_TRUNC, 0600);
 	bin_to_system(&(header->magic), 4);
@@ -78,6 +88,7 @@ int		creat_file(t_instruct_head *head, char *av, t_header *header)
 	write(fd, header, sizeof(t_header));
 	printinst(head, fd);
 	close(fd);
+	ft_printf("%s written\n", name);
 	return (0);
 }
 
@@ -103,7 +114,7 @@ int		set_labels(t_instruct_head *head)
 				kev = head->head;
 				while (v < head->slen)
 				{
-					if (kev->label &&ft_strcmp(kev->label, &(tmp->params_str[k][1])) == 0)
+					if (kev->label && ft_strcmp(kev->label, &(tmp->params_str[k][1])) == 0)
 					{
 						val = kev->byt_index - tmp->byt_index;
 						tmp->params_str[k] = ft_itoa(val);
@@ -114,7 +125,7 @@ int		set_labels(t_instruct_head *head)
 				}
 				if (v == head->slen)
 				{
-					ft_printf(" >>> %s\n", tmp->params_str[k]);
+					head->line = tmp->line_n;
 					return (-1);
 				}
 			}
@@ -132,20 +143,36 @@ int		main(int ac, char **av)
 	t_header		header;
 	int				retrn_parse;
 	int				retrn_labels;
+	int				av_path;
 
-	if (ac != 2)
-		ft_printf("Error\n");
+	av_path = 1;
+	if (av[1][0] == '-')
+	{
+		av_path = 2;
+		if (ac != 3)
+			return (ft_printf("Error\n"));
+	} else if (ac != 2)
+		return (ft_printf("Error\n"));
 	ft_bzero(&header, sizeof(t_header));
 	ft_bzero(&head, sizeof(t_instruct_head));
 	header.magic = COREWAR_EXEC_MAGIC;
-	retrn_parse = ft_read(&head, av[1], &header);
-	ft_printf("ret: %d\n", retrn_parse);
-	header.prog_size = head.length;
-	instruct_display_all(&head);
-	retrn_labels = set_labels(&head);
-	ft_printf("ret: %d\n", retrn_labels);
-	if (retrn_labels && retrn_parse)
-		creat_file(&head, av[1], &header);
+	retrn_parse = ft_read(&head, av[av_path], &header);
+	if (retrn_parse == 1)
+	{
+		header.prog_size = head.length;
+		retrn_labels = set_labels(&head);
+		if (retrn_labels < 0)
+		{
+			ft_errors(retrn_labels, head.line);
+			return (0);
+		}
+		if (ac == 3 && av[1][1] == 'a')
+			instruct_display_all(&head);
+		if (retrn_labels && retrn_parse)
+			creat_file(&head, av[av_path], &header);
+	}
+	else
+		ft_errors(retrn_parse, head.line);
 //	instruct_free(&head);
 	return (0);
 }

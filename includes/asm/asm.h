@@ -15,9 +15,12 @@
 
 # include <stdlib.h>
 # include "endianes.h"
+# include "ftlib.h"
+# include "ftio.h"
 # include "config.h"
+# include "op.h"
 
-# define REG_CHAR "0123456789 "
+# define REG_CHAR "0123456789"
 
 typedef struct			s_instruc
 {
@@ -31,6 +34,7 @@ typedef struct			s_instruc
 	char				*params_str[3];
 	uint32_t			params_bits[3];
 	size_t				len;
+	int					line_n;
 }						t_instruct;
 
 typedef struct			s_instruc_head
@@ -38,6 +42,7 @@ typedef struct			s_instruc_head
 	t_instruct			*head;
 	size_t				length;
 	size_t				slen;
+	int					line;
 }						t_instruct_head;
 
 /*
@@ -53,6 +58,7 @@ int						check_instruct(char *line, t_instruct_head *head);
 */
 
 void					instruct_free(t_instruct_head *head);
+void					ft_errors(int err, int line_n);
 
 /*
 ** tools

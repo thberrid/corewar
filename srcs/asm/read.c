@@ -93,13 +93,16 @@ int		ft_read(t_instruct_head *head, char *path, t_header *header)
 	char	*line;
 	int		rethd;
 	int		ret;
+	int		retinst;
+//	int		count;
 
 	rethd = 0;
-
-	if(!(fd = open(path, O_RDONLY)))
+	//count = 0;
+	if((fd = open(path, O_RDONLY)) <= 0)
 		return (0);
 	while ((ret = gnl(fd, &line)) > 0)
-	{
+	{	
+		head->line++;
 		if (!*line)
 		{
 			ft_strdel(&line);
@@ -110,7 +113,7 @@ int		ft_read(t_instruct_head *head, char *path, t_header *header)
 		if (rethd != 3)
 		{
 			if (check_headder(header, line, fd, &rethd) == -1)
-				return (0);
+				return (-2);
 		}
 		else
 		{
@@ -119,11 +122,15 @@ int		ft_read(t_instruct_head *head, char *path, t_header *header)
 				ft_strdel(&line);
 				continue ;
 			}
-			if (check_instruct(line, head) < 0)
-				return (0);
+			if ((retinst = check_instruct(line, head)) < 0)
+			{
+				return (retinst);
+			}
 		}
 		ft_strdel(&line);
 	}
+	if (ret == -1)
+		return (0);
 	ft_strdel(&line);
 	return (1);
 }
