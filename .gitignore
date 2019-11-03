@@ -3,6 +3,7 @@ zasm
 tester
 corewar
 zcorewar
+tests/*
 !*/
 *.dSYM
 *.sw*
