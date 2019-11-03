@@ -203,11 +203,24 @@ test_opcode()
 	printf "\n"
 }
 
+clear_tests()
+{
+	rm -rf "./tests/"
+}
+
 # Startpoint
+
+if [[ $1 == "clear" ]]; then
+	clear_tests
+	exit
+fi
+
 init_tests $1
 
 for op in "$@"; do
-	if [[ $op =~ ^[0-9]+$ ]] ; then
+	if [[ $op == "clear" ]]; then
+		clear_tests
+	elif [[ $op =~ ^[0-9]+$ ]] ; then
 		loop=$op
 	else
 		while [[ $loop -gt 0 ]]; do

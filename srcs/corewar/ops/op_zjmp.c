@@ -6,20 +6,27 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:05:20 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/22 17:40:34 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/03 20:41:58 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "process.h"
-#include "config.h"
+#include "utils.h"
+#include "ftio.h"
 #include "vm.h"
 #include "op.h"
-#include "ftio.h"
 
 char	op_zjmp(t_vm *vm, t_proc *proc)
 {
-	(void)vm;
-	(void)proc;
-	ft_printf("code: %u - zjmp\n", OP_ZJMP);
-	return (0);
+	t_ind	off;
+	t_dir	val;
+
+	off = 1;
+	val = get_dir(proc, &off);
+	if (vm->verbosity & V_OPERATONS)
+		ft_printf("P %4d | zjmp %d %s\n", proc->pid, val,
+			proc->carry ? "OK" : "FAIL");
+	if (proc->carry)
+		off = val;
+	proc->pc += off;
+	return (proc->carry);
 }

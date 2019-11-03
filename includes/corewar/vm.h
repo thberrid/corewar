@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 09:47:24 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/03 17:51:08 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/03 20:19:32 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,9 @@ typedef struct	s_vm
 	size_t		psize;
 	t_champ		players[MAX_PLAYERS];
 	t_byte		verbosity;
+	int64_t		last_dec;
+	int64_t		cycle_to_die;
+	uint32_t	cycles;
 }				t_vm;
 
 typedef struct	s_dispatch
