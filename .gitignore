@@ -1,5 +1,8 @@
 asm
+zasm
+tester
 corewar
+zcorewar
 !*/
 *.dSYM
 *.sw*
@@ -13,6 +16,4 @@ corewar
 */*.test
 *.d
 *.cor
-zasm
-zcorewar
 .clang_complete
