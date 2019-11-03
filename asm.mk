@@ -11,6 +11,7 @@ SRC_ASM	:=	\
 			ft_bprint.c \
 			instruct_display.c \
 			instruct_free.c \
+			utils.c \
 			read.c
 
 $(ASM):	CFLAGS += -I./includes/asm

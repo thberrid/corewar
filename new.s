@@ -1,4 +1,6 @@
-.comment  "Multi?"
-.name	"Leeloo"
+.name "ALL OF IT"
+.comment "# prepare les fork"
 
-ld 5, r-1
+label: live %1
+live %:label
+live %1

@@ -26,8 +26,8 @@ print_result ()
 
 # clean previous tests trace
 
-rm tmp/*.cor inputs/*.cor
 clear
+rm tmp/*.cor inputs/*.cor
 
 # launch tests
 
@@ -36,3 +36,4 @@ for test_script in srcs/test_*; do
 	source $test_script
 	echo ""
 done
+rm tmp/*.cor inputs/*.cor
