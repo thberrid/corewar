@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 15:20:59 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/03 23:05:17 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/04 02:55:16 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ void		vm_loop(t_vm *vm)
 	last_check = 0;
 	vm->cycles = 0;
 	vm->cycle_to_die = CYCLE_TO_DIE;
-	vm->verbosity = V_CYCLES | V_LIVES | V_OPERATONS;
 	while (g_procs.size)
 	{
 		if (vm->dmp_bol && vm->cycles >= vm->dump)

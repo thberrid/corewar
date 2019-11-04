@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 09:47:24 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/03 23:10:23 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/04 02:55:29 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 # include "config.h"
 
 # define DUMP_LEN	32
-# define VERBOSITY	(4 | 32)
 
 typedef signed long		t_scycle;
 typedef unsigned int	t_cycle;
@@ -31,6 +30,8 @@ typedef struct s_champ	t_champ;
 # define V_DEATHS		8
 # define V_PC			16
 # define V_AFF			32
+
+# define VERBOSITY	(V_CYCLES | V_LIVES | V_OPERATONS | V_AFF)
 
 typedef enum	e_dumpm
 {
@@ -57,12 +58,12 @@ typedef struct	s_vm
 	t_dumpm		dmp_bol;
 	uint32_t	dump;
 	size_t		psize;
-	uint32_t	winer;
 	t_champ		players[MAX_PLAYERS];
 	t_byte		verbosity;
 	t_scycle	last_dec;
 	t_scycle	cycle_to_die;
 	t_cycle		cycles;
+	t_champ		*winer;
 }				t_vm;
 
 typedef struct	s_dispatch

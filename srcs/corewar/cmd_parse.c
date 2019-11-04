@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:32:56 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/03 23:23:24 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/04 02:50:29 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,8 +154,8 @@ t_vm		parse_args(char **av)
 	{
 		load_file(&vm, vm.players + i, (char *)vm.players[i].pc);
 		proc = add_process(vm.players[i].pc - g_map, NULL);
-		if (vm.players[vm.winer].pid < vm.players[i].pid)
-			vm.winer = i;
+		if (!vm.winer || vm.winer->pid < vm.players[i].pid)
+			vm.winer = vm.players + i;
 		proc->pid = vm.players[i].pid;
 		proc->regs[0] = -vm.players[i++].pid;
 	}

@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 07:24:26 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/03 23:30:26 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/04 02:49:36 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,22 @@ static void	print_vm_state(t_vm *vm)
 	print_process();
 }
 
+t_champ		*get_player(t_vm *vm, uint32_t pid)
+{
+	uint32_t	i;
+	t_champ		*p;
+
+	i = 0;
+	p = vm->players;
+	while (i++ < vm->psize)
+	{
+		if (p->pid == pid)
+			return (p);
+		p++;
+	}
+	return (NULL);
+}
+
 void		destruct(void)
 {
 	clear_procs();
@@ -102,7 +118,7 @@ int			main(int ac __attribute__((unused)), char **av)
 		vm_dump(DUMP_LEN * vm.dmp_bol);
 	else
 		ft_printf("Contestant %d, \"%s\", has won !\n",
-			vm.players[vm.winer].pid, vm.players[vm.winer].name);
+			vm.winer->pid, vm.winer->name);
 	return (0);
 }
 

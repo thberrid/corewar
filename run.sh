@@ -116,9 +116,11 @@ compare_corewar()
 	if [[ $? -ne 0 ]]; then
 		exit
 	fi
-	diff --suppress-common-lines -y $YOUR_OUT_FILE $ZAZ_OUT_FILE 2>/dev/null
+	dif=`diff --suppress-common-lines -y $YOUR_OUT_FILE $ZAZ_OUT_FILE 2>/dev/null`
 	if [[ $? -ne 0 ]]; then
 		printf "$COL_RED""FAIL!$COL_NRM\n"
+		printf "Diff:\n%s\n" "$dif"
+		unset dif
 		return 1
 	else
 		printf "$COL_GRN""OK$COL_NRM\n"
