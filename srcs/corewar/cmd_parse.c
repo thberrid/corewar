@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:32:56 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/04 02:50:29 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/04 04:12:17 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,35 +131,33 @@ static void	load_file(t_vm *vm, t_champ *chmp, const char *path)
 	ft_strcpy(chmp->name, head.prog_name);
 }
 
-t_vm		parse_args(char **av)
+void	parse_args(t_vm *vm, char **av)
 {
 	uint32_t	i;
-	t_vm		vm;
 	t_proc		*proc;
 
-	ft_bzero(&vm, sizeof(vm));
-	vm.players[0].pid = 1;
-	vm.verbosity = VERBOSITY;
+	ft_bzero(vm, sizeof(t_vm));
+	vm->players[0].pid = 1;
+	vm->verbosity = VERBOSITY;
 	while (av && *av)
 	{
 		i = 0;
 		while (g_parser[i].opt && !ft_strequ(*av, g_parser[i].opt))
 			++i;
-		av = g_parser[i].callback(&vm, av + !!g_parser[i].opt);
+		av = g_parser[i].callback(vm, av + !!g_parser[i].opt);
 	}
-	if (!vm.psize)
+	if (!vm->psize)
 		exit(ft_print_error("No player.\n"));
 	i = 0;
-	while (i < vm.psize)
+	while (i < vm->psize)
 	{
-		load_file(&vm, vm.players + i, (char *)vm.players[i].pc);
-		proc = add_process(vm.players[i].pc - g_map, NULL);
-		if (!vm.winer || vm.winer->pid < vm.players[i].pid)
-			vm.winer = vm.players + i;
-		proc->pid = vm.players[i].pid;
-		proc->regs[0] = -vm.players[i++].pid;
+		load_file(vm, vm->players + i, (char *)vm->players[i].pc);
+		proc = add_process(vm->players[i].pc - g_map, NULL);
+		if (!vm->winer || vm->winer->pid < vm->players[i].pid)
+			vm->winer = vm->players + i;
+		proc->pid = vm->players[i].pid;
+		proc->regs[0] = -vm->players[i++].pid;
 	}
-	return (vm);
 }
 
 /*
@@ -167,5 +165,5 @@ t_vm		parse_args(char **av)
 **	Keeping it here in case the linux compiler doesn't like
 **		to negate an unsigned value...
 **
-**	proc->regs[0] = 0xffffffffu - (vm.players[i++].pid - 1);
+**	proc->regs[0] = 0xffffffffu - (vm->players[i++].pid - 1);
 */

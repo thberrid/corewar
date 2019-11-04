@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 09:47:24 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/04 02:55:29 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/04 04:11:52 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ typedef struct	s_dispatch
 }				t_dispatch;
 
 void			vm_loop(t_vm *vm);
-t_vm			parse_args(char **av);
+void			parse_args(t_vm *vm, char **av);
 void			destruct(void) __attribute__((destructor));
 
 /*

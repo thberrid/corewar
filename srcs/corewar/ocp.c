@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 17:54:53 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/01 19:12:10 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/04 04:56:45 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,16 +42,15 @@ t_ind	check_ocp(t_byte ocp, uint32_t opid)
 
 	ln = 0;
 	rs = 0;
-	i = MAX_ARGS_NUMBER;
+	i = MAX_ARGS_NUMBER - 1;
 	ref = g_op_tab[opid].args;
 	while (i-- > 0)
 	{
-		cr = ocp & 3;
+		cr = (ocp >>= 2) & 3;
 		ln += (g_arg_sizes[cr] - (g_ocpc[cr] == T_DIR && g_op_tab[opid].hdir));
 		if ((!(g_ocpc[cr] & ref[i]) && (ref[i] || g_ocpc[cr]))
 			|| (g_ocpc[cr] && i >= g_op_tab[opid].arg_cnt))
 			rs |= 1;
-		ocp >>= 2;
 	}
 	return (rs * ln);
 }

@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 07:24:26 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/04 02:49:36 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/04 04:12:35 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ int			main(int ac __attribute__((unused)), char **av)
 
 	i = 0;
 	ft_bzero(&g_procs, sizeof(t_lst));
-	vm = parse_args(av + 1);
+	parse_args(&vm, av + 1);
 	ft_putstr("Introducing contestants...\n");
 	while (i < vm.psize)
 	{
