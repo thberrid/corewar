@@ -16,11 +16,15 @@
 #include "asm.h"
 
 
-int		get_namecom(char *header, char *line, int fd)
+int		get_namecom(char *header, char *line, int fd, char n_or_c)
 {
 	int	i;
+	int		rest;
 
 	i = 0;
+	rest = ft_strlen(header) + ft_strlen(line);
+	if (rest > (n_or_c ? PROG_NAME_LENGTH : COMMENT_LENGTH))
+		return (n_or_c ? -7 : -8);
 	while (*line && *line != '"')
 	{
 		header[i] = *line;
@@ -32,33 +36,33 @@ int		get_namecom(char *header, char *line, int fd)
 		if (*(line + 1) == '\0')
 			return (1);
 		else
-			return (0);
+			return (-1);
 	}
 	if (gnl(fd,&line) > 0)
 	{
 		header[i] = '\n';
-		return (get_namecom(&header[++i], line, fd));
+		return (get_namecom(&header[++i], line, fd, n_or_c));
 	}
-	return (0);
+	return (-1);
 }
 
 int		check_headder(t_header *header, char *line, int fd, int *rethd)
 {
 	int		i;
-
+	int 	ret;
 	if (ft_strlen(line) < 5)
 		return (0);
 	if (!ft_strncmp(line, NAME_CMD_STRING, 5))
 	{	
 		*rethd |= 1;
 		if (!ft_contains('"', line))
-		return (-1);
+		return (-2);
 	}
 	if (!ft_strncmp(line, COMMENT_CMD_STRING, 8))
 	{	
 		*rethd |= 2;
 		if (!ft_contains('"', line))
-		return (-1);
+		return (-2);
 	}
 	i = (ft_strncmp(line, NAME_CMD_STRING, 5) == 0) ? 5 : 0;
 	i = (i != 5 && ft_strncmp(line, COMMENT_CMD_STRING, 8) == 0) ? 8 : i;
@@ -70,21 +74,27 @@ int		check_headder(t_header *header, char *line, int fd, int *rethd)
 		if (*line == '"' && i == 5)
 		{
 			line++;
-			if (!get_namecom(header->prog_name, line, fd))
-				return (-1);
+			if ((ret = get_namecom(header->prog_name, line, fd, 1)) < 0)
+				return (ret);
 		}
 		else if (*line == '"' && i == 8)
 		{
 			line++;
-			if (!get_namecom(header->comment, line, fd))
-				return (-1);
+			if ((ret = get_namecom(header->comment, line, fd, 0)) < 0)
+				return (ret);
 		}
 	//	if (header->prog_name[0] && header->comment[0])
 		if (*rethd == 3)
 			return (1);
 		return (0);
 	}
-	return (-1);
+	return (-2);
+}
+
+void	ft_fixheader(t_header *header)
+{
+	ft_strcpy(header->prog_name, "default name");
+	ft_strcpy(header->comment, "default comment");
 }
 
 int		ft_read(t_instruct_head *head, char *path, t_header *header)
@@ -112,8 +122,11 @@ int		ft_read(t_instruct_head *head, char *path, t_header *header)
 			continue ;
 		if (rethd != 3)
 		{
-			if (check_headder(header, line, fd, &rethd) == -1)
-				return (-2);
+			retinst = check_headder(header, line, fd, &rethd);
+			if (retinst < -1 && !head->cflag)
+				return (retinst);
+			else if (retinst < -1)
+				ft_fixheader(header);
 		}
 		else
 		{
@@ -122,10 +135,14 @@ int		ft_read(t_instruct_head *head, char *path, t_header *header)
 				ft_strdel(&line);
 				continue ;
 			}
-			if ((retinst = check_instruct(line, head)) < 0)
+			if (head->cflag)
 			{
-				return (retinst);
+				if (debug_instruct(line, head) < 0)
+					return (-9);
 			}
+			else
+				if ((retinst = check_instruct(line, head)) < 0)
+					return (retinst);
 		}
 		ft_strdel(&line);
 	}

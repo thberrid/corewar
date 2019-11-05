@@ -11,6 +11,7 @@ SRC_ASM	:=	\
 			ft_bprint.c \
 			instruct_display.c \
 			instruct_free.c \
+			instruct_debug.c \
 			utils.c \
 			read.c
 

@@ -12,7 +12,7 @@
 
 #include "asm.h"
 
-void		ft_errors(int err, int line_n)
+int		ft_errors(int err, int line_n)
 {
 	err *= -1;
 	static char	*str[] = {
@@ -21,11 +21,24 @@ void		ft_errors(int err, int line_n)
 		"Syntax error",
 		"Invalid parameter",
 		"Program too big",
-		"Invalid instruction"
+		"Invalid instruction",
+		"No instruction found :(",
+		"name too long T-T",
+		"comment too long T-T",
+		"malloc Error"
 	};
 	ft_putstr_fd(str[err], 2);
 	ft_putchar_fd(' ', 2);
-	ft_putnbr_fd(line_n, 2);
+	if(line_n)
+		ft_putnbr_fd(line_n, 2);
 	ft_putendl_fd("", 2);
-	
+	return (0);
+}
+
+int		ft_usage(void)
+{
+	ft_printf("Usage: ./asm [-a] <sourcefile.s>\n");
+	ft_printf("	-a : Instead of creating a .cor file, outputs a stripped");
+	ft_printf("and annotated version of the code to the standard output\n");
+	return(0);
 }

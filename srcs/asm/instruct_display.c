@@ -19,9 +19,11 @@ void	instruct_display(t_instruct *this)
 
 	if (this->label)
 		ft_printf("Label -> %s\n", this->label);
+	else
+		ft_printf("\n");
 	ft_printf("ID -> %d\n", this->id);
-	ft_printf("Instr. size -> %lu\n", this->len);
-	ft_printf("Instr. index -> %u\n", this->byt_index);
+	//ft_printf("Instr. size -> %lu\n", this->len);
+//	ft_printf("Instr. index -> %u\n", this->byt_index);
 	ft_printf("OCP -> ");
 	ft_bprint_fd_rev(&(this->ocp), sizeof(this->ocp), 1);
 	i = 0;
@@ -33,18 +35,24 @@ void	instruct_display(t_instruct *this)
 	}
 }
 
-void	instruct_display_all(t_instruct_head *head)
+void	instruct_display_all(t_instruct_head *head, t_header *header)
 {
 	size_t		i;
+	size_t		len;
 	t_instruct	*this;
 
 	i = 0;
+	len = 0;
 	this = head->head;
 	ft_printf("Number of instructions ->  %lu\n", head->slen);
-	ft_printf("Size of the program ->  %lu\n", head->length);
+	ft_printf("Size of the program ->  %lu bytes\n", head->length);
+	ft_printf("Name : \"%s\"\n", header->prog_name);
+	ft_printf("Comment : \"%s\"\n\n", header->comment);	
 	ft_putendl("----------");
 	while (i < head->slen)
 	{
+		ft_printf("%lu	(%lu)	: ", len, this->len);
+		len += this->len;
 		instruct_display(this);
 		this = this->next;
 		ft_putendl("----------");

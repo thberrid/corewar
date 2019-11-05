@@ -43,6 +43,7 @@ typedef struct			s_instruc_head
 	size_t				length;
 	size_t				slen;
 	int					line;
+	int					cflag;
 }						t_instruct_head;
 
 /*
@@ -58,7 +59,7 @@ int						check_instruct(char *line, t_instruct_head *head);
 */
 
 void					instruct_free(t_instruct_head *head);
-void					ft_errors(int err, int line_n);
+int						ft_errors(int err, int line_n);
 
 /*
 ** tools
@@ -67,6 +68,9 @@ void					ft_errors(int err, int line_n);
 void					ft_bprint_fd(void *ptr, int nbits, int fd);
 void					ft_bprint_fd_rev(void *ptr, int nbits, int fd);
 void					instruct_display(t_instruct *this);
-void					instruct_display_all(t_instruct_head *head);
-
+void					instruct_display_all(t_instruct_head *head, t_header *header);
+int						ft_usage(void);
+t_instruct				*add_inst(t_instruct_head *head);
+int						debug_instruct(char *line, t_instruct_head *head); 
+int						is_paramtype_allowed(char param_type, t_instruct *inst, int i);
 #endif

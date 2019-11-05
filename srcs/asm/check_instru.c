@@ -23,8 +23,10 @@ int		ft_getlab(char **line, t_instruct *inst)
 	i = 0;
 	while ((*line)[i] && (*line)[i] != LABEL_CHAR && !(ft_isspace((*line)[i])))
 	{
+		if ((*line)[i] == DIRECT_CHAR)
+			return (0);
 		if (!ft_contains((*line)[i], LABEL_CHARS))
-			return (-1);
+				return (-1);
 		i++;
 	}
 	if ((*line)[i] == LABEL_CHAR)
@@ -183,8 +185,13 @@ int			is_str_valid(char *str)
 	{
 		str++;
 		return (ft_checkchar(str, LABEL_CHARS));
-	} else
+	} 
+	else
+	{
+		if (*str == '-')
+			str++;
 		return (ft_checkchar(str, REG_CHAR));
+	}
 	return (0);
 }
 
@@ -338,11 +345,8 @@ int		update_progsize(t_instruct_head *head, t_instruct *inst)
 	inst->byt_index = head->length;
 	head->length += prog_size;
 	//ft_printf("LAAA : %zu\n", inst->id, );
-	if (head->length > 2000)
-	{
-		ft_printf("LAAA : %zu\n", head->length);
-		return (-1);
-	}
+	if (head->length > CHAMP_MAX_SIZE)
+		return (-4);
 	return (0);
 }
 
@@ -377,13 +381,13 @@ int		check_instruct(char *line, t_instruct_head *head)
 		inst = (inst->prev->label && !inst->prev->id) ? inst->prev : add_inst(head); 
 	}
 	if (!inst)
-		return (-1);
+		return (-9);
 	inst->line_n = head->line;
 	while (ft_isspace(*line))
 		line++;
 	if (i <= head->slen && ft_getlab(&line, inst) < 0)
 		return (-1);
-while (ft_isspace(*line))
+	while (ft_isspace(*line))
 		line++;	
 	if (!*line)
 		return (1);

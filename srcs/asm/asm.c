@@ -145,20 +145,24 @@ int		main(int ac, char **av)
 	int				retrn_labels;
 	int				av_path;
 
-	av_path = 1;
+	av_path = ac - 1;
+	ft_bzero(&head, sizeof(t_instruct_head));
+	if (ac == 1)
+		return (ft_usage());
 	if (av[1][0] == '-')
 	{
-		av_path = 2;
-		if (ac != 3)
+		if (av[1][1] == 'c')
+			head.cflag = 1;
+		if (ac < 3)
 			return (ft_printf("Error\n"));
-	} else if (ac != 2)
-		return (ft_printf("Error\n"));
+	}
 	ft_bzero(&header, sizeof(t_header));
-	ft_bzero(&head, sizeof(t_instruct_head));
 	header.magic = COREWAR_EXEC_MAGIC;
 	retrn_parse = ft_read(&head, av[av_path], &header);
 	if (retrn_parse == 1)
 	{
+		if (!head.length)
+			return (ft_errors(-6, 0));
 		header.prog_size = head.length;
 		retrn_labels = set_labels(&head);
 		if (retrn_labels < 0)
@@ -167,7 +171,10 @@ int		main(int ac, char **av)
 			return (0);
 		}
 		if (ac == 3 && av[1][1] == 'a')
-			instruct_display_all(&head);
+		{
+			instruct_display_all(&head, &header);
+			return(0);
+		}
 		if (retrn_labels && retrn_parse)
 			creat_file(&head, av[av_path], &header);
 	}
