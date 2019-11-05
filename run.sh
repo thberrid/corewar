@@ -121,6 +121,7 @@ compare_corewar()
 		printf "$COL_RED""FAIL!$COL_NRM\n"
 		printf "Diff:\n%s\n" "$dif"
 		unset dif
+		mv $2 `echo $2 | sed 's:.cor:.fail.cor:g'`
 		return 1
 	else
 		printf "$COL_GRN""OK$COL_NRM\n"

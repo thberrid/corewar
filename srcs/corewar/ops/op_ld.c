@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:05:20 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/04 04:57:17 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/05 12:43:38 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,20 @@
 
 char	op_ld(t_vm *vm, t_proc *proc)
 {
+	t_byte	reg;
 	t_byte	ocp;
+	t_dir	val;
 	t_ind	off;
 
-	(void)vm;
 	ocp = g_map[proc->pc + 1 % MEM_SIZE];
-	if ((off = check_ocp(ocp, OP_AFF)) && (proc->pc += off))
-		return (0);
-	ft_printf("code: %u - ld\n", OP_LD);
-	return (proc->carry);
+	if ((off = check_ocp(ocp, OP_LD)) && (proc->pc += off))
+		return (proc->carry);
+	off = 2;
+	val = (g_getter[((ocp >> 6) & 3)](proc, &off));
+	reg = g_map[(proc->pc + off++) % MEM_SIZE];
+	if ((reg <= 0 || reg > REG_NUMBER) && (proc->pc += off))
+		return (proc->carry);
+	if (vm->verbosity & V_OPERATONS)
+		ft_printf("P %4d | ld %d r%d\n", proc->pid, val, reg);
+	return (!(proc->regs[reg - 1] = val));
 }

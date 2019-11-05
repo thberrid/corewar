@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 15:20:59 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/04 04:58:20 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/05 12:30:41 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,17 +58,15 @@ static void	vm_exec(t_vm *vm, t_proc *proc)
 	cur = g_map[proc->pc % MEM_SIZE];
 	while (op->name && cur != op->id)
 		op++;
-	if (op->fnc)
+	if (++proc->time_to_wait >= op->cost)
 	{
-		if (++proc->time_to_wait >= op->cost)
-		{
+		if (op->fnc)
 			proc->carry = op->fnc(vm, proc);
-			proc->time_to_wait = 0;
-			proc->pc %= MEM_SIZE;
-		}
+		else
+			proc->pc++;
+		proc->time_to_wait = 0;
+		proc->pc %= MEM_SIZE;
 	}
-	else
-		proc->pc = (proc->pc % MEM_SIZE);
 }
 
 void		vm_loop(t_vm *vm)
