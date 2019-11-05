@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 02:51:55 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/05 16:01:59 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/05 22:43:34 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,11 @@ t_reg	get_reg(t_proc *proc, t_ind *off)
 	t_byte	reg;
 
 	reg = g_map[(proc->pc + *off) % MEM_SIZE];
+	ft_dprintf(2, "reg 'r%d\n'", reg);
 	if (reg <= 0 || reg > REG_NUMBER)
 		return (0);
 	(*off)++;
+	ft_dprintf(2, "reg 'r%d' = %d\n", reg, proc->regs[reg - 1]);
 	return (proc->regs[reg - 1]);
 }
 
@@ -57,6 +59,7 @@ t_dir	get_ind(t_proc *proc, t_ind *off)
 		| g_map[(proc->pc + *off + 1) % MEM_SIZE];
 	(*off) += 2;
 	addr = (addr % IDX_MOD);
+	ft_dprintf(2, "ind = *%d\n", addr);
 	return (get_dir__(proc, &addr, 0));
 }
 
