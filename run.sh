@@ -245,12 +245,15 @@ if [[ $TOTAL_OP -eq $PASSED_OP ]]; then
 else
 	printf "$COL_RED"
 fi
-printf "%d/%d$COL_NRM(" $PASSED_OP $TOTAL_OP
 
-if [[ $TOTAL_RUN -eq $PASSED_RUN ]]; then
-	printf "$COL_CYA"
-else
-	printf "$COL_RED"
+if [[ $TOTAL_RUN -ne 0 ]]; then
+	printf "%d/%d$COL_NRM(" $PASSED_OP $TOTAL_OP
+
+	if [[ $TOTAL_RUN -eq $PASSED_RUN ]]; then
+		printf "$COL_CYA"
+	else
+		printf "$COL_RED"
+	fi
+
+	printf "%d/%d$COL_NRM)\n" $PASSED_RUN $TOTAL_RUN
 fi
-
-printf "%d/%d$COL_NRM)\n" $PASSED_RUN $TOTAL_RUN
