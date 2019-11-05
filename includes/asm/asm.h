@@ -73,4 +73,6 @@ int						ft_usage(void);
 t_instruct				*add_inst(t_instruct_head *head);
 int						debug_instruct(char *line, t_instruct_head *head); 
 int						is_paramtype_allowed(char param_type, t_instruct *inst, int i);
+int						get_paramlen(int opcode);
+int						is_strn_valid(char *str, int n);
 #endif

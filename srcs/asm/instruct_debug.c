@@ -81,28 +81,35 @@ int		debug_instruct(char *line, t_instruct_head *head)
 			inst->id = i;
 			param_len = get_paramlen(inst->id);
 			line += len;
-			while (i < param_len)
+			i_param = 0;
+			while (i_param < param_len)
 			{
 				len = 0;
-				while (line[len] && ft_isspace(line[len]) && line[len] != SEPARATOR_CHAR)
+				while (ft_isspace(*line))
+					line++;
+				while (line[len] && line[len] != SEPARATOR_CHAR && !ft_isspace(line[len]))
 					len++;
 				param_type = IND_CODE;
 				if (*line == 'r')
 					param_type = REG_CODE;
 				if (*line == DIRECT_CHAR)
 					param_type = DIR_CODE;
-				if (*line && is_paramtype_allowed(param_type, inst, i_param))
+					ft_printf("%d\n", len);
+				if (*line && is_paramtype_allowed(param_type, inst, i_param) && is_strn_valid(line, len))
 				{
+					if (!(inst->params_str[i_param] = ft_strnew(len)))
+						return (-10);
+					ft_strncpy(inst->params_str[i_param], line, len);
 					inst->ocp += ((param_type << (3 - i) * 2));
-				} else
+				} 
+				else
 				{
-					// find the first allowd param
+					ft_printf("create new param\n");
 				}
-				
-
 				line += len + 1;					
-				i++;
+				i_param++;
 			}
+			break ;
 		}
 		i++;
 	}

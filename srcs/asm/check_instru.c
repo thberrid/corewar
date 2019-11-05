@@ -160,6 +160,20 @@ int		get_octet(t_byte id, char param_type)
 ** ici on regarde le premier char pour savoir si rX ou si % ou si rien
 */
 
+int		ft_checkcharn(char *str, char *type, int n)
+{
+	int		j;
+
+	j = 0;
+	while (str[j] && j < n)
+	{
+		if (ft_contains(str[j], type) != 1 && !ft_isspace(str[j]))
+			return (0);
+		j++;
+	}
+	return (1);
+}
+
 int		ft_checkchar(char *str, char *type)
 {
 	int		j;
@@ -172,6 +186,27 @@ int		ft_checkchar(char *str, char *type)
 		j++;
 	}
 	return (1);
+}
+
+int			is_strn_valid(char *str, int n)
+{
+	int	i;
+
+	i = 0;
+	if (!*str)
+		return (0);
+	if (*str == LABEL_CHAR)
+	{
+		str++;
+		return (ft_checkcharn(str, LABEL_CHARS, n));
+	} 
+	else
+	{
+		if (*str == '-')
+			str++;
+		return (ft_checkcharn(str, REG_CHAR, n));
+	}
+	return (0);
 }
 
 int			is_str_valid(char *str)
