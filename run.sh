@@ -2,10 +2,13 @@
 
 TESTER='./tester'
 YOUR_VM='./corewar'
-ZAZ_VM='./documents/vm_champs/corewar -a -v 15'
+ZAZ_VM='./documents/vm_champs/corewar'
+
+# Option to be passed to both vms
+VM_OPT='-a -v 15'
 
 # The option to make your vm dump the memory as zaz's one do it (same format).
-DUMP_OPT='-zdump'
+DUMP_OPT='-d'
 
 # Files used to compare the output results.
 YOUR_OUT_FILE='yout.dump'
@@ -112,7 +115,7 @@ print_usage()
 compare_corewar()
 {
 	printf "$COL_MAG$2$COL_NRM: "
-	$YOUR_VM $DUMP_OPT $1 $2 > $YOUR_OUT_FILE && $OSX_CONTAINER $ZAZ_VM -d $1 $2 > $ZAZ_OUT_FILE
+	$YOUR_VM $VM_OPT $DUMP_OPT $1 $2 > $YOUR_OUT_FILE && $OSX_CONTAINER $ZAZ_VM $VM_OPT -d $1 $2 > $ZAZ_OUT_FILE
 	if [[ $? -ne 0 ]]; then
 		exit
 	fi
@@ -213,10 +216,10 @@ clear_tests()
 
 # Startpoint
 
-if [[ $1 == "clear" ]]; then
-	clear_tests
-	exit
-fi
+#if [[ $1 == "clear" ]]; then
+#	clear_tests
+#	exit
+#fi
 
 init_tests $1
 

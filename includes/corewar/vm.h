@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 09:47:24 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/04 04:11:52 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/05 16:37:13 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ typedef struct s_champ	t_champ;
 # define V_DEATHS		8
 # define V_PC			16
 # define V_AFF			32
-
-# define VERBOSITY	(V_CYCLES | V_LIVES | V_OPERATONS | V_AFF)
 
 typedef enum	e_dumpm
 {
@@ -65,12 +63,6 @@ typedef struct	s_vm
 	t_cycle		cycles;
 	t_champ		*winer;
 }				t_vm;
-
-typedef struct	s_dispatch
-{
-	const char	*opt;
-	char		**(*callback)(t_vm *vm, char **av);
-}				t_dispatch;
 
 void			vm_loop(t_vm *vm);
 void			parse_args(t_vm *vm, char **av);

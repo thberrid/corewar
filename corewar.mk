@@ -24,8 +24,17 @@ OPS_COR	:=	\
 			op_lfork.c
 OPS_COR	:=	$(addprefix ops/,$(OPS_COR))
 
+PARSER	:=	\
+			opt_aff.c	\
+			opt_num.c	\
+			opt_file.c	\
+			opt_dump.c	\
+			opt_verbosity.c
+PARSER	:=	$(addprefix parser/,$(PARSER))
+
 #	general source definitions
-SRC_COR	:=	$(OPS_COR)	\
+SRC_COR	:=	$(PARSER)	\
+			$(OPS_COR)	\
 			ocp.c		\
 			loop.c		\
 			utils.c		\
@@ -37,7 +46,7 @@ SRC_COR	:=	$(OPS_COR)	\
 #
 #	vm compilation specific flags
 #
-$(COR):	CFLAGS += -I./includes/corewar -ansi -pedantic -DVM
+$(COR):	CFLAGS += -g -I./includes/corewar -ansi -pedantic -DVM
 
 #
 #	vm unit tests

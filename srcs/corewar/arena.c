@@ -6,7 +6,7 @@
 /*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/20 21:01:15 by baurens           #+#    #+#             */
-/*   Updated: 2019/11/02 17:59:30 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/05 16:19:46 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,16 @@ void	vm_dump(const uint32_t dump_len)
 
 void	map_to_var(void *dest, t_ind pos, register size_t size)
 {
+	const	size_t s = size;
+
 	while (size-- > 0)
 		((t_byte *)dest)[size] = g_map[(pos + size) % MEM_SIZE];
+	bin_to_system(dest, s);
 }
 
 void	var_to_map(void *src, t_ind pos, register size_t size)
 {
+	system_to_bin(src, size);
 	while (size-- > 0)
 		g_map[(pos + size) % MEM_SIZE] = ((t_byte *)src)[size];
 }

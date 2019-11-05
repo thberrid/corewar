@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 15:20:59 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/05 12:30:41 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/05 16:48:17 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,15 @@
 #include "op.h"
 #include "vm.h"
 
+static t_proc	*vm_kill(t_vm *vm, t_proc *proc)
+{
+	if (vm->verbosity & V_DEATHS)
+		ft_printf("Process %d hasn't lived for %d cycles (CTD %ld)\n",
+			proc->pid, vm->cycles - proc->last_live, vm->cycle_to_die);
+	return (kill_process(proc));
+}
 
-
-static void	vm_check(t_vm *vm)
+static void		vm_check(t_vm *vm)
 {
 	uint64_t	total_live;
 	t_proc		*proc;
@@ -32,9 +38,7 @@ static void	vm_check(t_vm *vm)
 	{
 		if (!proc->lives)
 		{
-			ft_printf("Process %d hasn't lived for %d cycles (CTD %ld)\n",
-				proc->pid, vm->cycles - proc->last_live, vm->cycle_to_die);
-			proc = kill_process(proc);
+			proc = vm_kill(vm, proc);
 			continue ;
 		}
 		total_live += proc->lives;
@@ -45,11 +49,12 @@ static void	vm_check(t_vm *vm)
 	{
 		vm->last_dec = 0;
 		vm->cycle_to_die -= CYCLE_DELTA;
-		ft_printf("Cycle to die is now %ld\n", vm->cycle_to_die);
+		if (vm->verbosity & V_CYCLES)
+			ft_printf("Cycle to die is now %ld\n", vm->cycle_to_die);
 	}
 }
 
-static void	vm_exec(t_vm *vm, t_proc *proc)
+static void		vm_exec(t_vm *vm, t_proc *proc)
 {
 	t_byte				cur;
 	register const t_op	*op;
@@ -69,7 +74,7 @@ static void	vm_exec(t_vm *vm, t_proc *proc)
 	}
 }
 
-void		vm_loop(t_vm *vm)
+void			vm_loop(t_vm *vm)
 {
 	t_proc		*proc;
 	uint32_t	last_check;

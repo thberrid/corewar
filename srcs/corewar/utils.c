@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 02:51:55 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/02 17:59:46 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/05 16:01:59 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ t_dir	get_dir__(t_proc *proc, t_ind *off, char hdir)
 	if (hdir)
 		v = &ind;
 	map_to_var(v, proc->pc + *off, DIR_SIZE / (hdir + 1));
-	bin_to_system(v, DIR_SIZE / (hdir + 1));
+	/*bin_to_system(v, DIR_SIZE / (hdir + 1));*/
 	(*off) += DIR_SIZE / (hdir + 1);
 	return (hdir ? ind : dir);
 }
@@ -62,6 +62,5 @@ t_dir	get_ind(t_proc *proc, t_ind *off)
 
 void	dir_to_map(t_proc *proc, t_ind off, t_dir val)
 {
-	system_to_bin(&val, sizeof(val));
 	var_to_map(&val, (proc->pc + off), sizeof(val));
 }

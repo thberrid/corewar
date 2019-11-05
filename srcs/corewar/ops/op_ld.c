@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:05:20 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/05 12:43:38 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/05 16:49:08 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,6 @@ char	op_ld(t_vm *vm, t_proc *proc)
 		return (proc->carry);
 	if (vm->verbosity & V_OPERATONS)
 		ft_printf("P %4d | ld %d r%d\n", proc->pid, val, reg);
+	proc->pc += off;
 	return (!(proc->regs[reg - 1] = val));
 }

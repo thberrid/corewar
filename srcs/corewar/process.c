@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 12:40:34 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/03 23:18:33 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/05 16:45:44 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 **		add a function to sort the process list or to add a process in
 **			the right place
 */
+
 t_proc	*add_process(t_ind pc, t_proc *copy)
 {
 	t_proc	*new;
