@@ -380,8 +380,8 @@ int		update_progsize(t_instruct_head *head, t_instruct *inst)
 	inst->byt_index = head->length;
 	head->length += prog_size;
 	//ft_printf("LAAA : %zu\n", inst->id, );
-	if (head->length > CHAMP_MAX_SIZE)
-		return (-4);
+//	if (head->length > CHAMP_MAX_SIZE)
+//		return (-4);
 	return (0);
 }
 
