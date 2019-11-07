@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 12:40:34 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/07 15:29:53 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/07 17:06:02 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,29 @@
 
 /*
 **	TOTO:
-**		pass proces id to add_process or make a singelton (or other way) to
+**		pass proces id to add_process or make a singleton (or other way) to
 **			get next available pid
 **		add a function to sort the process list or to add a process in
 **			the right place
 */
 
-t_proc	*add_process(t_ind pc, t_proc *copy)
+static uint32_t	get_next_pid(void)
+{
+	t_proc		*cur;
+	uint32_t	max;
+
+	max = 0;
+	cur = g_procs.head;
+	while (cur)
+	{
+		if (max < cur->pid)
+			max = cur->pid;
+		cur = cur->next;
+	}
+	return (max + 1);
+}
+
+t_proc			*add_process(t_ind pc, t_proc *copy)
 {
 	t_proc	*new;
 
@@ -37,14 +53,15 @@ t_proc	*add_process(t_ind pc, t_proc *copy)
 		*new = *copy;
 	new->pc = pc;
 	new->prev = NULL;
+	new->pid = get_next_pid();
 	if ((new->next = g_procs.head))
 		new->next->prev = new;
 	g_procs.head = new;
-	g_procs.size++;
+	++g_procs.size;
 	return (new);
 }
 
-t_proc	*kill_process(register t_proc *proc)
+t_proc			*kill_process(register t_proc *proc)
 {
 	register t_proc	*res;
 
@@ -60,7 +77,7 @@ t_proc	*kill_process(register t_proc *proc)
 	return ((t_proc *)res);
 }
 
-void	clear_procs(void)
+void			clear_procs(void)
 {
 	t_proc	*cur;
 
@@ -75,7 +92,7 @@ void	clear_procs(void)
 	g_procs.size = 0;
 }
 
-t_byte		move_pc(t_vm *vm, t_proc *proc, const t_ind off)
+t_byte			move_pc(t_vm *vm, t_proc *proc, const t_ind off)
 {
 	register int i;
 

@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 07:24:26 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/07 15:19:33 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/07 16:50:07 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int			main(int ac __attribute__((unused)), char **av)
 	while (i < vm.psize)
 	{
 		ft_printf("* Player %lu, weighing %zu bytes, \"%s\" (\"%s\") !\n",
-				i + 1, vm.players[i].size,
+				vm.players[i].pid, vm.players[i].size,
 				vm.players[i].name, vm.players[i].comm);
 		++i;
 	}
@@ -121,27 +121,3 @@ int			main(int ac __attribute__((unused)), char **av)
 			vm.winer->pid, vm.winer->name);
 	return (0);
 }
-
-/*
-**	#include <stdio.h>
-**	int main(void)
-**	{
-**		uint32_t	dir;
-**
-**		dir = 0xffffffffu;
-**		printf("dir = %#010x = %u\n", dir, dir);
-**		dir %= MEM_SIZE;
-**		printf("dir = %#010x = %u\n", dir, dir);
-**		dir %= IDX_MOD;
-**		printf("dir = %#010x = %u\n\n", dir, dir);
-**
-**		dir = 0xffffffffu;
-**		printf("dir = %#010x = %u\n", dir, dir);
-**		dir &= 0xffff;
-**		printf("dir = %#010x = %u\n", dir, dir);
-**		dir %= MEM_SIZE;
-**		printf("dir = %#010x = %u\n", dir, dir);
-**		dir %= IDX_MOD;
-**		printf("dir = %#010x = %u\n", dir, dir);
-**	}
-*/

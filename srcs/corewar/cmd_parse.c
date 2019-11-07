@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:32:56 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/05 16:38:02 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/07 17:00:01 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,33 @@ static void	load_file(t_vm *vm, t_champ *chmp, const char *path)
 	ft_strcpy(chmp->name, head.prog_name);
 }
 
+static void	sort_players(t_vm *vm)
+{
+	size_t	i;
+	char	lp;
+	t_champ	tmp;
+
+	lp = 1;
+	while (lp)
+	{
+		i = 0;
+		lp = 0;
+		while (++i < vm->psize)
+		{
+			if (vm->players[i - 1].pid > vm->players[i].pid)
+			{
+				tmp = vm->players[i];
+				vm->players[i] = vm->players[i - 1];
+				vm->players[i - 1] = tmp;
+				lp = 1;
+			}
+		}
+	}
+}
+
 void		parse_args(t_vm *vm, char **av)
 {
-	uint32_t	i;
+	int32_t		i;
 	t_proc		*proc;
 
 	ft_bzero(vm, sizeof(t_vm));
@@ -78,22 +102,15 @@ void		parse_args(t_vm *vm, char **av)
 	}
 	if (!vm->psize)
 		exit(ft_print_error("No player.\n"));
-	i = 0;
-	while (i < vm->psize)
-	{
+	i = -1;
+	while (++i < (int32_t)vm->psize)
 		load_file(vm, vm->players + i, (char *)vm->players[i].pc);
+	sort_players(vm + (i = 0));
+	while (i < (int32_t)vm->psize)
+	{
 		proc = add_process(vm->players[i].pc - g_map, NULL);
 		if (!vm->winer || vm->winer->pid < vm->players[i].pid)
 			vm->winer = vm->players + i;
-		proc->pid = vm->players[i].pid;
 		proc->regs[0] = -vm->players[i++].pid;
 	}
 }
-
-/*
-**	This is equivalent to invert the sign but slower.
-**	Keeping it here in case the linux compiler doesn't like
-**		to negate an unsigned value...
-**
-**	proc->regs[0] = 0xffffffffu - (vm->players[i++].pid - 1);
-*/
