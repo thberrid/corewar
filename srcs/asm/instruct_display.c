@@ -6,7 +6,7 @@
 /*   By: thberrid <thberrid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/20 02:52:22 by thberrid          #+#    #+#             */
-/*   Updated: 2019/10/30 16:37:56 by baurens          ###   ########.fr       */
+/*   Updated: 2019/11/07 04:11:26 by thberrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,9 @@ void	instruct_display(t_instruct *this)
 	else
 		ft_printf("\n");
 	ft_printf("ID -> %d\n", this->id);
-	//ft_printf("Instr. size -> %lu\n", this->len);
-//	ft_printf("Instr. index -> %u\n", this->byt_index);
-	ft_printf("OCP -> ");
-	ft_bprint_fd_rev(&(this->ocp), sizeof(this->ocp), 1);
+	bin_to_system(&(this->ocp), sizeof(this->ocp));
+	ft_printf("OCP -> %u\n", (unsigned char)this->ocp);
 	i = 0;
-	ft_putchar('\n');
 	while (i < 3)
 	{
 		ft_printf("P%d -> %s\n", i + 1, this->params_str[i]);

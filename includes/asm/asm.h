@@ -6,7 +6,7 @@
 /*   By: smoreno- <smoreno-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 06:05:50 by smoreno-          #+#    #+#             */
-/*   Updated: 2019/11/01 20:07:27 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/07 04:00:42 by thberrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,6 @@ int						ft_errors(int err, int line_n);
 ** tools
 */
 
-void					ft_bprint_fd(void *ptr, int nbits, int fd);
-void					ft_bprint_fd_rev(void *ptr, int nbits, int fd);
 void					instruct_display(t_instruct *this);
 void					instruct_display_all(t_instruct_head *head, t_header *header);
 int						ft_usage(void);
