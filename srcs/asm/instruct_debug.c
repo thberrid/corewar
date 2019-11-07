@@ -39,6 +39,23 @@ int		ft_deflab(t_instruct *inst, int *cflag, char *line, int len)
 	return (0);
 }
 
+char	get_available_type(int id, int param_n, int max_params)
+{
+	int		i;
+	char	param_type;
+
+	i = 0;
+	param_type = 1;
+	while (i < max_params)
+	{
+		if ()
+			return (param_type);
+		i++;
+		param_type *= 2;
+	}
+	return (1);
+}
+
 int		debug_instruct(char *line, t_instruct_head *head)
 {
 	int 		i;
@@ -104,14 +121,26 @@ int		debug_instruct(char *line, t_instruct_head *head)
 				} 
 				else
 				{
-					ft_printf("create new param\n");
+					// CREATE NEW PARAM
+					// JUSTE SET TO ONE
+					// FIND AVAILABLE PARAM TYPE TO UPDATE INST->OPC
+					param_type = get_available_type(inst->id, i_param, param_len);
+					if (param_type == T_IND)
+						param_type = IND_CODE;
+					inst->ocp += ((param_type << (3 - i) * 2));
 				}
-				line += len + 1;					
+				line += len;
+				while (*line && *line != SEPARATOR_CHAR)
+					line++;	
+				if (*line == SEPARATOR_CHAR)
+					line++;
 				i_param++;
 			}
 			break ;
 		}
 		i++;
 	}
+	if (update_progsize(head, inst) < 0)
+		return (-4);
 	return (0);
 }
