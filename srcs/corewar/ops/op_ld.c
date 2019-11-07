@@ -6,12 +6,11 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:05:20 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/07 15:31:01 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/07 21:05:46 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
-#include "arena.h"
 #include "ftio.h"
 #include "vm.h"
 #include "op.h"

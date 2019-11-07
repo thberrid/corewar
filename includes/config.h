@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 15:50:02 by abaurens          #+#    #+#             */
-/*   Updated: 2019/10/23 18:53:17 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/07 21:03:53 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,6 @@
 # define MAX_ARGS_NUMBER	4
 # define MAX_PLAYERS		4
 
-/*
-**	# define MEM_SIZE			4096
-*/
 # define MEM_SIZE			(4*1024)
 # define IDX_MOD			(MEM_SIZE / 8)
 # define CHAMP_MAX_SIZE		(MEM_SIZE / 6)
@@ -50,13 +47,6 @@
 # define T_DIR				2
 # define T_IND				4
 # define T_LAB				8
-
-/*
-**	# define T_REG			0b0001
-**	# define T_DIR			0b0010
-**	# define T_IND			0b0100
-**	# define T_LAB			0b1000
-*/
 
 # define PROG_NAME_LENGTH	(128)
 # define COMMENT_LENGTH		(2048)

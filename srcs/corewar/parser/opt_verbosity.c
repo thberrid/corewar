@@ -6,11 +6,9 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 16:25:45 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/05 16:50:14 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/07 21:07:45 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#define	FT_DISABLE_WARNINGS
 
 #include <stdlib.h>
 #include "ftlib.h"

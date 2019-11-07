@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 09:47:24 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/07 16:44:17 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/07 21:02:39 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void			destruct(void) __attribute__((destructor));
 /*
 **	vm ocp functions
 */
-t_ind			check_ocp(t_byte ocp, uint32_t opid);
+t_byte			check_ocp(t_byte ocp, uint32_t opid, t_ind *off);
 t_ind			get_arg_size(t_byte ocp, uint32_t opid);
 
 void			destruct(void) __attribute__((destructor));

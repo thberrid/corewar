@@ -5,7 +5,7 @@ YOUR_VM='./corewar'
 ZAZ_VM='./documents/vm_champs/corewar'
 
 # Option to be passed to both vms
-VM_OPT='-a -v 15'
+VM_OPT='-a -v 31'
 
 # The option to make your vm dump the memory as zaz's one do it (same format).
 DUMP_OPT='-d'

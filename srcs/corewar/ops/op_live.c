@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:05:20 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/07 14:17:00 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/07 18:12:40 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@ char	op_live(t_vm *vm, t_proc *proc)
 	get_dir4(proc, &off, &val);
 	if (vm->verbosity & V_OPERATONS)
 		ft_printf("P %4d | live %d\n", proc->pid, val);
-	proc->pc += off;
 	if ((pl = get_player(vm, -val)) && (vm->verbosity & V_LIVES))
 	{
 		ft_printf("Player %d (%s) is said to be alive\n", pl->pid, pl->name);
 		vm->winer = pl;
 	}
+	move_pc(vm, proc, off);
 	return (proc->carry);
 }

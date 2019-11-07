@@ -6,11 +6,9 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 15:20:59 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/05 16:48:17 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/07 21:00:03 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#define FT_DISABLE_WARNINGS
 
 #include <stdlib.h>
 #include "process.h"
@@ -65,11 +63,11 @@ static void		vm_exec(t_vm *vm, t_proc *proc)
 		op++;
 	if (++proc->time_to_wait >= op->cost)
 	{
+		proc->time_to_wait = 0;
 		if (op->fnc)
 			proc->carry = op->fnc(vm, proc);
 		else
 			proc->pc++;
-		proc->time_to_wait = 0;
 		proc->pc %= MEM_SIZE;
 	}
 }
