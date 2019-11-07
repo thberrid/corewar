@@ -89,6 +89,7 @@ int		creat_file(t_instruct_head *head, char *av, t_header *header)
 	printinst(head, fd);
 	close(fd);
 	ft_printf("%s written\n", name);
+	ft_strdel(&name);
 	return (0);
 }
 
@@ -117,6 +118,7 @@ int		set_labels(t_instruct_head *head)
 					if (kev->label && ft_strcmp(kev->label, &(tmp->params_str[k][1])) == 0)
 					{
 						val = kev->byt_index - tmp->byt_index;
+						ft_strdel(&(tmp->params_str[k]));
 						tmp->params_str[k] = ft_itoa(val);
 						break ;
 					}
@@ -180,6 +182,6 @@ int		main(int ac, char **av)
 	}
 	else
 		ft_errors(retrn_parse, head.line);
-//	instruct_free(&head);
+	instruct_free(&head);
 	return (0);
 }
