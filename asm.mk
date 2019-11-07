@@ -7,7 +7,7 @@
 #	general source definitions
 SRC_ASM	:=	\
 			asm.c \
-			check_instru.c \
+			instruct_check.c \
 			instruct_display.c \
 			instruct_free.c \
 			instruct_debug.c \
