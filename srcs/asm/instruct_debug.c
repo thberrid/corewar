@@ -39,16 +39,16 @@ int		ft_deflab(t_instruct *inst, int *cflag, char *line, int len)
 	return (0);
 }
 
-char	get_available_type(int id, int param_n, int max_params)
+char	get_available_type(int id, t_instruct *inst, int param_n)
 {
-	int		i;
+	int			i;
 	char	param_type;
 
-	i = 0;
 	param_type = 1;
-	while (i < max_params)
+	i = 0;
+	while (i < 3)
 	{
-		if ()
+		if (is_paramtype_allowed(param_type, inst, param_n))
 			return (param_type);
 		i++;
 		param_type *= 2;
@@ -124,7 +124,8 @@ int		debug_instruct(char *line, t_instruct_head *head)
 					// CREATE NEW PARAM
 					// JUSTE SET TO ONE
 					// FIND AVAILABLE PARAM TYPE TO UPDATE INST->OPC
-					param_type = get_available_type(inst->id, i_param, param_len);
+					// DONT FORGET TO SAVE OCTET SIZE ALSO THROUGH THE `GET_OCTECT` FUNCTION
+					param_type = get_available_type(inst->id, inst, i_param);
 					if (param_type == T_IND)
 						param_type = IND_CODE;
 					inst->ocp += ((param_type << (3 - i) * 2));
@@ -141,6 +142,6 @@ int		debug_instruct(char *line, t_instruct_head *head)
 		i++;
 	}
 	if (update_progsize(head, inst) < 0)
-		return (-4);
+		return (-9);
 	return (0);
 }
