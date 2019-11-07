@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:05:20 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/07 12:54:21 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/07 15:42:04 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,18 +35,18 @@ char			op_lld(t_vm *vm, t_proc *proc)
 	t_ind	off;
 
 	ocp = g_map[proc->pc + 1 % MEM_SIZE];
-	if ((off = check_ocp(ocp, OP_LLD)) && (proc->pc += off))
+	if ((off = check_ocp(ocp, OP_LLD)) && move_pc(vm, proc, off))
 		return (proc->carry);
 	off = 2;
 	if (((ocp >> 6) & 3) == IND_CODE)
 		val = lld_get_ind(proc, &off);
 	else
-		g_getter[((ocp >> 6) & 3)](proc, &off, &val);
+		g_arg[((ocp >> 6) & 3)](proc, &off, &val);
 	reg = g_map[(proc->pc + off++) % MEM_SIZE];
-	if ((reg <= 0 || reg > REG_NUMBER) && (proc->pc += off))
+	if ((reg <= 0 || reg > REG_NUMBER) && move_pc(vm, proc, off))
 		return (proc->carry);
 	if (vm->verbosity & V_OPERATONS)
 		ft_printf("P %4d | lld %d r%d\n", proc->pid, val, reg);
-	proc->pc += off;
+	move_pc(vm, proc, off);
 	return (!(proc->regs[reg - 1] = val));
 }

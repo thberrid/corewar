@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 12:11:35 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/07 13:14:47 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/07 15:33:29 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,30 +15,43 @@
 #include "ftio.h"
 #include "op.h"
 
-t_byte	get_arguments(t_proc *proc, t_args *args)
+t_dir	apply_type(t_proc *proc, t_byte type, t_byte mod, t_dir value)
 {
-	t_byte		err;
-	t_byte		ocp;
-	t_ind		off;
-	const t_op	*cur;
+	if (type == REG_CODE)
+		return (proc->regs[value - 1]);
+	if (type == IND_CODE)
+	{
+		if (mod)
+			value %= IDX_MOD;
+		map_to_var(&value, proc->pc + value, sizeof(value));
+	}
+	return (value);
+}
 
-	err = 0;
-	cur = g_op_tab;
-	while (cur->name && cur->id != g_map[proc->pc % MEM_SIZE])
-		++cur;
+t_byte	get_arguments(t_vm *vm, t_proc *proc, t_args *av)
+{
+	t_byte		er;
+	t_byte		ocp;
+	t_ind		of;
+	const t_op	*op;
+
+	er = 0;
+	op = g_op_tab;
+	while (op->name && op->id != g_map[proc->pc % MEM_SIZE])
+		++op;
 	ocp = g_map[proc->pc + 1 % MEM_SIZE];
-	if ((off = check_ocp(ocp, cur->id)) && (proc->pc += off))
+	if ((of = check_ocp(ocp, op->id)) && move_pc(vm, proc, of))
 		return (0);
-	off = 2;
-	if (cur->arg_cnt > 0)
-		err |= g_getter[args->t1 = ((ocp >> 6) & 3)](proc, &off, &(args->v1));
-	if (cur->arg_cnt > 1)
-		err |= g_getter[args->t2 = ((ocp >> 4) & 3)](proc, &off, &(args->v2));
-	if (cur->arg_cnt > 2)
-		err |= g_getter[args->t3 = ((ocp >> 2) & 3)](proc, &off, &(args->v3));
-	if (cur->arg_cnt > 3)
-		err |= g_getter[args->t4 = (ocp & 3)](proc, &off, &(args->v4));
-	if (err)
-		proc->pc += off;
-	return ((!err) * off);
+	of = 2;
+	if (op->arg_cnt > 0)
+		er |= g_arg[av->t1 = ((ocp >> 6) & 3)](proc, &of, &(av->v1));
+	if (op->arg_cnt > 1)
+		er |= g_arg[av->t2 = ((ocp >> 4) & 3)](proc, &of, &(av->v2));
+	if (op->arg_cnt > 2)
+		er |= g_arg[av->t3 = ((ocp >> 2) & 3)](proc, &of, &(av->v3));
+	if (op->arg_cnt > 3)
+		er |= g_arg[av->t4 = (ocp & 3)](proc, &of, &(av->v4));
+	if (er)
+		move_pc(vm, proc, of);
+	return ((!er) * of);
 }

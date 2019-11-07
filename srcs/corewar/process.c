@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 12:40:34 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/05 16:45:44 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/07 15:29:53 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,21 @@ void	clear_procs(void)
 	g_procs.head = NULL;
 	g_procs.tail = NULL;
 	g_procs.size = 0;
+}
+
+t_byte		move_pc(t_vm *vm, t_proc *proc, const t_ind off)
+{
+	register int i;
+
+	proc->pc = (proc->pc + off) % MEM_SIZE;
+	if (vm->verbosity & V_PC)
+	{
+		i = 0;
+		ft_printf("ADV %d (0x%04x -> 0x%04x)",
+					off, off, proc->pc, proc->pc + off);
+		while (i < off)
+			ft_printf(" %02x", g_map[proc->pc + i++]);
+		ft_printf("\n");
+	}
+	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:05:20 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/04 02:55:42 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/07 15:32:53 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@ char	op_aff(t_vm *vm, t_proc *proc)
 	t_byte	reg;
 
 	ocp = g_map[proc->pc + 1 % MEM_SIZE];
-	if ((off = check_ocp(ocp, OP_AFF)) && (proc->pc += off))
+	if ((off = check_ocp(ocp, OP_AFF)) && move_pc(vm, proc, off))
 		return (proc->carry);
 	off = 2;
 	reg = g_map[(proc->pc + off++) % MEM_SIZE];
-	proc->pc += off;
+	move_pc(vm, proc, off);
 	if (reg <= 0 || reg > REG_NUMBER)
 		return (proc->carry);
 	if (vm->verbosity & V_AFF)

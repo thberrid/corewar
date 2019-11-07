@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:05:20 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/07 12:53:47 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/07 15:31:01 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,33 +21,11 @@ char	op_ld(t_vm *vm, t_proc *proc)
 	t_args	av;
 	t_ind	off;
 
-	if (!(off = get_arguments(proc, &av)))
+	if (!(off = get_arguments(vm, proc, &av)))
 		return (proc->carry);
+	av.v1 = apply_type(proc, av.t1, 1, av.v1);
 	if (vm->verbosity & V_OPERATONS)
 		ft_printf("P %4d | ld %d r%d\n", proc->pid, av.v1, av.v2);
-	proc->pc += off;
+	move_pc(vm, proc, off);
 	return (!(proc->regs[av.v2 - 1] = av.v1));
 }
-
-/*
-char	op_ld(t_vm *vm, t_proc *proc)
-{
-	t_byte	reg;
-	t_byte	ocp;
-	t_dir	val;
-	t_ind	off;
-
-	ocp = g_map[proc->pc + 1 % MEM_SIZE];
-	if ((off = check_ocp(ocp, OP_LD)) && (proc->pc += off))
-		return (proc->carry);
-	off = 2;
-	val = (g_getter[((ocp >> 6) & 3)](proc, &off));
-	reg = g_map[(proc->pc + off++) % MEM_SIZE];
-	if ((reg <= 0 || reg > REG_NUMBER) && (proc->pc += off))
-		return (proc->carry);
-	if (vm->verbosity & V_OPERATONS)
-		ft_printf("P %4d | ld %d r%d\n", proc->pid, val, reg);
-	proc->pc += off;
-	return (!(proc->regs[reg - 1] = val));
-}
-*/

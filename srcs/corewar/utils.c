@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 02:51:55 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/07 13:14:16 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/07 14:38:48 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "op.h"
 #include "ftio.h"
 
-t_reg	get_reg(t_proc *proc, t_ind *off, t_reg *dest)
+t_byte	get_reg(t_proc *proc, t_ind *off, t_reg *dest)
 {
 	*dest = g_map[(proc->pc + (*off)++) % MEM_SIZE];
 	if (*dest <= 0 || *dest > REG_NUMBER)
@@ -24,29 +24,27 @@ t_reg	get_reg(t_proc *proc, t_ind *off, t_reg *dest)
 	return (0);
 }
 
-t_dir	get_dir__(t_proc *proc, t_ind *off, char hdir)
+t_byte	get_dir2(t_proc *proc, t_ind *off, t_dir *dest)
 {
-	t_dir	dir;
 	t_ind	ind;
-	void	*v;
 
-	dir = 0;
 	ind = 0;
-	v = &dir;
-	if (hdir)
-		v = &ind;
-	map_to_var(v, proc->pc + *off, DIR_SIZE / (hdir + 1));
-	(*off) += DIR_SIZE / (hdir + 1);
-	return (hdir ? ind : dir);
-}
-
-t_dir	get_dir(t_proc *proc, t_ind *off, t_dir *dest)
-{
-	*dest = get_dir__(proc, off, g_op_tab[g_map[proc->pc % MEM_SIZE]].hdir);
+	map_to_var(&ind, proc->pc + *off, sizeof(ind));
+	*off += sizeof(ind);
+	*dest = ind;
 	return (0);
 }
 
-t_dir	get_ind(t_proc *proc, t_ind *off, t_dir *dest)
+t_byte	get_dir4(t_proc *proc, t_ind *off, t_dir *dest)
+{
+	if (g_op_tab[g_map[proc->pc % MEM_SIZE]].hdir)
+		return (get_dir2(proc, off, dest));
+	map_to_var(dest, proc->pc + *off, sizeof(*dest));
+	*off += sizeof(*dest);
+	return (0);
+}
+
+t_byte	get_ind(t_proc *proc, t_ind *off, t_dir *dest)
 {
 	t_ind	addr;
 
@@ -54,7 +52,7 @@ t_dir	get_ind(t_proc *proc, t_ind *off, t_dir *dest)
 		| g_map[(proc->pc + *off + 1) % MEM_SIZE];
 	(*off) += 2;
 	addr = (addr % IDX_MOD);
-	*dest = get_dir__(proc, &addr, 0);
+	get_dir4(proc, &addr, dest);
 	return (0);
 }
 
