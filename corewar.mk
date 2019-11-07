@@ -41,6 +41,7 @@ SRC_COR	:=	$(PARSER)	\
 			arena.c		\
 			corewar.c	\
 			process.c	\
+			arguments.c	\
 			cmd_parse.c
 
 #

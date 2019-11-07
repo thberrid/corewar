@@ -6,7 +6,7 @@
 /*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 15:51:41 by baurens           #+#    #+#             */
-/*   Updated: 2019/11/02 17:14:28 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/07 12:58:03 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@
 # endif
 # include "config.h"
 
-typedef struct s_op	t_op;
+typedef struct s_op		t_op;
+typedef struct s_args	t_args;
 
 struct		s_op
 {
@@ -35,6 +36,18 @@ struct		s_op
 	char	ocp;
 	char	hdir;
 	char	(*fnc)();
+};
+
+struct		s_args
+{
+	t_byte	t1;
+	t_byte	t2;
+	t_byte	t3;
+	t_byte	t4;
+	t_dir	v1;
+	t_dir	v2;
+	t_dir	v3;
+	t_dir	v4;
 };
 
 enum	e_opcode

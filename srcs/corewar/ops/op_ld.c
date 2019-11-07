@@ -6,11 +6,9 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:05:20 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/05 16:49:08 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/07 12:53:47 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#define FT_DISABLE_WARNINGS
 
 #include "utils.h"
 #include "arena.h"
@@ -18,6 +16,20 @@
 #include "vm.h"
 #include "op.h"
 
+char	op_ld(t_vm *vm, t_proc *proc)
+{
+	t_args	av;
+	t_ind	off;
+
+	if (!(off = get_arguments(proc, &av)))
+		return (proc->carry);
+	if (vm->verbosity & V_OPERATONS)
+		ft_printf("P %4d | ld %d r%d\n", proc->pid, av.v1, av.v2);
+	proc->pc += off;
+	return (!(proc->regs[av.v2 - 1] = av.v1));
+}
+
+/*
 char	op_ld(t_vm *vm, t_proc *proc)
 {
 	t_byte	reg;
@@ -38,3 +50,4 @@ char	op_ld(t_vm *vm, t_proc *proc)
 	proc->pc += off;
 	return (!(proc->regs[reg - 1] = val));
 }
+*/
