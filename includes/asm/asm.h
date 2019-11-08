@@ -56,14 +56,14 @@ typedef struct			s_instruc_head
 */
 
 int						ft_read(t_instruct_head *head, char *path,
-									t_header *header);
+							t_header *header);
 int						check_instruct(char *line, t_instruct_head *head);
 
 /*
 ** free
 */
 
-int					instruct_free(t_instruct_head *head);
+int						instruct_free(t_instruct_head *head);
 int						ft_errors(int err, int line_n);
 
 /*
@@ -71,14 +71,17 @@ int						ft_errors(int err, int line_n);
 */
 
 void					instruct_display(t_instruct *this);
-void					instruct_display_all(t_instruct_head *head, t_header *header);
+void					instruct_display_all(t_instruct_head *head,
+							t_header *header);
 int						ft_usage(void);
 t_instruct				*add_inst(t_instruct_head *head);
-int						debug_instruct(char *line, t_instruct_head *head); 
-int						is_paramtype_allowed(char param_type, t_instruct *inst, int i);
+int						debug_instruct(char *line, t_instruct_head *head);
+int						is_paramtype_allowed(char param_type,
+							t_instruct *inst, int i);
 int						get_paramlen(int opcode);
 int						is_strn_valid(char *str, int n);
-int						update_progsize(t_instruct_head *head, t_instruct *inst);
+int						update_progsize(t_instruct_head *head,
+							t_instruct *inst);
 int						get_octet(t_byte id, char param_type);
 int						default_op(t_instruct *inst);
 int						strtobin(int fd, char *param, uint32_t size);
