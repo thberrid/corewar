@@ -6,11 +6,10 @@
 /*   By: thberrid <thberrid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/20 02:52:22 by thberrid          #+#    #+#             */
-/*   Updated: 2019/11/07 04:11:26 by thberrid         ###   ########.fr       */
+/*   Updated: 2019/11/08 06:20:17 by thberrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ftio.h"
 #include "asm.h"
 
 void	instruct_display(t_instruct *this)
@@ -44,7 +43,7 @@ void	instruct_display_all(t_instruct_head *head, t_header *header)
 	ft_printf("Number of instructions ->  %lu\n", head->slen);
 	ft_printf("Size of the program ->  %lu bytes\n", head->length);
 	ft_printf("Name : \"%s\"\n", header->prog_name);
-	ft_printf("Comment : \"%s\"\n\n", header->comment);	
+	ft_printf("Comment : \"%s\"\n\n", header->comment);
 	ft_putendl("----------");
 	while (i < head->slen)
 	{
