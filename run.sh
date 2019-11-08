@@ -101,7 +101,7 @@ print_usage()
 	printf "      ""$COL_CYA""num$COL_NRM: repeat the next test multiple times\n"
 	printf "      ""$COL_CYA""opcode$COL_NRM: the opcode to be tested\n"
 	printf "valid opcodes are ("
-	for code in `cat $op_h_file|grep -Eo '\{\"[a-z]+\"'|grep -Eo "[a-z]+"|tr '\n' ' '|sed 's: $::g'`; do
+	for code in `op_list`; do
 		printf "$coma$COL_MAG%s$COL_NRM" $code
 		coma=','
 	done
@@ -119,7 +119,7 @@ compare_corewar()
 	if [[ $? -ne 0 ]]; then
 		exit
 	fi
-	diff --suppress-common-lines -y $YOUR_OUT_FILE $ZAZ_OUT_FILE 1>&2 2>/dev/null
+	diff --suppress-common-lines -y $YOUR_OUT_FILE $ZAZ_OUT_FILE >/dev/null 2>/dev/null
 	if [[ $? -ne 0 ]]; then
 		printf "$COL_RED""FAIL!$COL_NRM\n"
 		printf "Diff:\n"
@@ -136,41 +136,11 @@ compare_corewar()
 get_op_cost()
 {
 	cat $op_h_file|grep "{\"$1\", "|tr -d ' \t'|sed -E 's:\{(((T_IND|T_DIR|T_REG|0)\|?)+,?){1,3}\},::g'|cut -d',' -f4
-#	if [ $1 = "live" ]; then
-#		echo "10"
-#	elif [ $1 = "ld" ]; then
-#		echo "5"
-#	elif [ $1 = "st" ]; then
-#		echo "5"
-#	elif [ $1 = "add" ]; then
-#		echo "10"
-#	elif [ $1 = "sub" ]; then
-#		echo "10"
-#	elif [ $1 = "and" ]; then
-#		echo "6"
-#	elif [ $1 = "or" ]; then
-#		echo "6"
-#	elif [ $1 = "xor" ]; then
-#		echo "6"
-#	elif [ $1 = "zjmp" ]; then
-#		echo "20"
-#	elif [ $1 = "ldi" ]; then
-#		echo "25"
-#	elif [ $1 = "sti" ]; then
-#		echo "25"
-#	elif [ $1 = "fork" ]; then
-#		echo "800"
-#	elif [ $1 = "lld" ]; then
-#		echo "10"
-#	elif [ $1 = "lldi" ]; then
-#		echo "50"
-#	elif [ $1 = "lfork" ]; then
-#		echo "1000"
-#	elif [ $1 = "aff" ]; then
-#		echo "2"
-#	else
-#		echo "0"
-#	fi
+}
+
+op_list()
+{
+	cat $op_h_file|grep -Eo '\{\"[a-z]+\"'|grep -Eo "[a-z]+"|tr '\n' ' '|sed 's:nop ::g'|sed 's: $:\n:g'
 }
 
 # Generate test files and test the vm with them
@@ -209,6 +179,11 @@ test_opcode()
 	printf "\n"
 }
 
+test_file()
+{
+
+}
+
 clear_tests()
 {
 	rm -rf "./tests/"
@@ -230,7 +205,13 @@ for op in "$@"; do
 		loop=$op
 	else
 		while [[ $loop -gt 0 ]]; do
-			test_opcode $op
+			if [[ $op == "all" ]]; then
+				for cop in `op_list`; do
+					test_opcode $cop
+				done
+			else
+				test_opcode $op
+			fi
 			loop=$((loop-1))
 		done
 		if [[ $TOTAL_RUN -eq $PASSED_RUN ]]; then
