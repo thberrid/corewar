@@ -36,4 +36,4 @@ for test_script in srcs/test_*; do
 	source $test_script
 	echo ""
 done
-#rm tmp/*.cor inputs/*.cor
+rm tmp/*.cor inputs/*.cor

@@ -6,7 +6,7 @@
 /*   By: thberrid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/08 06:03:53 by thberrid          #+#    #+#             */
-/*   Updated: 2019/11/08 06:04:33 by thberrid         ###   ########.fr       */
+/*   Updated: 2019/11/08 09:09:40 by thberrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,3 @@ int			push_paramtype(char **line, int *len)
 		param_type = DIR_CODE;
 	return (param_type);
 }
-

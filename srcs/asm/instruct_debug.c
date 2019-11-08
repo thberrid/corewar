@@ -6,7 +6,7 @@
 /*   By: smoreno- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 07:33:12 by smoreno-          #+#    #+#             */
-/*   Updated: 2019/11/08 06:04:42 by thberrid         ###   ########.fr       */
+/*   Updated: 2019/11/08 09:18:56 by thberrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,24 +27,6 @@ char		get_available_type(t_instruct *inst, int param_n)
 		param_type *= 2;
 	}
 	return (1);
-}
-
-t_instruct	*get_freeinst(t_instruct_head *head)
-{
-	t_instruct	*inst;
-	t_instruct	*prev;
-
-	inst = head->head;
-	if (!inst)
-		inst = add_inst(head);
-	else
-	{
-		prev = inst->prev;
-		inst = (prev->label && !prev->id) ? prev : add_inst(head);
-	}
-	if (!inst)
-		return (NULL);
-	return (inst);
 }
 
 void		debug_ocp(t_instruct *inst, char **line, int par_n, int par_type)

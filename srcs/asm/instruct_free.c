@@ -6,12 +6,28 @@
 /*   By: thberrid <thberrid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/19 05:10:47 by thberrid          #+#    #+#             */
-/*   Updated: 2019/10/30 16:39:16 by baurens          ###   ########.fr       */
+/*   Updated: 2019/11/08 09:13:46 by thberrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ftlib.h"
 #include "asm.h"
+
+/*
+** ok lol kevin has got a problem with the leaks and valgrind and stuff
+*/
+
+void	free_split(char **params)
+{
+	int		i;
+
+	i = 0;
+	while (params[i])
+	{
+		free(params[i]);
+		i += 1;
+	}
+	free(params);
+}
 
 int		instruct_free(t_instruct_head *head)
 {

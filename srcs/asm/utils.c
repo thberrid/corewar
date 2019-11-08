@@ -6,7 +6,7 @@
 /*   By: smoreno- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/03 07:13:20 by smoreno-          #+#    #+#             */
-/*   Updated: 2019/11/03 07:15:32 by smoreno-         ###   ########.fr       */
+/*   Updated: 2019/11/08 09:11:48 by thberrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,16 +92,16 @@ int		init_headder(char *line, int *rethd)
 	if (ft_strlen(line) < 5)
 		return (0);
 	if (!ft_strncmp(line, NAME_CMD_STRING, 5))
-	{	
+	{
 		*rethd |= 1;
 		if (!ft_contains('"', line))
-		return (-2);
+			return (-2);
 	}
 	if (!ft_strncmp(line, COMMENT_CMD_STRING, 8))
-	{	
+	{
 		*rethd |= 2;
 		if (!ft_contains('"', line))
-		return (-2);
+			return (-2);
 	}
 	i = (ft_strncmp(line, NAME_CMD_STRING, 5) == 0) ? 5 : 0;
 	i = (i != 5 && ft_strncmp(line, COMMENT_CMD_STRING, 8) == 0) ? 8 : i;
