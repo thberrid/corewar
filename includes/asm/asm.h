@@ -19,6 +19,8 @@
 # include "ftio.h"
 # include "config.h"
 # include "op.h"
+# include <fcntl.h>
+# include <unistd.h>
 
 # define REG_CHAR "0123456789"
 
@@ -44,6 +46,9 @@ typedef struct			s_instruc_head
 	size_t				slen;
 	int					line;
 	int					cflag;
+	int					retrn_parse;
+	int					retrn_labels;
+	int					av_path;
 }						t_instruct_head;
 
 /*
@@ -51,14 +56,14 @@ typedef struct			s_instruc_head
 */
 
 int						ft_read(t_instruct_head *head, char *path,
-									t_header *header);
+							t_header *header);
 int						check_instruct(char *line, t_instruct_head *head);
 
 /*
 ** free
 */
 
-void					instruct_free(t_instruct_head *head);
+int						instruct_free(t_instruct_head *head);
 int						ft_errors(int err, int line_n);
 
 /*
@@ -66,14 +71,28 @@ int						ft_errors(int err, int line_n);
 */
 
 void					instruct_display(t_instruct *this);
-void					instruct_display_all(t_instruct_head *head, t_header *header);
+void					instruct_display_all(t_instruct_head *head,
+							t_header *header);
 int						ft_usage(void);
 t_instruct				*add_inst(t_instruct_head *head);
-int						debug_instruct(char *line, t_instruct_head *head); 
-int						is_paramtype_allowed(char param_type, t_instruct *inst, int i);
+int						debug_instruct(char *line, t_instruct_head *head);
+int						is_paramtype_allowed(char param_type,
+							t_instruct *inst, int i);
 int						get_paramlen(int opcode);
 int						is_strn_valid(char *str, int n);
-int						update_progsize(t_instruct_head *head, t_instruct *inst);
+int						update_progsize(t_instruct_head *head,
+							t_instruct *inst);
 int						get_octet(t_byte id, char param_type);
 int						default_op(t_instruct *inst);
+int						strtobin(int fd, char *param, uint32_t size);
+int						printinst(t_instruct_head *head, int fd);
+int						ft_deflab(t_instruct *inst, int *cflag,
+							char *line, int len);
+int						default_op(t_instruct *inst);
+void					default_param(int param_type, t_instruct *inst,
+							int i_param);
+int						push_label(char **line, t_instruct *inst, int *cflag);
+int						push_param(char **line);
+int						push_paramtype(char **line, int *len);
+char					get_available_type(t_instruct *inst, int param_n);
 #endif
