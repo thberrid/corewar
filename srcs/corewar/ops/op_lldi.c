@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:05:20 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/07 21:05:33 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/08 22:36:56 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ char	op_lldi(t_vm *vm, t_proc *proc)
 			av.v1, av.v2, (av.v1 + av.v2), proc->pc + av.v1 + av.v2);
 	}
 	map_to_var(&val, proc->pc + av.v1 + av.v2, sizeof(val));
-	proc->regs[av.v3 - 1] = val;
 	move_pc(vm, proc, off);
-	return (proc->carry);
+	return (!(proc->regs[av.v3 - 1] = val));
 }

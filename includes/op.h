@@ -6,7 +6,7 @@
 /*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 15:51:41 by baurens           #+#    #+#             */
-/*   Updated: 2019/11/07 12:58:03 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/08 22:39:35 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,7 @@ char		op_lfork(t_vm *vm, t_proc *proc);
 **			sti		no
 **			fork	no
 **			lld		yes : carry = !(v1)
-**			lldi	no
+**			lldi	yes : carry = !(*((pc + (v1 + v2)) % MEM_SIZE))
 **			lfork	no
 **			aff		no
 */

@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 12:40:34 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/08 19:49:38 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/08 22:09:40 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,8 @@ t_byte			move_pc(t_vm *vm, t_proc *proc, const t_ind off)
 	if (vm->verbosity & V_PC)
 	{
 		i = 0;
-		ft_printf("(%d)ADV %d (0x%04x -> 0x%04x) ",
-					proc->pid, off, proc->pc, proc->pc + off);
+		ft_printf("ADV %d (0x%04x -> 0x%04x) ",
+					off, proc->pc, proc->pc + off);
 		while (i < off)
 			ft_printf("%02x ", g_map[(proc->pc + i++) % MEM_SIZE]);
 		ft_printf("\n");
