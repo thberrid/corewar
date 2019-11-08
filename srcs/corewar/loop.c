@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 15:20:59 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/08 18:24:52 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/08 23:19:40 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,27 +24,6 @@ static t_proc	*vm_kill(t_vm *vm, t_proc *proc)
 			proc->pid, vm->cycles - proc->last_live, vm->cycle_to_die);
 	return (kill_process(proc));
 }
-
-/*
-**	zaz:
-**	3278	It is now cycle 3072
-**	3279	Process 13 hasn't lived for 1866 cycles (CTD 1536)
-**	3280	Process 11 hasn't lived for 1611 cycles (CTD 1536)
-**	3281	Process 7 hasn't lived for 1866 cycles (CTD 1536)
-**
-**	3559	P   12 | live 367872286
-**	3594	P   12 | live -1570065708
-**	3640	P   12 | live 1974229750
-*/
-
-/*
-**	my:
-**	3278	It is now cycle 3072
-**	3279	Process 13 hasn't lived for 1866 cycles (CTD 1536)
-**	3280	Process 12 hasn't lived for 3072 cycles (CTD 1536)
-**	3281	Process 11 hasn't lived for 1611 cycles (CTD 1536)
-**	3282	Process 7 hasn't lived for 1866 cycles (CTD 1536)
-*/
 
 static void		vm_check(t_vm *vm)
 {
@@ -104,9 +83,8 @@ void			vm_loop(t_vm *vm)
 	vm->cycle_to_die = CYCLE_TO_DIE;
 	while (g_procs.size)
 	{
-		if (vm->dmp_bol && vm->cycles >= vm->dump)
-			return ;
-		++vm->cycles;
+		if (vm->cycles++ >= vm->dump && vm->dmp_bol)
+			vm_dump(DUMP_LEN * vm->dmp_bol);
 		if (vm->verbosity & V_CYCLES)
 			ft_printf("It is now cycle %d\n", vm->cycles);
 		proc = g_procs.head;

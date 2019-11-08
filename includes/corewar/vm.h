@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 09:47:24 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/08 16:05:46 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/08 23:37:35 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,14 @@
 # include "config.h"
 
 # define DUMP_LEN	32
+
+# ifdef ZAZ_OUTPUT
+#  define WINMSG	"Contestant %d, \"%s\", has won !\n"
+#  define LIVMSG	"Player %d (%s) is said to be alive\n"
+# else
+#  define WINMSG	"le joueur %d(%s) a gagne\n"
+#  define LIVMSG	"un processus dit que le joueur %d(%s) est en vie\n"
+# endif
 
 typedef signed long		t_scycle;
 typedef unsigned int	t_cycle;

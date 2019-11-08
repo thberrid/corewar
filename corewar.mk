@@ -47,7 +47,12 @@ SRC_COR	:=	$(PARSER)	\
 #
 #	vm compilation specific flags
 #
-$(COR):	CFLAGS += -g -I./includes/corewar -ansi -pedantic -DVM
+override ZAZ ?= FALSE
+ifeq ($(ZAZ),TRUE)
+override ZAZ_FLAG	:= -DZAZ_OUTPUT
+endif
+
+$(COR):	CFLAGS += -I./includes/corewar -ansi -pedantic -DVM $(ZAZ_FLAG)
 
 #
 #	vm unit tests
