@@ -84,3 +84,26 @@ int		printinst(t_instruct_head *head, int fd)
 	}
 	return (0);
 }
+
+int		init_headder(char *line, int *rethd)
+{
+	int	i;
+
+	if (ft_strlen(line) < 5)
+		return (0);
+	if (!ft_strncmp(line, NAME_CMD_STRING, 5))
+	{	
+		*rethd |= 1;
+		if (!ft_contains('"', line))
+		return (-2);
+	}
+	if (!ft_strncmp(line, COMMENT_CMD_STRING, 8))
+	{	
+		*rethd |= 2;
+		if (!ft_contains('"', line))
+		return (-2);
+	}
+	i = (ft_strncmp(line, NAME_CMD_STRING, 5) == 0) ? 5 : 0;
+	i = (i != 5 && ft_strncmp(line, COMMENT_CMD_STRING, 8) == 0) ? 8 : i;
+	return (i);
+}
