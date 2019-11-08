@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:05:20 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/07 18:12:40 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/08 16:05:47 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ char	op_live(t_vm *vm, t_proc *proc)
 
 	off = 1;
 	proc->lives++;
+	vm->total_live++;
 	proc->last_live = vm->cycles;
 	get_dir4(proc, &off, &val);
 	if (vm->verbosity & V_OPERATONS)

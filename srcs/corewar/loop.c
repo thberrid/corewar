@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 15:20:59 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/07 21:00:03 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/08 18:24:52 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,31 @@ static t_proc	*vm_kill(t_vm *vm, t_proc *proc)
 	return (kill_process(proc));
 }
 
+/*
+**	zaz:
+**	3278	It is now cycle 3072
+**	3279	Process 13 hasn't lived for 1866 cycles (CTD 1536)
+**	3280	Process 11 hasn't lived for 1611 cycles (CTD 1536)
+**	3281	Process 7 hasn't lived for 1866 cycles (CTD 1536)
+**
+**	3559	P   12 | live 367872286
+**	3594	P   12 | live -1570065708
+**	3640	P   12 | live 1974229750
+*/
+
+/*
+**	my:
+**	3278	It is now cycle 3072
+**	3279	Process 13 hasn't lived for 1866 cycles (CTD 1536)
+**	3280	Process 12 hasn't lived for 3072 cycles (CTD 1536)
+**	3281	Process 11 hasn't lived for 1611 cycles (CTD 1536)
+**	3282	Process 7 hasn't lived for 1866 cycles (CTD 1536)
+*/
+
 static void		vm_check(t_vm *vm)
 {
-	uint64_t	total_live;
 	t_proc		*proc;
 
-	total_live = 0;
 	proc = g_procs.head;
 	while (proc)
 	{
@@ -39,17 +58,20 @@ static void		vm_check(t_vm *vm)
 			proc = vm_kill(vm, proc);
 			continue ;
 		}
-		total_live += proc->lives;
 		proc->lives = 0;
 		proc = proc->next;
 	}
-	if (total_live >= NBR_LIVE || ++vm->last_dec >= MAX_CHECKS)
+	vm->last_dec++;
+	if (vm->total_live >= NBR_LIVE || vm->last_dec >= MAX_CHECKS)
 	{
-		vm->last_dec = 0;
 		vm->cycle_to_die -= CYCLE_DELTA;
 		if (vm->verbosity & V_CYCLES)
+		{
 			ft_printf("Cycle to die is now %ld\n", vm->cycle_to_die);
+		}
+		vm->last_dec = 0;
 	}
+	vm->total_live = 0;
 }
 
 static void		vm_exec(t_vm *vm, t_proc *proc)

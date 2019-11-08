@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 09:47:24 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/07 21:02:39 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/08 16:05:46 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct	s_vm
 	t_dumpm		dmp_bol;
 	uint32_t	dump;
 	size_t		psize;
+	uint32_t	total_live;
 	t_champ		players[MAX_PLAYERS];
 	t_byte		verbosity;
 	t_scycle	last_dec;

@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 12:11:35 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/07 21:02:45 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/08 20:20:05 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,18 +40,18 @@ t_byte	get_arguments(t_vm *vm, t_proc *proc, t_args *av)
 	while (op->name && op->id != g_map[proc->pc % MEM_SIZE])
 		++op;
 	ocp = g_map[(proc->pc + 1) % MEM_SIZE];
-	if ((check_ocp(ocp, op->id, &of)) && move_pc(vm, proc, 2 + of))
-		return (0);
 	of = 2;
-	if (op->arg_cnt > 0)
-		er |= g_arg[av->t1 = ((ocp >> 6) & 3)](proc, &of, &(av->v1));
-	if (op->arg_cnt > 1)
-		er |= g_arg[av->t2 = ((ocp >> 4) & 3)](proc, &of, &(av->v2));
-	if (op->arg_cnt > 2)
-		er |= g_arg[av->t3 = ((ocp >> 2) & 3)](proc, &of, &(av->v3));
-	if (op->arg_cnt > 3)
-		er |= g_arg[av->t4 = (ocp & 3)](proc, &of, &(av->v4));
+	if (op->arg_cnt > 0 && (av->t1 = ((ocp >> 6) & 3)))
+		er |= g_arg[av->t1](proc, &of, &(av->v1));
+	if (op->arg_cnt > 1 && (av->t2 = ((ocp >> 4) & 3)))
+		er |= g_arg[av->t2](proc, &of, &(av->v2));
+	if (op->arg_cnt > 2 && (av->t3 = ((ocp >> 2) & 3)))
+		er |= g_arg[av->t3](proc, &of, &(av->v3));
+	if (op->arg_cnt > 3 && (av->t4 = (ocp & 3)))
+		er |= g_arg[av->t4](proc, &of, &(av->v4));
 	if (er)
 		move_pc(vm, proc, of);
+	if ((check_ocp(ocp, op->id, &of)) && move_pc(vm, proc, 2 + of))
+		return (0);
 	return ((!er) * of);
 }

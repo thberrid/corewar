@@ -1,0 +1,6 @@
+le test suivant donne 100% de succès (jusqu'à présent):
+
+./run.sh clear fork
+./corewar -v 31 ./tests/fork/4.cor ./tests/fork/36.cor ./tests/fork/21.cor ./tests/fork/11.cor > mout
+./zcorewar -v 31 ./tests/fork/4.cor ./tests/fork/36.cor ./tests/fork/21.cor ./tests/fork/11.cor > zout
+diff mout zout
