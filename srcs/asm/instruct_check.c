@@ -432,7 +432,6 @@ int		check_instruct(char *line, t_instruct_head *head)
 		return (-3);
 ///	if (check_endline(line) < 0)
 	//	return (-1);
-	if (update_progsize(head, inst) < 0)
-		return (-4);
+	update_progsize(head, inst);
 	return (1);
 }

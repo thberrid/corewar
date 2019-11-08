@@ -1,12 +1,8 @@
 .name "nega"
 .comment "tif"
 
-# live %:-labellius:
-
-#label-lius:live %1
-
-#labellius-: live %1
-
-#aff r-1
+# lkjgkdjghdflkjghdfkhgjdg
+ # .|.
+# on s en fou
 
 ld -5, r1

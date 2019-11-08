@@ -73,4 +73,7 @@ int						debug_instruct(char *line, t_instruct_head *head);
 int						is_paramtype_allowed(char param_type, t_instruct *inst, int i);
 int						get_paramlen(int opcode);
 int						is_strn_valid(char *str, int n);
+int						update_progsize(t_instruct_head *head, t_instruct *inst);
+int						get_octet(t_byte id, char param_type);
+int						default_op(t_instruct *inst);
 #endif

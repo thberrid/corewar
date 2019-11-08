@@ -39,7 +39,7 @@ int		ft_deflab(t_instruct *inst, int *cflag, char *line, int len)
 	return (0);
 }
 
-char	get_available_type(int id, t_instruct *inst, int param_n)
+char	get_available_type(t_instruct *inst, int param_n)
 {
 	int			i;
 	char	param_type;
@@ -53,6 +53,16 @@ char	get_available_type(int id, t_instruct *inst, int param_n)
 		i++;
 		param_type *= 2;
 	}
+	return (1);
+}
+int		default_op(t_instruct *inst)
+{
+	inst->id = 1;
+	inst->ocp = -128;
+	if (!(inst->params_str[0] = ft_strnew(1)))
+		return (-9);
+	inst->params_str[0][0] = '1';
+	inst->params_bits[0] = 4;
 	return (1);
 }
 
@@ -107,17 +117,15 @@ int		debug_instruct(char *line, t_instruct_head *head)
 				while (line[len] && line[len] != SEPARATOR_CHAR && !ft_isspace(line[len]))
 					len++;
 				param_type = IND_CODE;
-				if (*line == 'r')
+				if (*line == 'r' && len-- && line++)
 					param_type = REG_CODE;
-				if (*line == DIRECT_CHAR)
+				if (*line == DIRECT_CHAR && len-- && line++)
 					param_type = DIR_CODE;
-					ft_printf("%d\n", len);
+				if (!(inst->params_str[i_param] = ft_strnew(len ? len : 1)))
+						return (-10);
 				if (*line && is_paramtype_allowed(param_type, inst, i_param) && is_strn_valid(line, len))
 				{
-					if (!(inst->params_str[i_param] = ft_strnew(len)))
-						return (-10);
 					ft_strncpy(inst->params_str[i_param], line, len);
-					inst->ocp += ((param_type << (3 - i) * 2));
 				} 
 				else
 				{
@@ -125,11 +133,13 @@ int		debug_instruct(char *line, t_instruct_head *head)
 					// JUSTE SET TO ONE
 					// FIND AVAILABLE PARAM TYPE TO UPDATE INST->OPC
 					// DONT FORGET TO SAVE OCTET SIZE ALSO THROUGH THE `GET_OCTECT` FUNCTION
-					param_type = get_available_type(inst->id, inst, i_param);
+					param_type = get_available_type(inst, i_param);
 					if (param_type == T_IND)
 						param_type = IND_CODE;
-					inst->ocp += ((param_type << (3 - i) * 2));
+					inst->params_str[i_param][0] = '1';
 				}
+					inst->ocp += ((param_type << (3 - i_param) * 2));
+				inst->params_bits[i_param] = get_octet(inst->id, param_type);
 				line += len;
 				while (*line && *line != SEPARATOR_CHAR)
 					line++;	
@@ -141,7 +151,8 @@ int		debug_instruct(char *line, t_instruct_head *head)
 		}
 		i++;
 	}
-	if (update_progsize(head, inst) < 0)
-		return (-9);
+	if (i == 17)
+		default_op(inst);
+	update_progsize(head, inst);
 	return (0);
 }

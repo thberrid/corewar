@@ -22,7 +22,7 @@ void	instruct_display(t_instruct *this)
 	else
 		ft_printf("\n");
 	ft_printf("ID -> %d\n", this->id);
-	bin_to_system(&(this->ocp), sizeof(this->ocp));
+	bin_to_system(&(this->ocp), 1);
 	ft_printf("OCP -> %u\n", (unsigned char)this->ocp);
 	i = 0;
 	while (i < 3)

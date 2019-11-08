@@ -17,14 +17,14 @@ int		ft_errors(int err, int line_n)
 	err *= -1;
 	static char	*str[] = {
 		"Can't read source file",
-		"Lexical error at ligne",
-		"Syntax error",
-		"Invalid parameter",
+		"Lexical error at ligne :",
+		"Syntax error at line :",
+		"Invalid parameter at line :",
 		"Program too big",
-		"Invalid instruction",
+		"Invalid instruction at line :",
 		"No instruction found :(",
-		"name too long T-T",
-		"comment too long T-T",
+		"name too long T-T at line :",
+		"comment too long T-T at line :",
 		"malloc Error"
 	};
 	ft_putstr_fd(str[err], 2);

@@ -17,6 +17,7 @@ void	instruct_free(t_instruct_head *head)
 {
 	size_t		i;
 	int			j;
+	int			param_len;
 	t_instruct	*tmp;
 	t_instruct	*next;
 
@@ -27,7 +28,8 @@ void	instruct_free(t_instruct_head *head)
 		next = tmp->next;
 		ft_memdel((void **)&(tmp->label));
 		j = 0;
-		while (tmp->params_str[j])
+		param_len = get_paramlen(tmp->id);
+		while (j < param_len)
 		{
 			ft_memdel((void **)&(tmp->params_str[j]));
 			j += 1;

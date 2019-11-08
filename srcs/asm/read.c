@@ -20,6 +20,7 @@ int		get_namecom(char *header, char *line, int fd, char n_or_c)
 {
 	int	i;
 	int		rest;
+	int 	ret;
 
 	i = 0;
 	rest = ft_strlen(header) + ft_strlen(line);
@@ -41,7 +42,9 @@ int		get_namecom(char *header, char *line, int fd, char n_or_c)
 	if (gnl(fd,&line) > 0)
 	{
 		header[i] = '\n';
-		return (get_namecom(&header[++i], line, fd, n_or_c));
+		ret = get_namecom(&header[++i], line, fd, n_or_c);
+		ft_strdel(&line);
+		return (ret);
 	}
 	return (-1);
 }
@@ -113,18 +116,21 @@ int		ft_read(t_instruct_head *head, char *path, t_header *header)
 	while ((ret = gnl(fd, &line)) > 0)
 	{	
 		head->line++;
-		if (!*line)
+		if (!*line || line[0] == COMMENT_CHAR)
 		{
 			ft_strdel(&line);
 			continue ;
 		}
-		if (line[0] == COMMENT_CHAR)
-			continue ;
+		/*if (line[0] == COMMENT_CHAR)
+			continue ;*/
 		if (rethd != 3)
 		{
 			retinst = check_headder(header, line, fd, &rethd);
 			if (retinst < -1 && !head->cflag)
-				return (retinst);
+			{	
+					ft_strdel(&line);
+					return (retinst);
+			}
 			else if (retinst < -1)
 				ft_fixheader(header);
 		}
@@ -142,9 +148,17 @@ int		ft_read(t_instruct_head *head, char *path, t_header *header)
 			}
 			else
 				if ((retinst = check_instruct(line, head)) < 0)
+				{	
+					ft_strdel(&line);
 					return (retinst);
+				}
 		}
 		ft_strdel(&line);
+	}
+	if (head->cflag && !head->head->id)
+	{
+		default_op(head->head);
+		update_progsize(head, head->head);
 	}
 	if (ret == -1)
 		return (0);

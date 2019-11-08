@@ -72,13 +72,15 @@ int		creat_file(t_instruct_head *head, char *av, t_header *header)
 
 	if ((npos = ft_strrchr(av, '.')) > 0)
 	{	
-		name = ft_strnew(npos - av + 4);
+		if (!(name = ft_strnew(npos - av + 4)))
+			return (-9);
 		name = ft_strncpy(name, av, npos - av);
 	}
 	else
 	{
 		npos = av + ft_strlen(av);
-		name = ft_strnew(ft_strlen(av) + 4);
+		if(!(name = ft_strnew(ft_strlen(av) + 4)))
+			return (-9);
 	}
 	//name = ft_strncpy(name, av, npos - av);
 	ft_strlcat(name, ".cor", npos - av + 5);
@@ -128,7 +130,10 @@ int		set_labels(t_instruct_head *head)
 				if (v == head->slen)
 				{
 					head->line = tmp->line_n;
-					return (-1);
+					if (head->cflag)
+						tmp->params_str[k][0] = 0;	
+					else
+						return (-1);
 				}
 			}
 			k++;
@@ -153,7 +158,7 @@ int		main(int ac, char **av)
 		return (ft_usage());
 	if (av[1][0] == '-')
 	{
-		if (av[1][1] == 'c')
+		if (ft_contains('c', av[1]))
 			head.cflag = 1;
 		if (ac < 3)
 			return (ft_printf("Error\n"));
@@ -168,16 +173,13 @@ int		main(int ac, char **av)
 		header.prog_size = head.length;
 		retrn_labels = set_labels(&head);
 		if (retrn_labels < 0)
-		{
 			ft_errors(retrn_labels, head.line);
-			return (0);
-		}
-		if (ac == 3 && av[1][1] == 'a')
+		if (retrn_labels && ac == 3 && ft_contains('a', av[1])) 
 		{
 			instruct_display_all(&head, &header);
 			return(0);
 		}
-		if (retrn_labels && retrn_parse)
+		if (retrn_labels > 0 && retrn_parse > 0)
 			creat_file(&head, av[av_path], &header);
 	}
 	else
