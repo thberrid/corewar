@@ -13,7 +13,7 @@
 #include "ftlib.h"
 #include "asm.h"
 
-void	instruct_free(t_instruct_head *head)
+int		instruct_free(t_instruct_head *head)
 {
 	size_t		i;
 	int			j;
@@ -38,4 +38,5 @@ void	instruct_free(t_instruct_head *head)
 		tmp = next;
 		i++;
 	}
+	return (0);
 }

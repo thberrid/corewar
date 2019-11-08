@@ -19,6 +19,8 @@
 # include "ftio.h"
 # include "config.h"
 # include "op.h"
+# include <fcntl.h>
+# include <unistd.h>
 
 # define REG_CHAR "0123456789"
 
@@ -44,6 +46,9 @@ typedef struct			s_instruc_head
 	size_t				slen;
 	int					line;
 	int					cflag;
+	int					retrn_parse;
+	int					retrn_labels;
+	int					av_path;
 }						t_instruct_head;
 
 /*
@@ -58,7 +63,7 @@ int						check_instruct(char *line, t_instruct_head *head);
 ** free
 */
 
-void					instruct_free(t_instruct_head *head);
+int					instruct_free(t_instruct_head *head);
 int						ft_errors(int err, int line_n);
 
 /*
@@ -76,4 +81,7 @@ int						is_strn_valid(char *str, int n);
 int						update_progsize(t_instruct_head *head, t_instruct *inst);
 int						get_octet(t_byte id, char param_type);
 int						default_op(t_instruct *inst);
+int						strtobin(int fd, char *param, uint32_t size);
+int						printinst(t_instruct_head *head, int fd);
+
 #endif

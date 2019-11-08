@@ -14,7 +14,6 @@
 
 int		ft_errors(int err, int line_n)
 {
-	err *= -1;
 	static char	*str[] = {
 		"Can't read source file",
 		"Lexical error at ligne :",
@@ -27,9 +26,11 @@ int		ft_errors(int err, int line_n)
 		"comment too long T-T at line :",
 		"malloc Error"
 	};
+
+	err *= -1;
 	ft_putstr_fd(str[err], 2);
 	ft_putchar_fd(' ', 2);
-	if(line_n)
+	if (line_n)
 		ft_putnbr_fd(line_n, 2);
 	ft_putendl_fd("", 2);
 	return (0);
@@ -40,5 +41,46 @@ int		ft_usage(void)
 	ft_printf("Usage: ./asm [-a] <sourcefile.s>\n");
 	ft_printf("	-a : Instead of creating a .cor file, outputs a stripped");
 	ft_printf("and annotated version of the code to the standard output\n");
-	return(0);
+	return (0);
+}
+
+int		strtobin(int fd, char *param, uint32_t size)
+{
+	int		tmp;
+
+	if (param[0] == LABEL_CHAR)
+	{
+		write(fd, "##", size);
+		return (0);
+	}
+	tmp = ft_atoi(param);
+	bin_to_system(&tmp, size);
+	write(fd, &tmp, size);
+	return (0);
+}
+
+int		printinst(t_instruct_head *head, int fd)
+{
+	t_instruct	*tmp;
+	size_t		i;
+	int			j;
+
+	tmp = head->head;
+	i = 0;
+	while (i < head->slen)
+	{
+		j = 0;
+		if (tmp->id)
+			write(fd, &tmp->id, 1);
+		if (g_op_tab[tmp->id].ocp)
+			write(fd, &(tmp->ocp), 1);
+		while (j < g_op_tab[tmp->id].arg_cnt)
+		{
+			strtobin(fd, tmp->params_str[j], tmp->params_bits[j]);
+			j++;
+		}
+		tmp = tmp->next;
+		i++;
+	}
+	return (0);
 }
