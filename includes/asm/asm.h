@@ -86,5 +86,13 @@ int						get_octet(t_byte id, char param_type);
 int						default_op(t_instruct *inst);
 int						strtobin(int fd, char *param, uint32_t size);
 int						printinst(t_instruct_head *head, int fd);
-
+int						ft_deflab(t_instruct *inst, int *cflag,
+							char *line, int len);
+int						default_op(t_instruct *inst);
+void					default_param(int param_type, t_instruct *inst,
+							int i_param);
+int						push_label(char **line, t_instruct *inst, int *cflag);
+int						push_param(char **line);
+int						push_paramtype(char **line, int *len);
+char					get_available_type(t_instruct *inst, int param_n);
 #endif
