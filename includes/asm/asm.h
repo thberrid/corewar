@@ -95,4 +95,6 @@ int						push_label(char **line, t_instruct *inst, int *cflag);
 int						push_param(char **line);
 int						push_paramtype(char **line, int *len);
 char					get_available_type(t_instruct *inst, int param_n);
+int						init_headder(char *line, int *rethd);
+
 #endif
