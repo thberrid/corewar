@@ -73,7 +73,7 @@ int		whilegnl(t_instruct_head *head, char **line, t_header *header, int fd)
 	int		rethd;
 
 	rethd = 0;
-	while ((retrn = gnl(fd, line)) > 0)
+	while ((retrn = sgnl(fd, line)) > 0)
 	{
 		head->line++;
 		if (rethd != 3)
