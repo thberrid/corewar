@@ -91,8 +91,13 @@ int		ft_read(t_instruct_head *head, char *path, t_header *header)
 
 	if ((fd = open(path, O_RDONLY)) <= 0)
 		return (0);
+	line = NULL;
 	if ((ret = whilegnl(head, &line, header, fd)) < 0)
+	{
+		if (line)
+			ft_strdel(&line);
 		return (ret);
+	}
 	if (no_empty_cor(head, line) < 0)
 		return (-9);
 	if (ret == -1)
