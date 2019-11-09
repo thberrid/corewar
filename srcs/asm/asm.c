@@ -98,7 +98,7 @@ int		set_labels(t_instruct_head *head)
 	return (1);
 }
 
-int		ft_init(t_instruct_head *head, t_header *header, int ac, char **av)
+int		ft_init(t_instruct_head *head, t_header *header, char **av)
 {
 	if (!head->length)
 		return (ft_errors(-6, 0));
@@ -106,7 +106,7 @@ int		ft_init(t_instruct_head *head, t_header *header, int ac, char **av)
 	head->retrn_labels = set_labels(head);
 	if (head->retrn_labels < 0)
 		ft_errors(head->retrn_labels, head->line);
-	if (head->retrn_labels && ac == 3 && ft_contains('a', av[1]))
+	if (head->retrn_labels && av[1][0] == '-' && ft_contains('a', av[1]))
 	{
 		instruct_display_all(head, header);
 		return (0);
@@ -137,7 +137,7 @@ int		main(int ac, char **av)
 	head.retrn_parse = ft_read(&head, av[head.av_path], &header);
 	if (head.retrn_parse == 1)
 	{
-		if (ft_init(&head, &header, ac, av) == 0)
+		if (ft_init(&head, &header, av) == 0)
 			return (instruct_free(&head));
 	}
 	else
