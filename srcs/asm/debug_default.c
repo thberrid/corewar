@@ -34,6 +34,7 @@ int			ft_deflab(t_instruct *inst, int *cflag, char *line, int len)
 			return (-9);
 		ft_strcpy(inst->label, "defaut_n");
 		ft_strcat(inst->label, str);
+		ft_strdel(&str);
 		(*cflag)++;
 	}
 	return (0);
