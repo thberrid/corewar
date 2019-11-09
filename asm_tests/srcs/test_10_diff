@@ -3,6 +3,7 @@
 # test differents .s cases 
 # compile then diff all .s files in ./inputs/
 
+INDEX=1
 for filename in inputs/*.s; do
 	SUCCESS=0
 	ERROR_MSG=""

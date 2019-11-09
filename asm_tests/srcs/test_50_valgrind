@@ -7,17 +7,6 @@
 
 # log.txt 2>&1
 
-grep_logs () 
-{
-	SUCCESS=1
-	#declare -l RETURN=`cat $VALG_LOGS | grep "definitely lost" | cut -d ' ' -f 7`
-	declare -l RETURN=`cat $3 | grep $4 | cut -d ' ' -f $5`
-	if [ $RETURN != $6 ]; then
-		SUCCESS=0
-	fi
-	print_result $1 "$2 $4" $SUCCESS "($RETURN)"
-}
-
 declare -l VALG_LOGS="tmp/valgrind_logs"
 INDEX=1
 for i in inputs/*.s; do

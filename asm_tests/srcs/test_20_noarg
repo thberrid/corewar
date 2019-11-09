@@ -1,0 +1,9 @@
+#!/bin/zsh
+INDEX=1
+declare -l VALG_LOGS="tmp/valgrind_logs"
+./$ASM_NEW
+valgrind --log-file=$VALG_LOGS ./$ASM_NEW > /dev/null
+grep_logs $INDEX "NO ARG" $VALG_LOGS "definitely lost" 7 "0"
+grep_logs $INDEX "NO ARG" $VALG_LOGS "indirectly lost" 7 "0"
+grep_logs $INDEX "NO ARG" $VALG_LOGS "possibly lost" 9 "8,840" 
+grep_logs $INDEX "NO ARG" $VALG_LOGS "still reachable" 7 "10,442"

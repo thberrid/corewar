@@ -23,6 +23,16 @@ print_result ()
 	echo -e $2 "\e[1;31m$4\e[0m"
 }
 
+grep_logs () 
+{
+	SUCCESS=1
+	#declare -l RETURN=`cat $VALG_LOGS | grep "definitely lost" | cut -d ' ' -f 7`
+	declare -l RETURN=`cat $3 | grep $4 | cut -d ' ' -f $5`
+	if [ $RETURN != $6 ]; then
+		SUCCESS=0
+	fi
+	print_result $1 "$2 $4" $SUCCESS "($RETURN)"
+}
 
 # clean previous tests trace
 
