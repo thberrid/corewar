@@ -58,7 +58,10 @@ typedef struct			s_instruc_head
 int						ft_read(t_instruct_head *head, char *path,
 							t_header *header);
 int						check_instruct(char *line, t_instruct_head *head);
-
+int		whilegnl(t_instruct_head *head, char **line, t_header *header, int fd);
+int		check_headder(t_header *header, char *line, int fd, int *rethd);
+void	ft_fixheader(t_header *header);
+int		no_empty_cor(t_instruct_head *head, char *line);
 /*
 ** free
 */

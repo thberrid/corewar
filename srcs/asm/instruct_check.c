@@ -124,7 +124,7 @@ int			check_instruct(char *line, t_instruct_head *head)
 	{
 		i = head->slen;
 		prev = inst->prev;
-		inst = (prev->label && !prev->id) ? prev : add_inst(head);
+		inst = (!prev->id) ? prev : add_inst(head);
 	}
 	if (!inst)
 		return (-9);

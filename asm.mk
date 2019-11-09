@@ -18,6 +18,7 @@ SRC_ASM	:=	\
 			debug_default.c \
 			debug_push.c \
 			utils.c \
-			read.c
+			read.c \
+			read_utils.c
 
 $(ASM):	CFLAGS += -I./includes/asm
