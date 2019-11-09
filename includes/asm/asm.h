@@ -64,6 +64,7 @@ int						check_headder(t_header *header, char *line,
 							int fd, int *rethd);
 void					ft_fixheader(t_header *header);
 int						no_empty_cor(t_instruct_head *head, char *line);
+
 /*
 ** free
 */
@@ -101,6 +102,7 @@ int						param_to_inst(char **param_raw, t_instruct *inst,
 							char **line);
 t_instruct				*add_inst(t_instruct_head *head);
 t_instruct				*get_freeinst(t_instruct_head *head);
+int						push_str(char *dest, char *src, int len, int start);
 
 /*
 ** get datas

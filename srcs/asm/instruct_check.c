@@ -37,6 +37,7 @@ int			param_to_inst(char **param_raw, t_instruct *inst, char **line)
 	int		i;
 	int		j;
 	int		len;
+	char	is_reg;
 
 	i = 0;
 	while (param_raw[i])
@@ -44,18 +45,17 @@ int			param_to_inst(char **param_raw, t_instruct *inst, char **line)
 		j = 0;
 		while (ft_isspace(param_raw[i][j]))
 			j++;
+		is_reg = param_raw[i][j] == 'r' ? 1 : 0;
 		if (param_raw[i][j] == DIRECT_CHAR || param_raw[i][j] == 'r')
 			j++;
 		len = 0;
 		while (param_raw[i][j + len] && !ft_isspace(param_raw[i][j + len]))
 			len += 1;
-		if (!len)
+		if (!len || (is_reg && len > 2))
 			return (0);
 		if (!(inst->params_str[i] = ft_strnew(len)))
 			return (0);
-		ft_bzero(inst->params_str[i], len);
-		ft_strncpy(inst->params_str[i], &(param_raw[i][j]), len);
-		(*line) += (j + 1);
+		(*line) += push_str(inst->params_str[i], &(param_raw[i][j]), len, j);
 		i += 1;
 	}
 	return (1);

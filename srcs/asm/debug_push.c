@@ -12,6 +12,13 @@
 
 #include "asm.h"
 
+int			push_str(char *dest, char *src, int len, int start)
+{
+	ft_bzero(dest, len);
+	ft_strncpy(dest, src, len);
+	return (start + 1);
+}
+
 int			push_label(char **line, t_instruct *inst, int *cflag)
 {
 	int		len;

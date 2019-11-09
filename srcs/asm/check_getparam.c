@@ -50,18 +50,20 @@ int			ft_getparams(char **line, t_instruct *inst)
 {
 	char	**param_raw;
 	int		param_len;
+	int		err;
 
 	param_len = get_paramlen(inst->id);
+	err = 1;
 	if (param_len != 1 + ft_strcountchar(*line, SEPARATOR_CHAR))
-		return (-1);
+		err = -1;
 	if (!(param_raw = ft_strsplit(*line, SEPARATOR_CHAR)))
-		return (-1);
+		err = -1;
 	if (!(inst->ocp = get_ocp(param_raw, param_len, inst)))
-		return (-1);
+		err = -1;
 	if (!param_to_inst(param_raw, inst, line))
-		return (-1);
+		err = -1;
 	free_split(param_raw);
-	return (1);
+	return (err);
 }
 
 t_arg_type	get_ocp(char **param_raw, int param_len, t_instruct *inst)
