@@ -138,7 +138,7 @@ int		main(int ac, char **av)
 	if (head.retrn_parse == 1)
 	{
 		if (ft_init(&head, &header, ac, av) == 0)
-			return (0);
+			return (instruct_free(&head));
 	}
 	else
 		ft_errors(head.retrn_parse, head.line);
