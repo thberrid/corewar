@@ -6,3 +6,4 @@
 # on s en fou
 
 ld -5, r1
+ld %-5, r1
