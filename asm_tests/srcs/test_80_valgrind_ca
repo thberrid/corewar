@@ -1,0 +1,33 @@
+#!/bin/zsh
+
+# with a normal .s
+# with errors
+#	no file
+#	one syntax error file
+
+# log.txt 2>&1
+
+grep_logs () 
+{
+	SUCCESS=1
+	#declare -l RETURN=`cat $VALG_LOGS | grep "definitely lost" | cut -d ' ' -f 7`
+	declare -l RETURN=`cat $3 | grep $4 | cut -d ' ' -f $5`
+	if [ $RETURN != $6 ]; then
+		SUCCESS=0
+	fi
+	print_result $1 "$2 $4" $SUCCESS "($RETURN)"
+}
+
+declare -l VALG_LOGS="tmp/valgrind_logs"
+INDEX=1
+for i in inputs/*.s; do
+	echo $i
+	valgrind --log-file=$VALG_LOGS ./$ASM_NEW -ca $i > /dev/null
+	# prototype : grep_logs index, .s filename, log_file, leak type {indirectly, etc}, field number {for cut -f N}, correct value 
+	grep_logs $INDEX $i $VALG_LOGS "definitely lost" 7 "0"
+	grep_logs $INDEX $i $VALG_LOGS "indirectly lost" 7 "0"
+	grep_logs $INDEX $i $VALG_LOGS "possibly lost" 9 "8,840" 
+	grep_logs $INDEX $i $VALG_LOGS "still reachable" 7 "10,442"
+	let "INDEX+=1"
+	echo ""
+done

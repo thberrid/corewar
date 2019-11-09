@@ -7,4 +7,4 @@ ld%1     , r2
 ld               5,r2
 ldi r1,        r10,r10
 ld%:label, r1
-ld %: label, r1
+ld %:label, r1
