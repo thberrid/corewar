@@ -6,7 +6,7 @@
 /*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 15:51:41 by baurens           #+#    #+#             */
-/*   Updated: 2019/11/08 22:39:35 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/09 03:08:36 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,7 @@ char		op_lfork(t_vm *vm, t_proc *proc);
 
 static const t_op	g_op_tab[] __attribute__((unused)) =
 {
-	{"nop", 0, {0}, 0, 0, "nothing", 0, 0, 0x0},
+	{"nop", 0, {0}, 0, 1, "nothing", 0, 0, 0x0},
 	{"live", 1, {T_DIR}, 1, 10, "alive", 0, 0, OP_LIVE_F},
 	{"ld", 2, {T_DIR | T_IND, T_REG}, 2, 5, "load", 1, 0, OP_LD_F},
 	{"st", 2, {T_REG, T_IND | T_REG}, 3, 5, "store", 1, 0, OP_ST_F},

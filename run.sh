@@ -74,7 +74,7 @@ init_tests()
 
 	if [[ ! -f `echo $YOUR_VM | cut -d' ' -f1` ]]; then
 		echo "Compiling $YOUR_VM..."
-		make -s $YOUR_VM
+		make -s $YOUR_VM ZAZ=TRUE
 		if [[ $? -ne 0 ]]; then
 			can_run=false
 		fi

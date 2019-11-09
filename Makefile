@@ -6,13 +6,13 @@
 #    By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/15 06:46:14 by abaurens          #+#    #+#              #
-#    Updated: 2019/11/08 23:35:14 by abaurens         ###   ########.fr        #
+#    Updated: 2019/11/09 05:55:40 by abaurens         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC		:=	gcc -g
+CC		:=	gcc
 RM		:=	rm -rf
-LINKER	:=	gcc -g -o
+LINKER	:=	gcc -o
 LIB		:=	libft/libft.a
 COR		:=	corewar
 ASM		:=	asm

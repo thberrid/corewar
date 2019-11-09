@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 15:20:59 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/08 23:19:40 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/09 06:27:27 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,7 @@ static void		vm_check(t_vm *vm)
 	{
 		vm->cycle_to_die -= CYCLE_DELTA;
 		if (vm->verbosity & V_CYCLES)
-		{
 			ft_printf("Cycle to die is now %ld\n", vm->cycle_to_die);
-		}
 		vm->last_dec = 0;
 	}
 	vm->total_live = 0;
@@ -55,31 +53,33 @@ static void		vm_check(t_vm *vm)
 
 static void		vm_exec(t_vm *vm, t_proc *proc)
 {
-	t_byte				cur;
-	register const t_op	*op;
+	t_byte		cur;
 
-	op = g_op_tab;
-	cur = g_map[proc->pc % MEM_SIZE];
-	while (op->name && cur != op->id)
-		op++;
-	if (++proc->time_to_wait >= op->cost)
+	if (!proc->op)
 	{
-		proc->time_to_wait = 0;
-		if (op->fnc)
-			proc->carry = op->fnc(vm, proc);
-		else
-			proc->pc++;
-		proc->pc %= MEM_SIZE;
+		cur = g_map[proc->pc % MEM_SIZE];
+		if (cur <= 0 || cur > 16)
+		{
+			proc->pc = (++proc->pc % MEM_SIZE);
+			return ;
+		}
+		proc->op = cur;
+		proc->time_to_wait = g_op_tab[cur].cost;
+	}
+	if (proc->op && !--proc->time_to_wait)
+	{
+		proc->carry = g_op_tab[proc->op].fnc(vm, proc);
+		proc->op = 0;
 	}
 }
 
 void			vm_loop(t_vm *vm)
 {
 	t_proc		*proc;
-	uint32_t	last_check;
+	int32_t		last_check;
 
-	last_check = 0;
 	vm->cycles = 0;
+	last_check = CYCLE_TO_DIE;
 	vm->cycle_to_die = CYCLE_TO_DIE;
 	while (g_procs.size)
 	{
@@ -93,10 +93,10 @@ void			vm_loop(t_vm *vm)
 			vm_exec(vm, proc);
 			proc = proc->next;
 		}
-		if ((vm->cycles - last_check) >= vm->cycle_to_die)
+		if (--last_check <= 0)
 		{
 			vm_check(vm);
-			last_check = vm->cycles;
+			last_check = vm->cycle_to_die;
 		}
 	}
 }

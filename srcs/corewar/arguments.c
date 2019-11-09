@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 12:11:35 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/08 22:45:33 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/09 04:44:58 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ t_byte	get_arguments(t_vm *vm, t_proc *proc, t_args *av)
 
 	er = 0;
 	op = g_op_tab;
-	while (op->name && op->id != g_map[proc->pc % MEM_SIZE])
+	while (op->name && op->id != proc->op)
 		++op;
 	ocp = g_map[(proc->pc + 1) % MEM_SIZE];
 	if ((check_ocp(ocp, op->id, &of)) && move_pc(vm, proc, 2 + of))

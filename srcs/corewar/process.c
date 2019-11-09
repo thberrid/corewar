@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 12:40:34 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/08 22:09:40 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/09 04:44:39 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ t_proc			*add_process(t_ind pc, t_proc *copy)
 		new->next->prev = new;
 	g_procs.head = new;
 	++g_procs.size;
+	new->op = 0;
 	new->pid = get_next_pid();
 	new->pc = pc % MEM_SIZE;
 	if (pc < 0)
