@@ -6,7 +6,7 @@
 /*   By: smoreno- <smoreno-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 06:05:50 by smoreno-          #+#    #+#             */
-/*   Updated: 2019/11/08 09:41:14 by thberrid         ###   ########.fr       */
+/*   Updated: 2019/11/09 06:35:09 by thberrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,12 @@ typedef struct			s_instruc_head
 int						ft_read(t_instruct_head *head, char *path,
 							t_header *header);
 int						check_instruct(char *line, t_instruct_head *head);
-int		whilegnl(t_instruct_head *head, char **line, t_header *header, int fd);
-int		check_headder(t_header *header, char *line, int fd, int *rethd);
-void	ft_fixheader(t_header *header);
-int		no_empty_cor(t_instruct_head *head, char *line);
+int						whilegnl(t_instruct_head *head, char **line,
+							t_header *header, int fd);
+int						check_headder(t_header *header, char *line,
+							int fd, int *rethd);
+void					ft_fixheader(t_header *header);
+int						no_empty_cor(t_instruct_head *head, char *line);
 /*
 ** free
 */
