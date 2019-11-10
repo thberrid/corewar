@@ -38,7 +38,7 @@ int		get_namecom(char *header, char *line, int fd, char n_or_c)
 	}
 	if (*line == '"')
 		return (ft_checkline(line));
-	if (gnl(fd, &line) > 0)
+	if (sgnl(fd, &line) > 0)
 	{
 		header[i] = '\n';
 		ret = get_namecom(&header[++i], line, fd, n_or_c);
@@ -60,17 +60,17 @@ int		check_headder(t_header *header, char *line, int fd, int *rethd)
 		line += i;
 		while (ft_isspace(*line))
 			line++;
-		if (*line == '"' && i == 5 && line++)
+		if (*line == '"' && *rethd & IS_NAME && line++)
 		{
 			if ((ret = get_namecom(header->prog_name, line, fd, 1)) < 0)
 				return (ret);
 		}
-		else if (*line == '"' && i == 8 && line++)
+		else if (*line == '"' && *rethd & IS_COMMENT && line++)
 		{
 			if ((ret = get_namecom(header->comment, line, fd, 0)) < 0)
 				return (ret);
 		}
-		if (*rethd == 3)
+		if (*rethd & NAME_DONE && *rethd & COMMENT_DONE)
 			return (1);
 		return (0);
 	}

@@ -43,15 +43,33 @@ int		no_empty_cor(t_instruct_head *head, char *line)
 	return (1);
 }
 
-int		skip_command(char **line)
+int		skip_command(char *line, int fd)
 {
-	if (!ft_strncmp(NAME_CMD_STRING, *line, 5)
-		|| !ft_strncmp(COMMENT_CMD_STRING, *line, 8))
+
+	while (ft_isspace(*line))
+		line++;
+	if (!ft_strncmp(NAME_CMD_STRING, line, 5)
+		|| !ft_strncmp(COMMENT_CMD_STRING, line, 8))
 	{
-		ft_strdel(line);
-		return (1);
+		if (!ft_contains('"', line))
+			return (0);
+		if (ft_strcountchar(line, '"') == 2)
+		{	
+			ft_strdel(&line);
+			return (1);
+		}
+		ft_strdel(&line);
+		while (sgnl(fd, &line) > 0)
+		{
+			if (ft_contains('"', line))
+			{	
+				ft_strdel(&line);
+				return (1);
+			}
+			ft_strdel(&line);
+		}
 	}
-	return (0);
+	return (3);
 }
 
 int		return_or_fix(t_instruct_head *hd, t_header *header, int r, char **line)
@@ -76,7 +94,7 @@ int		whilegnl(t_instruct_head *head, char **line, t_header *header, int fd)
 	while ((retrn = sgnl(fd, line)) > 0)
 	{
 		head->line++;
-		if (rethd != 3)
+		if (!(rethd & NAME_DONE) || !(rethd & COMMENT_DONE))
 		{
 			retinst = check_headder(header, *line, fd, &rethd);
 			if (return_or_fix(head, header, retinst, line) < -1)
@@ -84,7 +102,9 @@ int		whilegnl(t_instruct_head *head, char **line, t_header *header, int fd)
 		}
 		else
 		{
-			if (skip_command(line))
+			if ((retinst = skip_command(*line, fd)) == 0)
+				break ;
+			else if (retinst == 1)
 				continue ;
 			if ((retinst = check_or_debug(*line, head)) < 0)
 				return (retinst);
