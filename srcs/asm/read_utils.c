@@ -45,7 +45,6 @@ int		no_empty_cor(t_instruct_head *head, char *line)
 
 int		skip_command(char *line, int fd)
 {
-
 	while (ft_isspace(*line))
 		line++;
 	if (!ft_strncmp(NAME_CMD_STRING, line, 5)
@@ -54,7 +53,7 @@ int		skip_command(char *line, int fd)
 		if (!ft_contains('"', line))
 			return (0);
 		if (ft_strcountchar(line, '"') == 2)
-		{	
+		{
 			ft_strdel(&line);
 			return (1);
 		}
@@ -62,7 +61,7 @@ int		skip_command(char *line, int fd)
 		while (sgnl(fd, &line) > 0)
 		{
 			if (ft_contains('"', line))
-			{	
+			{
 				ft_strdel(&line);
 				return (1);
 			}
@@ -91,9 +90,8 @@ int		whilegnl(t_instruct_head *head, char **line, t_header *header, int fd)
 	int		rethd;
 
 	rethd = 0;
-	while ((retrn = sgnl(fd, line)) > 0)
+	while (((retrn = sgnl(fd, line)) > 0) && ++head->line)
 	{
-		head->line++;
 		if (!(rethd & NAME_DONE) || !(rethd & COMMENT_DONE))
 		{
 			retinst = check_headder(header, *line, fd, &rethd);

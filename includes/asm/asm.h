@@ -22,7 +22,11 @@
 # include <fcntl.h>
 # include <unistd.h>
 
-# define REG_CHAR "0123456789"
+# define REG_CHAR	 	"0123456789"
+# define IS_NAME		(1U << 0U)
+# define IS_COMMENT		(1U << 1U)
+# define NAME_DONE		(1U << 2U)
+# define COMMENT_DONE	(1U << 3U)
 
 typedef struct			s_instruc
 {
@@ -64,6 +68,7 @@ int						check_headder(t_header *header, char *line,
 							int fd, int *rethd);
 void					ft_fixheader(t_header *header);
 int						no_empty_cor(t_instruct_head *head, char *line);
+void					set_rethd(int fl, int *rethd);
 
 /*
 ** free

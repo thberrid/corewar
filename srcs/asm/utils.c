@@ -85,39 +85,18 @@ int		printinst(t_instruct_head *head, int fd)
 	return (0);
 }
 
-int		init_headder(char *line, int *rethd)
+void	set_rethd(int fl, int *rethd)
 {
-	int	i;
-	int	j;
-
-	j = 1;
-	while (ft_isspace(*line) && j++)
-			line++;
-	if (ft_strlen(line) < 5)
-		return (0);
-	if (!ft_strncmp(line, NAME_CMD_STRING, 5))
+	if (fl == 1)
 	{
 		*rethd |= IS_NAME;
 		*rethd |= NAME_DONE;
 		*rethd &= ~IS_COMMENT;
-		/**rethd |= 1;
-		*rethd |= 8;
-		*rethd ^= 4;*/
-		if (!ft_contains('"', line))
-			return (-2);
 	}
-	if (!ft_strncmp(line, COMMENT_CMD_STRING, 8))
+	else
 	{
 		*rethd |= IS_COMMENT;
 		*rethd |= COMMENT_DONE;
 		*rethd &= ~IS_NAME;
-		/**rethd |= 2;
-		*rethd |= 4;
-		*rethd ^= 8;*/
-		if (!ft_contains('"', line))
-			return (-2);
 	}
-	i = (ft_strncmp(line, NAME_CMD_STRING, 5) == 0) ? 5 : 0;
-	i = (i != 5 && ft_strncmp(line, COMMENT_CMD_STRING, 8) == 0) ? 8 : i;
-	return (i + j);
 }
