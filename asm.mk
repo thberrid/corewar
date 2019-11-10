@@ -11,6 +11,7 @@ SRC_ASM	:=	\
 			check_get.c \
 			check_getparam.c \
 			check_str.c \
+			header.c \
 			instruct_display.c \
 			instruct_free.c \
 			instruct_get.c \
@@ -19,7 +20,6 @@ SRC_ASM	:=	\
 			debug_push.c \
 			utils.c \
 			read.c \
-			read_headder.c \
 			read_utils.c
 
 $(ASM):	CFLAGS += -I./includes/asm

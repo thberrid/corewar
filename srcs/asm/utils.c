@@ -6,7 +6,7 @@
 /*   By: smoreno- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/03 07:13:20 by smoreno-          #+#    #+#             */
-/*   Updated: 2019/11/08 09:11:48 by thberrid         ###   ########.fr       */
+/*   Updated: 2019/11/10 06:16:57 by thberrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int		ft_usage(void)
 	ft_printf("Usage: ./asm [-a] <sourcefile.s>\n");
 	ft_printf("	-a : Instead of creating a .cor file, outputs a stripped");
 	ft_printf("and annotated version of the code to the standard output\n");
+	ft_printf("	-c : replace errors by simple default commands\n");
 	return (0);
 }
 
@@ -48,11 +49,6 @@ int		strtobin(int fd, char *param, uint32_t size)
 {
 	int		tmp;
 
-	if (param[0] == LABEL_CHAR)
-	{
-		write(fd, "##", size);
-		return (0);
-	}
 	tmp = ft_atoi(param);
 	bin_to_system(&tmp, size);
 	write(fd, &tmp, size);

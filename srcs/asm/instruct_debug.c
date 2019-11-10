@@ -6,7 +6,7 @@
 /*   By: smoreno- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 07:33:12 by smoreno-          #+#    #+#             */
-/*   Updated: 2019/11/08 09:18:56 by thberrid         ###   ########.fr       */
+/*   Updated: 2019/11/10 06:22:31 by thberrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,8 @@ int			debug_instruct(char *line, t_instruct_head *head)
 
 	if (!(inst = get_freeinst(head)))
 		return (-9);
-	len = push_label(&line, inst, &(head->cflag));
+	if ((len = push_label(&line, inst, &(head->cflag))) < -9)
+		return (-9);
 	i = 1;
 	while (i <= 16)
 	{

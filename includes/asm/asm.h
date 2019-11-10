@@ -6,7 +6,7 @@
 /*   By: smoreno- <smoreno-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 06:05:50 by smoreno-          #+#    #+#             */
-/*   Updated: 2019/11/09 06:35:09 by thberrid         ###   ########.fr       */
+/*   Updated: 2019/11/10 06:34:43 by thberrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ int						param_to_inst(char **param_raw, t_instruct *inst,
 t_instruct				*add_inst(t_instruct_head *head);
 t_instruct				*get_freeinst(t_instruct_head *head);
 int						push_str(char *dest, char *src, int len, int start);
+void					printheader(int fd, t_header *header);
 
 /*
 ** get datas

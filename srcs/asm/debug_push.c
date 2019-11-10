@@ -6,7 +6,7 @@
 /*   By: thberrid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/08 06:03:53 by thberrid          #+#    #+#             */
-/*   Updated: 2019/11/08 09:09:40 by thberrid         ###   ########.fr       */
+/*   Updated: 2019/11/10 06:18:00 by thberrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ int			push_label(char **line, t_instruct *inst, int *cflag)
 		len++;
 	if ((*line)[len] == LABEL_CHAR)
 	{
-		ft_deflab(inst, cflag, *line, len);
+		if (ft_deflab(inst, cflag, *line, len) < 0)
+			return (-9);
 		(*line) += (len + 1);
 	}
 	while (ft_isspace(**line))

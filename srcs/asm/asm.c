@@ -6,7 +6,7 @@
 /*   By: thberrid <thberrid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/19 05:19:53 by thberrid          #+#    #+#             */
-/*   Updated: 2019/11/07 04:05:17 by thberrid         ###   ########.fr       */
+/*   Updated: 2019/11/10 06:33:58 by thberrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,9 @@ int		creat_file(t_instruct_head *head, char *av, t_header *header)
 			return (-9);
 	}
 	ft_strlcat(name, ".cor", npos - av + 5);
-	fd = open(name, O_CREAT | O_WRONLY | O_TRUNC, 0600);
-	bin_to_system(&(header->magic), 4);
-	bin_to_system(&(header->prog_size), 4);
-	write(fd, header, sizeof(t_header));
+	if ((fd = open(name, O_CREAT | O_WRONLY | O_TRUNC, 0600)) < 0)
+		return (-9);
+	printheader(fd, header);
 	printinst(head, fd);
 	ft_printf("%s written\n", name);
 	ft_strdel(&name);
@@ -112,7 +111,8 @@ int		ft_init(t_instruct_head *head, t_header *header, char **av)
 		return (0);
 	}
 	if (head->retrn_labels > 0 && head->retrn_parse > 0)
-		creat_file(head, av[head->av_path], header);
+		if (creat_file(head, av[head->av_path], header))
+			return (ft_errors(9, 0));
 	return (1);
 }
 

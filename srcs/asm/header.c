@@ -1,16 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   read_headder.c                                     :+:      :+:    :+:   */
+/*   header.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: thberrid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/10 04:33:38 by thberrid          #+#    #+#             */
-/*   Updated: 2019/11/10 04:33:41 by thberrid         ###   ########.fr       */
+/*   Updated: 2019/11/10 06:33:08 by thberrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
+
+void	printheader(int fd, t_header *header)
+{
+	bin_to_system(&(header->magic), 4);
+	bin_to_system(&(header->prog_size), 4);
+	write(fd, header, sizeof(t_header));
+}
 
 int		init_headder(char *line, int *rethd)
 {
