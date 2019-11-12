@@ -1,5 +1,5 @@
-.name"]"
-.comment "]"
+.name""
+.comment ""
 
 #"]" cause error in name and comment
 #r_asm accepts it

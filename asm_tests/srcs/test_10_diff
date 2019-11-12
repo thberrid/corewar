@@ -44,6 +44,6 @@ for filename in inputs/*.s; do
 			ERROR_MSG="(comp. NOT required)"
 		fi
 	fi
-	print_result $INDEX $BTCODE_NAME $SUCCESS $ERROR_MSG
+	print_result $INDEX $filename $SUCCESS $ERROR_MSG
 	let "INDEX+=1"
 done
