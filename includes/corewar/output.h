@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 16:42:25 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/12 19:26:14 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/12 22:30:17 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 
 # define UOP		"    %-5s%-5s: %s\n"
 # define UVB		"%19s : %s\n"
+# define VM_HEXA	"0123456789abcdef"
 
 # ifdef ZAZ
 #  define USGAFF	" (Default is to hide it)"
