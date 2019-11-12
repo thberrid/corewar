@@ -1,0 +1,18 @@
+#!/bin/zsh
+
+# test wrong inputs
+#	dev / null, dev / random, etc > print error msg
+
+declare -l VALG_LOGS="tmp/valgrind_logs"
+INDEX=1
+declare -a WRONG_INPUTS=("/dev/null" "/dev/random" "/dev/zero")
+for i in $WRONG_INPUTS; do
+	echo $i
+	valgrind --log-file=$VALG_LOGS ./$ASM_NEW $i > /dev/null
+	# prototype : grep_logs index, .s filename, log_file, leak type {indirectly, etc}, field number {for cut -f N}, correct value 
+	grep_logs $INDEX $i $VALG_LOGS "definitely lost" 7 "0"
+	grep_logs $INDEX $i $VALG_LOGS "indirectly lost" 7 "0"
+	grep_logs $INDEX $i $VALG_LOGS "possibly lost" 9 "8,840" 
+	grep_logs $INDEX $i $VALG_LOGS "still reachable" 7 "10,442"
+	let "INDEX+=1"
+done
