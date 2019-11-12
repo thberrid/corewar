@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 09:47:24 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/08 23:37:35 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/12 14:30:30 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,15 @@
 
 # define DUMP_LEN	32
 
-# ifdef ZAZ_OUTPUT
+# define UOP		"    %-5s%-5s: %s\n"
+# define UVB		"%19s : %s\n"
+
+# ifdef ZAZ
+#  define USGAFF	" (Default is to hide it)"
 #  define WINMSG	"Contestant %d, \"%s\", has won !\n"
 #  define LIVMSG	"Player %d (%s) is said to be alive\n"
 # else
+#  define USGAFF	""
 #  define WINMSG	"le joueur %d(%s) a gagne\n"
 #  define LIVMSG	"un processus dit que le joueur %d(%s) est en vie\n"
 # endif
@@ -41,7 +46,7 @@ typedef struct s_champ	t_champ;
 
 typedef enum	e_dumpm
 {
-	NONE, SUBJECT, ZAZ
+	NONE, SUBJECT_DUMP, ZAZ_DUMP
 }				t_dumpm;
 
 /*

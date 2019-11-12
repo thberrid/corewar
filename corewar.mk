@@ -49,10 +49,11 @@ SRC_COR	:=	$(PARSER)	\
 #
 override ZAZ ?= FALSE
 ifeq ($(ZAZ),TRUE)
-override ZAZ_FLAG	:= -DZAZ_OUTPUT
+override ZAZ_FLAG	:= -DZAZ
 endif
 
-$(COR):	CFLAGS += -O3 -I./includes/corewar -ansi -pedantic -DVM $(ZAZ_FLAG)
+$(COR):	CFLAGS += -O3 -I./includes/corewar -ansi -pedantic -DVM $(ZAZ_FLAG) -pg
+$(COR):	LDFLAGS += -pg
 
 #
 #	vm unit tests
