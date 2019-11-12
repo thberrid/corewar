@@ -6,9 +6,11 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 12:40:34 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/12 19:27:55 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/12 21:38:56 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#define FT_DISABLE_WARNINGS
 
 #include <stdlib.h>
 #include "process.h"
@@ -18,7 +20,7 @@
 #include "ftio.h"
 #include "vm.h"
 
-static uint32_t	get_next_pid(void)
+static uint64_t	get_next_pid(void)
 {
 	static uint64_t	max = 0;
 
