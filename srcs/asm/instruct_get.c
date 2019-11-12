@@ -22,6 +22,7 @@ t_instruct	*add_inst(t_instruct_head *head)
 
 	if (!(new = ft_memalloc(sizeof(t_instruct))))
 		return (NULL);
+	ft_bzero(new, sizeof(t_instruct));
 	new->next = head->head ? head->head : new;
 	new->prev = head->head ? head->head->prev : new;
 	if (head->slen == 0)

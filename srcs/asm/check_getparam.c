@@ -12,6 +12,26 @@
 
 #include "asm.h"
 
+/*
+** take an ocp (REG_CODE / DIR_CODE / IND_CODE)
+** and look in g_op_tab.args
+** en utilisant les bitwise operator
+** par exemple : par exemple pour `ld` on a {T_DIR | T_IND, T_REG}
+** ce qui donne {2 | 4, 1}, en binaire {0010 | 0100, 0001}
+** et du coup le | il superpose tout c'est trop pratique et
+** COMME PAR HASARD OUPS aucun bit ne se superpose
+** ca donne {0110 | 0001} et du coup on peut regarder facilement
+*/
+
+int			is_paramtype_allowed(char param_type, t_instruct *inst, int i)
+{
+	if (param_type == IND_CODE)
+		param_type = T_IND;
+	if ((g_op_tab[inst->id].args[i] ^ param_type) < g_op_tab[inst->id].args[i])
+		return (1);
+	return (0);
+}
+
 int			get_paramtype(char **param_raw, t_instruct *inst, int i, int j)
 {
 	int		param_type;

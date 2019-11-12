@@ -67,13 +67,15 @@ int		printinst(t_instruct_head *head, int fd)
 	{
 		j = 0;
 		if (tmp->id)
-			write(fd, &tmp->id, 1);
-		if (g_op_tab[tmp->id].ocp)
-			write(fd, &(tmp->ocp), 1);
-		while (j < g_op_tab[tmp->id].arg_cnt)
 		{
-			strtobin(fd, tmp->params_str[j], tmp->params_bits[j]);
-			j++;
+			write(fd, &tmp->id, 1);
+			if (g_op_tab[tmp->id].ocp)
+				write(fd, &(tmp->ocp), 1);
+			while (j < g_op_tab[tmp->id].arg_cnt)
+			{
+				strtobin(fd, tmp->params_str[j], tmp->params_bits[j]);
+				j++;
+			}
 		}
 		tmp = tmp->next;
 		i++;

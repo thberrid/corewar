@@ -89,6 +89,5 @@ int			get_datas(char *s, t_instruct_head *hd, t_instruct *inst, size_t i)
 		return (-5);
 	if (ft_getparams(&s, inst) < 0)
 		return (-3);
-	update_progsize(hd, inst);
 	return (1);
 }

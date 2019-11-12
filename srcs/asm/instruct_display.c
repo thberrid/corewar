@@ -34,11 +34,9 @@ void	instruct_display(t_instruct *this)
 void	instruct_display_all(t_instruct_head *head, t_header *header)
 {
 	size_t		i;
-	size_t		len;
 	t_instruct	*this;
 
 	i = 0;
-	len = 0;
 	this = head->head;
 	ft_printf("Number of instructions ->  %lu\n", head->slen);
 	ft_printf("Size of the program ->  %lu bytes\n", head->length);
@@ -47,8 +45,7 @@ void	instruct_display_all(t_instruct_head *head, t_header *header)
 	ft_putendl("----------");
 	while (i < head->slen)
 	{
-		ft_printf("%lu	(%lu)	: ", len, this->len);
-		len += this->len;
+		ft_printf("%u	(%lu)	: ", this->byt_index, this->len);
 		instruct_display(this);
 		this = this->next;
 		ft_putendl("----------");
