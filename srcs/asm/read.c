@@ -89,7 +89,7 @@ int		ft_read(t_instruct_head *head, char *path, t_header *header)
 	char	*line;
 	int		ret;
 
-	if (!ft_strcmp(path, "/dev/zero"))
+	if (!ft_strcmp(path, "/dev/zero") || !ft_strcmp(path, "/dev/random"))
 		return (0);
 	if ((fd = open(path, O_RDONLY)) <= 0)
 		return (0);
