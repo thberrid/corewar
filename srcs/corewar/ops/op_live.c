@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:05:20 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/12 19:51:48 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/12 22:09:21 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@
 
 static void	out(long int pid, t_dir v1)
 {
-	/*ft_dprintf(2, "max(4 - %lu, 0) = %d\n", ft_numlen(pid), (int)ft_max(4 - ft_numlen(pid), 0));*/
-	write(1, "P     ", (int)ft_max((double)(4 - ft_numlen(pid)), 0) + 2);
+	write(1, "P     ", ft_max(4.0 - ft_numlen(pid), 0) + 2);
 	ft_putlnbr(pid);
 	write(1, " | live ", 8);
 	ft_putnbr(v1);

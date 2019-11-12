@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:05:20 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/12 18:10:34 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/12 22:09:04 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 static void	out(long int pid, t_dir v1, t_dir v2)
 {
-	write(1, "P     ", ft_max(4 - ft_numlen(pid), 0) + 2);
+	write(1, "P     ", ft_max(4.0 - ft_numlen(pid), 0) + 2);
 	ft_putlnbr(pid);
 	write(1, " | lld ", 7);
 	ft_putnbr(v1);

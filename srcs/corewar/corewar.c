@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 07:24:26 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/12 19:29:34 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/12 22:11:25 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void		destruct(void)
 	clear_procs();
 }
 
-int			main(int ac __attribute__((unused)), char **av)
+int			main(int ac __attribute__((unused)), char **av __attribute__((unused)))
 {
 	size_t	i;
 	t_vm	vm;
