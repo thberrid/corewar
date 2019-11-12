@@ -43,5 +43,5 @@ int		init_headder(char *line, int *rethd)
 	}
 	i = (ft_strncmp(line, NAME_CMD_STRING, 5) == 0) ? 5 : 0;
 	i = (i != 5 && ft_strncmp(line, COMMENT_CMD_STRING, 8) == 0) ? 8 : i;
-	return (i + j);
+	return (i + j - 1);
 }
