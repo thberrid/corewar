@@ -24,6 +24,11 @@ OPS_COR	:=	\
 			op_lfork.c
 OPS_COR	:=	$(addprefix ops/,$(OPS_COR))
 
+OUT_COR	:=	\
+			pc.c		\
+			cycles.c
+OUT_COR	:=	$(addprefix output/,$(OUT_COR))
+
 PARSER	:=	\
 			opt_aff.c	\
 			opt_num.c	\
@@ -35,6 +40,7 @@ PARSER	:=	$(addprefix parser/,$(PARSER))
 #	general source definitions
 SRC_COR	:=	$(PARSER)	\
 			$(OPS_COR)	\
+			$(OUT_COR)	\
 			ocp.c		\
 			loop.c		\
 			utils.c		\

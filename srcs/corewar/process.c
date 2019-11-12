@@ -6,14 +6,13 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 12:40:34 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/12 16:01:43 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/12 19:27:55 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#define FT_DISABLE_WARNINGS
-
 #include <stdlib.h>
 #include "process.h"
+#include "output.h"
 #include "arena.h"
 #include "ftlib.h"
 #include "ftio.h"
@@ -88,17 +87,8 @@ void			clear_procs(void)
 
 t_byte			move_pc(t_vm *vm, t_proc *proc, const t_ind off)
 {
-	register int i;
-
 	if (vm->verbosity & V_PC)
-	{
-		i = 0;
-		ft_printf("ADV %d (0x%04x -> 0x%04x) ",
-					off, proc->pc, proc->pc + off);
-		while (i < off)
-			ft_printf("%02x ", g_map[(proc->pc + i++) % MEM_SIZE]);
-		ft_printf("\n");
-	}
+		out_pc(proc, off);
 	proc->pc = (proc->pc + off) % MEM_SIZE;
 	return (1);
 }

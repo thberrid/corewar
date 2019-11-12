@@ -6,11 +6,13 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 07:24:26 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/12 14:53:33 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/12 19:29:34 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "process.h"
+#include "output.h"
 #include "ftlib.h"
 #include "ftio.h"
 #include "vm.h"
@@ -18,7 +20,7 @@
 t_byte		g_map[MEM_SIZE];
 t_lst		g_procs;
 
-static int	print_help(char const *const n)
+static void	print_help(char const *const n)
 {
 	ft_printf("Usage: %s [[-d | -dump] N -v N -a] <champion1.cor> <...>\n", n);
 	ft_printf(UOP, "-a", "", "Prints output from \"aff\""USGAFF);
@@ -32,7 +34,7 @@ static int	print_help(char const *const n)
 	ft_printf(UVB, "- 4", "Show operations (Params are NOT litteral ...)");
 	ft_printf(UVB, "- 8", "Show deaths");
 	ft_printf(UVB, "- 16", "Show PC movements (Except for jumps)");
-	return (0);
+	exit(0);
 }
 
 t_champ		*get_player(t_vm *vm, uint32_t pid)
@@ -63,7 +65,7 @@ int			main(int ac __attribute__((unused)), char **av)
 
 	i = 0;
 	if (ac == 1)
-		return (print_help(*av));
+		print_help(*av);
 	ft_bzero(&g_procs, sizeof(t_lst));
 	parse_args(&vm, av + 1);
 	ft_putstr("Introducing contestants...\n");

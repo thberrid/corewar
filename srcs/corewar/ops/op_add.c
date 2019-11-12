@@ -6,16 +6,32 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:04:56 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/07 21:05:54 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/12 19:13:50 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
+#include "ftmath.h"
 #include "utils.h"
+#include "ftlib.h"
 #include "ftio.h"
 #include "vm.h"
 #include "op.h"
 
-char	op_add(t_vm *vm, t_proc *proc)
+static void	out(long int pid, t_dir v1, t_dir v2, t_dir v3)
+{
+	write(1, "P     ", ft_max(4 - ft_numlen(pid), 0) + 2);
+	ft_putlnbr(pid);
+	write(1, " | add r", 8);
+	ft_putnbr(v1);
+	write(1, " r", 2);
+	ft_putnbr(v2);
+	write(1, " r", 2);
+	ft_putnbr(v3);
+	write(1, "\n", 1);
+}
+
+char		op_add(t_vm *vm, t_proc *proc)
 {
 	t_args	av;
 	t_ind	off;
@@ -23,7 +39,7 @@ char	op_add(t_vm *vm, t_proc *proc)
 	if (!(off = get_arguments(vm, proc, &av)))
 		return (proc->carry);
 	if (vm->verbosity & V_OPERATONS)
-		ft_printf("P %4ld | add r%d r%d r%d\n", proc->pid, av.v1, av.v2, av.v3);
+		out(proc->pid, av.v1, av.v2, av.v3);
 	av.v1 = proc->regs[av.v1 - 1];
 	av.v2 = proc->regs[av.v2 - 1];
 	move_pc(vm, proc, off);

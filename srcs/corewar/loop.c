@@ -6,12 +6,14 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 15:20:59 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/12 16:02:43 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/12 19:14:31 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
 #include <stdlib.h>
 #include "process.h"
+#include "output.h"
 #include "arena.h"
 #include "ftio.h"
 #include "op.h"
@@ -20,8 +22,15 @@
 static t_proc	*vm_kill(t_vm *vm, t_proc *proc)
 {
 	if (vm->verbosity & V_DEATHS)
-		ft_printf("Process %ld hasn't lived for %d cycles (CTD %ld)\n",
-			proc->pid, vm->cycles - proc->last_live, vm->cycle_to_die);
+	{
+		write(1, "Process ", 8);
+		ft_putlnbr(proc->pid);
+		write(1, " hasn't lived for ", 18);
+		ft_putnbr(vm->cycles - proc->last_live);
+		write(1, " cycles (CTD ", 13);
+		ft_putlnbr(vm->cycle_to_die);
+		write(1, ")\n", 2);
+	}
 	return (kill_process(proc));
 }
 
@@ -45,7 +54,7 @@ static void		vm_check(t_vm *vm)
 	{
 		vm->cycle_to_die -= CYCLE_DELTA;
 		if (vm->verbosity & V_CYCLES)
-			ft_printf("Cycle to die is now %ld\n", vm->cycle_to_die);
+			out_ctd(vm->cycle_to_die);
 		vm->last_dec = 0;
 	}
 	vm->total_live = 0;
@@ -86,7 +95,7 @@ void			vm_loop(t_vm *vm)
 		if (vm->cycles++ >= vm->dump && vm->dmp_bol)
 			vm_dump(DUMP_LEN * vm->dmp_bol);
 		if (vm->verbosity & V_CYCLES)
-			ft_printf("It is now cycle %d\n", vm->cycles);
+			out_cycles(vm->cycles);
 		proc = g_procs.head;
 		while (proc)
 		{

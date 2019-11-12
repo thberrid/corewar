@@ -6,16 +6,28 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:05:20 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/08 22:35:16 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/12 18:08:22 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#define FT_DISABLE_WARNINGS
-
+#include <unistd.h>
+#include "ftmath.h"
+#include "ftlib.h"
 #include "utils.h"
 #include "ftio.h"
 #include "vm.h"
 #include "op.h"
+
+static void	out(long int pid, t_dir v1, t_dir v2)
+{
+	write(1, "P     ", ft_max(4 - ft_numlen(pid), 0) + 2);
+	ft_putlnbr(pid);
+	write(1, " | ld ", 6);
+	ft_putnbr(v1);
+	write(1, " r", 2);
+	ft_putnbr(v2);
+	write(1, "\n", 1);
+}
 
 char	op_ld(t_vm *vm, t_proc *proc)
 {
@@ -26,7 +38,7 @@ char	op_ld(t_vm *vm, t_proc *proc)
 		return (proc->carry);
 	av.v1 = apply_type(proc, av.t1, 1, av.v1);
 	if (vm->verbosity & V_OPERATONS)
-		ft_printf("P %4ld | ld %d r%d\n", proc->pid, av.v1, av.v2);
+		out(proc->pid, av.v1, av.v2);
 	move_pc(vm, proc, off);
 	return (!(proc->regs[av.v2 - 1] = av.v1));
 }

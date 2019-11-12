@@ -6,16 +6,28 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:05:20 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/12 14:48:49 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/12 18:40:59 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
+#include "ftmath.h"
+#include "ftlib.h"
 #include "utils.h"
 #include "ftio.h"
 #include "vm.h"
 #include "op.h"
 
-char	op_zjmp(t_vm *vm, t_proc *proc)
+static void	out(long int pid, t_dir v1, char jmp)
+{
+	write(1, "P     ", ft_max(4 - ft_numlen(pid), 0) + 2);
+	ft_putlnbr(pid);
+	write(1, " | zjmp ", 8);
+	ft_putnbr(v1);
+	write(1, (jmp ? " OK\n" : " FAILED\n"), jmp ? 4 : 8);
+}
+
+char		op_zjmp(t_vm *vm, t_proc *proc)
 {
 	t_ind	off;
 	t_dir	val;
@@ -23,8 +35,7 @@ char	op_zjmp(t_vm *vm, t_proc *proc)
 	off = 1;
 	get_dir4(proc, &off, &val);
 	if (vm->verbosity & V_OPERATONS)
-		ft_printf("P %4ld | zjmp %d %s\n", proc->pid, val,
-			proc->carry ? "OK" : "FAILED");
+		out(proc->pid, val, proc->carry);
 	if (!proc->carry)
 		move_pc(vm, proc, off);
 	else if ((int16_t)(proc->pc = (proc->pc + (val % IDX_MOD)) % MEM_SIZE) < 0)
