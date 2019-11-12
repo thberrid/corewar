@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 15:20:59 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/09 06:27:27 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/12 14:50:04 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static void		vm_exec(t_vm *vm, t_proc *proc)
 		cur = g_map[proc->pc % MEM_SIZE];
 		if (cur <= 0 || cur > 16)
 		{
-			proc->pc = (++proc->pc % MEM_SIZE);
+			proc->pc = ((proc->pc + 1) % MEM_SIZE);
 			return ;
 		}
 		proc->op = cur;

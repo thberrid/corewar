@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 07:24:26 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/12 14:07:20 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/12 14:53:33 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int			main(int ac __attribute__((unused)), char **av)
 	ft_putstr("Introducing contestants...\n");
 	while (i < vm.psize)
 	{
-		ft_printf("* Player %u, weighing %zu bytes, \"%s\" (\"%s\") !\n",
+		ft_printf("* Player %u, weighing %lu bytes, \"%s\" (\"%s\") !\n",
 				vm.players[i].pid, vm.players[i].size,
 				vm.players[i].name, vm.players[i].comm);
 		++i;

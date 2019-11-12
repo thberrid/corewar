@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 12:40:34 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/09 04:44:39 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/12 15:53:45 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,15 @@ static uint32_t	get_next_pid(void)
 	static uint64_t	max = 0;
 
 	if (max > 0xfffffffful)
-		max = 0;
-	cur = g_procs.head;
-	while (cur)
 	{
-		if (max < cur->pid)
-			max = cur->pid;
-		cur = cur->next;
+		max = 0;
+		cur = g_procs.head;
+		while (cur)
+		{
+			if (max < cur->pid)
+				max = cur->pid;
+			cur = cur->next;
+		}
 	}
 	return (++max);
 }
@@ -43,15 +45,21 @@ t_proc			*add_process(t_ind pc, t_proc *copy)
 	if (!(new = ft_memalloc(sizeof(t_proc))))
 		exit(ft_print_error("Can't allocate process: %m.\n"));
 	if (copy)
-		*new = *copy;
+	{
+		new->carry = copy->carry;
+		new->lives = copy->lives;
+		new->last_live = copy->last_live;
+		new->time_to_wait = copy->time_to_wait;
+		ft_memcpy(new->regs, copy->regs, sizeof(t_reg) * REG_NUMBER);
+	}
 	new->prev = NULL;
 	if ((new->next = g_procs.head))
 		new->next->prev = new;
 	g_procs.head = new;
 	++g_procs.size;
 	new->op = 0;
-	new->pid = get_next_pid();
 	new->pc = pc % MEM_SIZE;
+	new->pid = get_next_pid();
 	if (pc < 0)
 		new->pc = MEM_SIZE + new->pc;
 	return (new);
@@ -64,6 +72,8 @@ t_proc			*kill_process(register t_proc *proc)
 	res = proc->next;
 	if (proc == g_procs.head)
 		g_procs.head = proc->next;
+	if (!res)
+		g_procs.tail = NULL;
 	if (proc->prev)
 		proc->prev->next = proc->next;
 	if (proc->next)

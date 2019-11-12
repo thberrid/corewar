@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:05:20 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/08 18:22:29 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/12 14:48:49 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	op_zjmp(t_vm *vm, t_proc *proc)
 			proc->carry ? "OK" : "FAILED");
 	if (!proc->carry)
 		move_pc(vm, proc, off);
-	else if ((proc->pc = (proc->pc + (val % IDX_MOD)) % MEM_SIZE) < 0)
+	else if ((int16_t)(proc->pc = (proc->pc + (val % IDX_MOD)) % MEM_SIZE) < 0)
 		proc->pc = MEM_SIZE - proc->pc;
 	return (proc->carry);
 }
