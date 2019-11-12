@@ -38,7 +38,7 @@ int		get_namecom(char *header, char *line, int fd, char n_or_c)
 	}
 	if (*line == '"')
 		return (ft_checkline(line));
-	if (sgnl(fd, &line) > 0)
+	if (gnl(fd, &line) > 0)
 	{
 		header[i] = '\n';
 		ret = get_namecom(&header[++i], line, fd, n_or_c);
@@ -89,6 +89,8 @@ int		ft_read(t_instruct_head *head, char *path, t_header *header)
 	char	*line;
 	int		ret;
 
+	if (!ft_strcmp(path, "/dev/zero"))
+		return (0);
 	if ((fd = open(path, O_RDONLY)) <= 0)
 		return (0);
 	line = NULL;

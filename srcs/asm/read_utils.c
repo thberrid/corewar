@@ -58,7 +58,7 @@ int		skip_command(char *line, int fd)
 			return (1);
 		}
 		ft_strdel(&line);
-		while (sgnl(fd, &line) > 0)
+		while (gnl(fd, &line) > 0)
 		{
 			if (ft_contains('"', line))
 			{
@@ -90,7 +90,7 @@ int		whilegnl(t_instruct_head *head, char **line, t_header *header, int fd)
 	int		rethd;
 
 	rethd = 0;
-	while (((retrn = sgnl(fd, line)) > 0) && ++head->line)
+	while (((retrn = gnl(fd, line)) > 0) && ++head->line)
 	{
 		if (!(rethd & NAME_DONE) || !(rethd & COMMENT_DONE))
 		{
