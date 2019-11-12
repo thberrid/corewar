@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 12:40:34 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/12 15:53:45 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/12 16:01:43 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,20 +21,8 @@
 
 static uint32_t	get_next_pid(void)
 {
-	t_proc			*cur;
 	static uint64_t	max = 0;
 
-	if (max > 0xfffffffful)
-	{
-		max = 0;
-		cur = g_procs.head;
-		while (cur)
-		{
-			if (max < cur->pid)
-				max = cur->pid;
-			cur = cur->next;
-		}
-	}
 	return (++max);
 }
 

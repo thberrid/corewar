@@ -23,7 +23,7 @@ char	op_zjmp(t_vm *vm, t_proc *proc)
 	off = 1;
 	get_dir4(proc, &off, &val);
 	if (vm->verbosity & V_OPERATONS)
-		ft_printf("P %4d | zjmp %d %s\n", proc->pid, val,
+		ft_printf("P %4ld | zjmp %d %s\n", proc->pid, val,
 			proc->carry ? "OK" : "FAILED");
 	if (!proc->carry)
 		move_pc(vm, proc, off);

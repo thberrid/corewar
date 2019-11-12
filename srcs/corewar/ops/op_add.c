@@ -23,7 +23,7 @@ char	op_add(t_vm *vm, t_proc *proc)
 	if (!(off = get_arguments(vm, proc, &av)))
 		return (proc->carry);
 	if (vm->verbosity & V_OPERATONS)
-		ft_printf("P %4d | add r%d r%d r%d\n", proc->pid, av.v1, av.v2, av.v3);
+		ft_printf("P %4ld | add r%d r%d r%d\n", proc->pid, av.v1, av.v2, av.v3);
 	av.v1 = proc->regs[av.v1 - 1];
 	av.v2 = proc->regs[av.v2 - 1];
 	move_pc(vm, proc, off);

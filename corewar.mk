@@ -52,8 +52,7 @@ ifeq ($(ZAZ),TRUE)
 override ZAZ_FLAG	:= -DZAZ
 endif
 
-$(COR):	CFLAGS += -O3 -I./includes/corewar -ansi -pedantic -DVM $(ZAZ_FLAG) -pg
-$(COR):	LDFLAGS += -pg
+$(COR):	CFLAGS += -O3 -I./includes/corewar -ansi -pedantic -DVM $(ZAZ_FLAG)
 
 #
 #	vm unit tests

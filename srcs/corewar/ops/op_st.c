@@ -23,7 +23,7 @@ char			op_st(t_vm *vm, t_proc *proc)
 	if (!(off = get_arguments(vm, proc, &av)))
 		return (proc->carry);
 	if (vm->verbosity & V_OPERATONS)
-		ft_printf("P %4d | st r%d %d\n", proc->pid, av.v1, av.v2);
+		ft_printf("P %4ld | st r%d %d\n", proc->pid, av.v1, av.v2);
 	av.v1 = apply_type(proc, av.t1, 1, av.v1);
 	if (av.t2 == REG_CODE)
 		proc->regs[av.v2 - 1] = av.v1;

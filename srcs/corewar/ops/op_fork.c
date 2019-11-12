@@ -23,7 +23,7 @@ char	op_fork(t_vm *vm, t_proc *proc)
 	off = 1;
 	get_dir2(proc, &off, &val);
 	if (vm->verbosity & V_OPERATONS)
-		ft_printf("P %4d | fork %d (%d)\n", proc->pid, val,
+		ft_printf("P %4ld | fork %d (%d)\n", proc->pid, val,
 		proc->pc + (val % IDX_MOD));
 	add_process(proc->pc + (val % IDX_MOD), proc);
 	move_pc(vm, proc, 3);

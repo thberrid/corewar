@@ -23,7 +23,7 @@ char	op_lfork(t_vm *vm, t_proc *proc)
 	off = 1;
 	get_dir2(proc, &off, &val);
 	if (vm->verbosity & V_OPERATONS)
-		ft_printf("P %4d | lfork %d (%d)\n", proc->pid, val, proc->pc + val);
+		ft_printf("P %4ld | lfork %d (%d)\n", proc->pid, val, proc->pc + val);
 	val %= MEM_SIZE;
 	add_process(proc->pc + val, proc);
 	move_pc(vm, proc, 3);

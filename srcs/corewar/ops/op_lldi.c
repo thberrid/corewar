@@ -28,7 +28,7 @@ char	op_lldi(t_vm *vm, t_proc *proc)
 	av.v2 = apply_type(proc, av.t2, 1, av.v2);
 	if (vm->verbosity & V_OPERATONS)
 	{
-		ft_printf("P %4d | lldi %d %d r%d\n", proc->pid, av.v1, av.v2, av.v3);
+		ft_printf("P %4ld | lldi %d %d r%d\n", proc->pid, av.v1, av.v2, av.v3);
 		ft_printf("       | -> load from %d + %d = %d (with pc %d)\n",
 			av.v1, av.v2, (av.v1 + av.v2), proc->pc + av.v1 + av.v2);
 	}

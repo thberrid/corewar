@@ -25,7 +25,7 @@ char	op_or(t_vm *vm, t_proc *proc)
 	av.v1 = apply_type(proc, av.t1, 1, av.v1);
 	av.v2 = apply_type(proc, av.t2, 1, av.v2);
 	if (vm->verbosity & V_OPERATONS)
-		ft_printf("P %4d | or %d %d r%d\n", proc->pid, av.v1, av.v2, av.v3);
+		ft_printf("P %4ld | or %d %d r%d\n", proc->pid, av.v1, av.v2, av.v3);
 	move_pc(vm, proc, off);
 	return (!(proc->regs[av.v3 - 1] = (av.v1 | av.v2)));
 }

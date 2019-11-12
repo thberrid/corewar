@@ -27,7 +27,7 @@ char	op_sti(t_vm *vm, t_proc *proc)
 	av.v3 = apply_type(proc, av.t3, 1, av.v3);
 	if (vm->verbosity & V_OPERATONS)
 	{
-		ft_printf("P %4d | sti r%d %d %d\n", proc->pid, av.v1, av.v2, av.v3);
+		ft_printf("P %4ld | sti r%d %d %d\n", proc->pid, av.v1, av.v2, av.v3);
 		ft_printf("       | -> store to %d + %d = %d (with pc and mod %d)\n",
 			av.v2, av.v3, (av.v2 + av.v3),
 			(proc->pc + ((av.v2 + av.v3) % IDX_MOD)) % MEM_SIZE);

@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 15:20:59 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/12 14:50:04 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/12 16:02:43 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 static t_proc	*vm_kill(t_vm *vm, t_proc *proc)
 {
 	if (vm->verbosity & V_DEATHS)
-		ft_printf("Process %d hasn't lived for %d cycles (CTD %ld)\n",
+		ft_printf("Process %ld hasn't lived for %d cycles (CTD %ld)\n",
 			proc->pid, vm->cycles - proc->last_live, vm->cycle_to_die);
 	return (kill_process(proc));
 }

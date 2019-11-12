@@ -32,7 +32,7 @@ char			op_lld(t_vm *vm, t_proc *proc)
 	else
 		av.v1 = apply_type(proc, av.t1, 0, av.v1);
 	if (vm->verbosity & V_OPERATONS)
-		ft_printf("P %4d | lld %d r%d\n", proc->pid, av.v1, av.v2);
+		ft_printf("P %4ld | lld %d r%d\n", proc->pid, av.v1, av.v2);
 	move_pc(vm, proc, off);
 	return (!(proc->regs[av.v2 - 1] = av.v1));
 }

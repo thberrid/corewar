@@ -27,7 +27,7 @@ char	op_live(t_vm *vm, t_proc *proc)
 	proc->last_live = vm->cycles;
 	get_dir4(proc, &off, &val);
 	if (vm->verbosity & V_OPERATONS)
-		ft_printf("P %4d | live %d\n", proc->pid, val);
+		ft_printf("P %4ld | live %d\n", proc->pid, val);
 	if ((pl = get_player(vm, -val)) && (vm->verbosity & V_LIVES))
 	{
 		ft_printf(LIVMSG, pl->pid, pl->name);
