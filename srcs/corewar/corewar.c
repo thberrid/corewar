@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 07:24:26 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/12 22:11:25 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/13 00:31:13 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,11 @@ int			main(int ac __attribute__((unused)), char **av __attribute__((unused)))
 				vm.players[i].name, vm.players[i].comm);
 		++i;
 	}
-	vm_loop(&vm);
+	#ifdef GRAPHIC
+		graphic_loop(&vm);
+	#else
+		vm_loop(&vm);
+	#endif
 	ft_printf(WINMSG, vm.winer->pid, vm.winer->name);
 	return (0);
 }

@@ -37,10 +37,29 @@ PARSER	:=	\
 			opt_verbosity.c
 PARSER	:=	$(addprefix parser/,$(PARSER))
 
+##
+##	Graphic (C++) part
+##
+ifdef GRAPHIC
+CPPFLAGS := $(shell sdl2-config --cflags) -DGRAPHIC -I./includes/graphic
+
+$(COR):	LDFLAGS += $(shell sdl2-config --libs)
+
+override GRAPHIC	:= \
+					graphic_loop.cpp
+override GRAPHIC	:= $(addprefix graphic/,$(GRAPHIC))
+override LINKER		:=	g++ -o
+
+$(OBJD)/%.o:	$(SRCD)/%.cpp
+	@mkdir -p $(dir $@)
+	g++ $(CPPFLAGS) -o $@ -c $<
+endif
+
 #	general source definitions
 SRC_COR	:=	$(PARSER)	\
 			$(OPS_COR)	\
 			$(OUT_COR)	\
+			$(GRAPHIC)	\
 			ocp.c		\
 			loop.c		\
 			utils.c		\

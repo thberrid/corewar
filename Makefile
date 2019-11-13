@@ -6,7 +6,7 @@
 #    By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/15 06:46:14 by abaurens          #+#    #+#              #
-#    Updated: 2019/11/09 05:55:40 by abaurens         ###   ########.fr        #
+#    Updated: 2019/11/13 00:39:23 by abaurens         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,8 @@ include $(ASM).mk
 
 SRC_COR	:=	$(addprefix $(COR)/,$(SRC_COR)) $(SRC_COM)
 SRC_ASM	:=	$(addprefix $(ASM)/,$(SRC_ASM)) $(SRC_COM)
-OBJ_COR	:=	$(addprefix $(OBJD)/,$(SRC_COR:.c=.o))
+OBJ_COR	:=	$(SRC_COR:.cpp=.o)
+OBJ_COR	:=	$(addprefix $(OBJD)/,$(OBJ_COR:.c=.o))
 OBJ_ASM	:=	$(addprefix $(OBJD)/,$(SRC_ASM:.c=.o))
 SRC_COR	:=	$(addprefix $(SRCD)/,$(SRC_COR))
 SRC_ASM	:=	$(addprefix $(SRCD)/,$(SRC_ASM))

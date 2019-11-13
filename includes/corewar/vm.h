@@ -6,12 +6,16 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 09:47:24 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/12 19:13:19 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/13 00:54:15 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VM_H
 # define VM_H
+
+#  ifdef __cplusplus
+extern "C" {
+#  endif
 
 # include <inttypes.h>
 # include <string.h>
@@ -58,7 +62,13 @@ typedef struct	s_vm
 	t_champ		*winer;
 }				t_vm;
 
+
+# ifndef GRAPHIC
 void			vm_loop(t_vm *vm);
+# else
+void			graphic_loop(t_vm *vm);
+# endif
+
 void			parse_args(t_vm *vm, char **av);
 void			destruct(void) __attribute__((destructor));
 
@@ -69,5 +79,9 @@ t_byte			check_ocp(t_byte ocp, uint32_t opid, t_ind *off);
 t_ind			get_arg_size(t_byte ocp, uint32_t opid);
 
 void			destruct(void) __attribute__((destructor));
+
+# ifdef __cplusplus
+}
+# endif
 
 #endif

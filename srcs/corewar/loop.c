@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 15:20:59 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/12 19:14:31 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/13 00:24:57 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,24 @@ static void		vm_exec(t_vm *vm, t_proc *proc)
 	}
 }
 
-void			vm_loop(t_vm *vm)
+void			cycle(t_vm *vm)
 {
 	t_proc		*proc;
+
+	if (vm->cycles++ >= vm->dump && vm->dmp_bol)
+		vm_dump(DUMP_LEN * vm->dmp_bol);
+	if (vm->verbosity & V_CYCLES)
+		out_cycles(vm->cycles);
+	proc = g_procs.head;
+	while (proc)
+	{
+		vm_exec(vm, proc);
+		proc = proc->next;
+	}
+}
+
+void			vm_loop(t_vm *vm)
+{
 	int32_t		last_check;
 
 	vm->cycles = 0;
@@ -92,16 +107,7 @@ void			vm_loop(t_vm *vm)
 	vm->cycle_to_die = CYCLE_TO_DIE;
 	while (g_procs.size)
 	{
-		if (vm->cycles++ >= vm->dump && vm->dmp_bol)
-			vm_dump(DUMP_LEN * vm->dmp_bol);
-		if (vm->verbosity & V_CYCLES)
-			out_cycles(vm->cycles);
-		proc = g_procs.head;
-		while (proc)
-		{
-			vm_exec(vm, proc);
-			proc = proc->next;
-		}
+		cycle(vm);
 		if (--last_check <= 0)
 		{
 			vm_check(vm);
