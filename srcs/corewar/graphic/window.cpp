@@ -6,11 +6,16 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 14:37:53 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/13 18:29:46 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/13 23:36:38 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#define GL_SILENCE_DEPRECATION
+
 #include <cstdlib>
+#include <GL/glew.h>
+#include <SDL2/SDL.h>
+#include "shader.hpp"
 #include "window.hpp"
 
 window::window(const std::string &ti, int w, int h) : title(ti), width(w), height(h), run(true)
@@ -27,6 +32,7 @@ window::window(const std::string &ti, int w, int h) : title(ti), width(w), heigh
 	}
 
 	// Set OpenGL version
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
 
@@ -55,6 +61,7 @@ window::window(const std::string &ti, int w, int h) : title(ti), width(w), heigh
 		exit(1);
 	}
 
+	glewExperimental = GL_TRUE;
 	if ((glew_status = glewInit()) != GLEW_OK)
 	{
 		std::cerr << "eror: Can't initialize GLEW: "
@@ -73,28 +80,54 @@ window::~window(void)
 	SDL_Quit();
 }
 
+static const GLfloat g_vertex_buffer_data[] = {
+	-1.0f, -1.0f,
+	1.0f, -1.0f,
+	0.0f,  1.0f,
+};
+
 void	window::loop(void)
 {
-	float vertices[] = {0.0, 0.0,   0.5, 0.0,   0.0, 0.5,      // Triangle 1
-					-0.8, -0.8,   -0.3, -0.8,   -0.8, -0.3};   // Triangle 2
 
+	GLuint VertexArrayID;
+	glGenVertexArrays(1, &VertexArrayID);
+	glBindVertexArray(VertexArrayID);
+
+	// This will identify our vertex buffer
+	GLuint vertexbuffer;
+
+	// Generate 1 buffer, put the resulting identifier in vertexbuffer
+	glGenBuffers(1, &vertexbuffer);
+
+	// The following commands will talk about our 'vertexbuffer' buffer
+	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+
+	// Give our vertices to OpenGL.
+	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
+
+	GLuint programID = LoadShaders("/Users/abaurens/Desktop/Workspace/Algo/corewar/shaders/main.vert", "/Users/abaurens/Desktop/Workspace/Algo/corewar/shaders/main.frag");
+	(void)programID;
+	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
 	while (this->run)
 	{
+		// Recupere un evenement
 		SDL_PollEvent(&this->events);
 		if (this->events.window.event == SDL_WINDOWEVENT_CLOSE)
 			this->run = false;
-
 		// Nettoyage de l'écran
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		// On remplie puis on active le tableau Vertex Attrib 0
-		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, vertices);
+		// Utilise le shader
+		glUseProgram(programID);
+
+		// 1rst attribute buffer : vertices
 		glEnableVertexAttribArray(0);
+		// bind le vbo 'vertexbuffer'
+		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
-		// On affiche le triangle
-		glDrawArrays(GL_TRIANGLES, 0, 6);
-
-		// On désactive le tableau Vertex Attrib puisque l'on n'en a plus besoin
+		// Draw the triangle !
+		glDrawArrays(GL_TRIANGLES, 0, 3);
 		glDisableVertexAttribArray(0);
 
 		// Actualisation de la fenêtre

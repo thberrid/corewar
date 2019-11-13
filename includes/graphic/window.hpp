@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 14:38:10 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/13 18:29:57 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/13 20:57:06 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 #include <string>
 #include <iostream>
-#include <GL/glew.h>
 #include <SDL2/SDL.h>
 #include "viewer.h"
 

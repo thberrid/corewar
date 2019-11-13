@@ -55,7 +55,17 @@ endif
 #	Graphic (C++) part
 #
 ifdef G
-ifneq ($(shell uname), Darwin)
+ifeq ($(shell uname), Darwin)
+
+GL	:=	-framework OpenGL
+$(COR):	CPPFLAGS	+= -I ~/.brew/include
+$(COR):	LDFLAGS +=	-L ~/.brew/lib
+
+else
+
+GL	:=	-lGL
+
+endif
 
 override GFLAG := -DGRAPHIC=1
 
@@ -64,10 +74,10 @@ CPPFLAGS	+= -I./$(dir $(LIB))includes $(GFLAG) -O3 -I./includes/corewar
 CPPFLAGS	+= $(shell sdl2-config --cflags) -I./includes/graphic
 
 $(COR):	CFLAGS += $(GFLAG)
-$(COR):	LDFLAGS +=
-$(COR):	LDFLAGS += $(shell sdl2-config --libs) -lGL -lGLEW
+$(COR):	LDFLAGS += $(shell sdl2-config --libs) $(GL) -lGLEW
 
 CLASS	:=	\
+			shader	\
 			window
 CLASS	:=	$(addsuffix .cpp, $(CLASS))
 
@@ -81,7 +91,6 @@ $(OBJD)/%.o:	$(SRCD)/%.cpp
 	@mkdir -p $(dir $@)
 	g++ $(CPPFLAGS) -o $@ -c $<
 
-endif
 endif
 
 $(COR):	CFLAGS += -O3 -I./includes/corewar -ansi -pedantic -DVM $(ZAZ_FLAG)

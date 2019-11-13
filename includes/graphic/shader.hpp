@@ -1,22 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   graphic_loop.cpp                                   :+:      :+:    :+:   */
+/*   shader.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/13 00:25:16 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/13 19:28:04 by abaurens         ###   ########.fr       */
+/*   Created: 2019/11/13 21:42:08 by abaurens          #+#    #+#             */
+/*   Updated: 2019/11/13 21:42:52 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <iostream>
-#include "window.hpp"
-#include "viewer.h"
+#ifndef SHADER_HPP
+# define SHADER_HPP
 
-char	graphic_loop(t_vm *vm __attribute__((unused)))
-{
-	window	win("Corewar", 1280, 720);
-	win.loop();
-	return (0);
-}
+# include <GL/glew.h>
+
+GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path);
+
+#endif
