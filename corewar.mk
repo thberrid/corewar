@@ -37,6 +37,11 @@ PARSER	:=	\
 			opt_verbosity.c
 PARSER	:=	$(addprefix parser/,$(PARSER))
 
+#
+#	REMOVE THIS BEFORE TURN-IN
+#
+override ZAZ ?= TRUE
+override GRAPHIC	?= TRUE
 
 #
 #	VM compilation specific flags
@@ -60,7 +65,12 @@ CPPFLAGS	+= $(shell sdl2-config --cflags) -I./includes/graphic
 $(COR):	CFLAGS += $(GFLAG)
 $(COR):	LDFLAGS += $(shell sdl2-config --libs) -lGL -lGLEW
 
+CLASS	:=	\
+			window
+CLASS	:=	$(addsuffix .cpp, $(CLASS))
+
 override GRAPHIC	:= \
+					$(CLASS)	\
 					graphic_loop.cpp
 override GRAPHIC	:= $(addprefix graphic/,$(GRAPHIC))
 override LINKER		:=	g++ -o
@@ -77,7 +87,6 @@ $(COR):	CFLAGS += -O3 -I./includes/corewar -ansi -pedantic -DVM $(ZAZ_FLAG)
 SRC_COR	:=	$(PARSER)	\
 			$(OPS_COR)	\
 			$(OUT_COR)	\
-			$(GRAPHIC)	\
 			ocp.c		\
 			loop.c		\
 			utils.c		\
@@ -85,7 +94,8 @@ SRC_COR	:=	$(PARSER)	\
 			corewar.c	\
 			process.c	\
 			arguments.c	\
-			cmd_parse.c
+			cmd_parse.c	\
+			$(GRAPHIC)
 
 #
 #	vm unit tests
