@@ -37,13 +37,28 @@ PARSER	:=	\
 			opt_verbosity.c
 PARSER	:=	$(addprefix parser/,$(PARSER))
 
-##
-##	Graphic (C++) part
-##
-ifdef GRAPHIC
-CPPFLAGS := $(shell sdl2-config --cflags) -DGRAPHIC -I./includes/graphic
 
-$(COR):	LDFLAGS += $(shell sdl2-config --libs)
+#
+#	VM compilation specific flags
+#
+override ZAZ ?= FALSE
+ifeq ($(ZAZ),TRUE)
+override ZAZ_FLAG	:= -DZAZ
+endif
+
+#
+#	Graphic (C++) part
+#
+ifdef GRAPHIC
+
+override GFLAG := -DGRAPHIC=1
+
+CPPFLAGS	:= -I./includes -MMD -MP -W -Wall -Wextra -Werror
+CPPFLAGS	+= -I./$(dir $(LIB))includes $(GFLAG) -O3 -I./includes/corewar
+CPPFLAGS	+= $(shell sdl2-config --cflags) -I./includes/graphic
+
+$(COR):	CFLAGS += $(GFLAG)
+$(COR):	LDFLAGS += $(shell sdl2-config --libs) -lGL -lGLEW
 
 override GRAPHIC	:= \
 					graphic_loop.cpp
@@ -53,7 +68,10 @@ override LINKER		:=	g++ -o
 $(OBJD)/%.o:	$(SRCD)/%.cpp
 	@mkdir -p $(dir $@)
 	g++ $(CPPFLAGS) -o $@ -c $<
+
 endif
+
+$(COR):	CFLAGS += -O3 -I./includes/corewar -ansi -pedantic -DVM $(ZAZ_FLAG)
 
 #	general source definitions
 SRC_COR	:=	$(PARSER)	\
@@ -68,16 +86,6 @@ SRC_COR	:=	$(PARSER)	\
 			process.c	\
 			arguments.c	\
 			cmd_parse.c
-
-#
-#	vm compilation specific flags
-#
-override ZAZ ?= FALSE
-ifeq ($(ZAZ),TRUE)
-override ZAZ_FLAG	:= -DZAZ
-endif
-
-$(COR):	CFLAGS += -O3 -I./includes/corewar -ansi -pedantic -DVM $(ZAZ_FLAG)
 
 #
 #	vm unit tests

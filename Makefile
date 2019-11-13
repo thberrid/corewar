@@ -6,7 +6,7 @@
 #    By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/15 06:46:14 by abaurens          #+#    #+#              #
-#    Updated: 2019/11/13 00:39:23 by abaurens         ###   ########.fr        #
+#    Updated: 2019/11/13 01:42:04 by abaurens         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,14 @@ OBJD	:=	objs
 SRC_COM	:=	$(addprefix ops/,$(OPS))\
 			endianes.c
 
+override CFLAGS	:=	-I./includes -MMD -MP -W -Wall -Wextra -Werror
+
+#
+#	libft
+#
+override CFLAGS	+= -I./$(dir $(LIB))includes
+override LDFLAGS	:=	-L./$(dir $(LIB)) -lft
+
 #	Virtual Machine
 include $(COR).mk
 
@@ -44,13 +52,6 @@ SRC_COR	:=	$(addprefix $(SRCD)/,$(SRC_COR))
 SRC_ASM	:=	$(addprefix $(SRCD)/,$(SRC_ASM))
 DEP		:=	$(OBJ_ASM:.o=.d) $(OBJ_COR:.o=.d)
 
-override CFLAGS	:=	-I./includes -MMD -MP -W -Wall -Wextra -Werror
-
-#
-#	libft
-#
-override CFLAGS	:=	$(CFLAGS) -I./$(dir $(LIB))includes
-LDFLAGS	:=	-L./$(dir $(LIB)) -lft
 
 all:	$(ASM) $(COR)
 

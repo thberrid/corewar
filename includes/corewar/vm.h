@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 09:47:24 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/13 00:54:15 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/13 02:23:07 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,10 @@
 #  ifdef __cplusplus
 extern "C" {
 #  endif
+
+# ifndef GRAPHIC
+#  define GRAPHIC	0
+# endif
 
 # include <inttypes.h>
 # include <string.h>
@@ -62,12 +66,8 @@ typedef struct	s_vm
 	t_champ		*winer;
 }				t_vm;
 
-
-# ifndef GRAPHIC
-void			vm_loop(t_vm *vm);
-# else
-void			graphic_loop(t_vm *vm);
-# endif
+char			vm_loop(t_vm *vm);
+char			graphic_loop(t_vm *vm);
 
 void			parse_args(t_vm *vm, char **av);
 void			destruct(void) __attribute__((destructor));

@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 15:20:59 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/13 00:24:57 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/13 02:21:54 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void			cycle(t_vm *vm)
 	}
 }
 
-void			vm_loop(t_vm *vm)
+char			vm_loop(t_vm *vm)
 {
 	int32_t		last_check;
 
@@ -114,4 +114,5 @@ void			vm_loop(t_vm *vm)
 			last_check = vm->cycle_to_die;
 		}
 	}
+	return (0);
 }
