@@ -6,10 +6,11 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 14:37:53 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/13 15:38:31 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/13 15:57:13 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <cstdlib>
 #include "window.hpp"
 
 window::window(const std::string &ti, int w, int h) : title(ti), width(w), height(h), run(true)
@@ -19,10 +20,10 @@ window::window(const std::string &ti, int w, int h) : title(ti), width(w), heigh
 
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
-		err = "can't initialize SDL: ";
-		err += SDL_GetError();
+		std::cerr << "error: can't initialize SDL: "
+					<< SDL_GetError() << std::endl;
 		SDL_Quit();
-		throw (err);
+		exit(1);
 	}
 
 	// Set OpenGL version
@@ -37,30 +38,30 @@ window::window(const std::string &ti, int w, int h) : title(ti), width(w), heigh
 	this->win = SDL_CreateWindow(this->title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, this->width, this->height, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
 	if (!this->win)
 	{
-		err = "Can't create window: ";
-		err += SDL_GetError();
+		std::cerr << "error: Can't create window: "
+			<< SDL_GetError() << std::endl;
 		SDL_Quit();
-		throw (err);
+		exit(1);
 	}
 
 	//	Create OpenGL context
 	if (!(this->context = SDL_GL_CreateContext(this->win)))
 	{
-		err = "Can't create OpenGL context: ";
-		err += SDL_GetError();
+		std::cerr << "Can't create OpenGL context: "
+				<< SDL_GetError() << std::endl;
 		SDL_DestroyWindow(this->win);
 		SDL_Quit();
-		throw (err);
+		exit(1);
 	}
 
 	if ((glew_status = glewInit()) != GLEW_OK)
 	{
-		err = "can't initialize GLEW: ";
-		err += (const char *)glewGetErrorString(glew_status);
+		std::cerr << "eror: Can't initialize GLEW: "
+				<< glewGetErrorString(glew_status) << std::endl;
 		SDL_GL_DeleteContext(this->context);
 		SDL_DestroyWindow(this->win);
 		SDL_Quit();
-		throw (err);
+		exit(1);
 	}
 }
 

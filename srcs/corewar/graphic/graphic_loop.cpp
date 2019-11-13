@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 00:25:16 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/13 15:38:22 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/13 15:57:01 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,14 +70,7 @@ void			quit_sdl(SDL_Window *window, SDL_GLContext gl_context)
 
 char			graphic_loop(t_vm *vm __attribute__((unused)))
 {
-	window	*win;
-	try {
-		win = new window("Corewar", 1280, 720);
-	} catch (std::string e) {
-		std::cerr << "\e[31merror\e[0m: " << e << std::endl;
-		return (1);
-	}
-	win->loop();
-	delete (win);
+	window	win("Corewar", 1280, 720);
+	win.loop();
 	return (0);
 }
