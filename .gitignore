@@ -18,3 +18,9 @@ tests/*
 *.d
 *.cor
 .clang_complete
+
+\.vscode/
+
+test\.mk
+
+zork\.s
