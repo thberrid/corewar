@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 14:37:53 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/13 15:57:13 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/13 18:29:46 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ window::window(const std::string &ti, int w, int h) : title(ti), width(w), heigh
 		SDL_Quit();
 		exit(1);
 	}
+
 
 	//	Create OpenGL context
 	if (!(this->context = SDL_GL_CreateContext(this->win)))

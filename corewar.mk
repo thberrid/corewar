@@ -40,8 +40,8 @@ PARSER	:=	$(addprefix parser/,$(PARSER))
 #
 #	REMOVE THIS BEFORE TURN-IN
 #
-override ZAZ ?= TRUE
-override GRAPHIC	?= TRUE
+override ZAZ	?= TRUE
+override G		?= TRUE
 
 #
 #	VM compilation specific flags
@@ -54,7 +54,8 @@ endif
 #
 #	Graphic (C++) part
 #
-ifdef GRAPHIC
+ifdef G
+ifneq ($(shell uname), Darwin)
 
 override GFLAG := -DGRAPHIC=1
 
@@ -63,22 +64,24 @@ CPPFLAGS	+= -I./$(dir $(LIB))includes $(GFLAG) -O3 -I./includes/corewar
 CPPFLAGS	+= $(shell sdl2-config --cflags) -I./includes/graphic
 
 $(COR):	CFLAGS += $(GFLAG)
+$(COR):	LDFLAGS +=
 $(COR):	LDFLAGS += $(shell sdl2-config --libs) -lGL -lGLEW
 
 CLASS	:=	\
 			window
 CLASS	:=	$(addsuffix .cpp, $(CLASS))
 
-override GRAPHIC	:= \
-					$(CLASS)	\
-					graphic_loop.cpp
-override GRAPHIC	:= $(addprefix graphic/,$(GRAPHIC))
+GRAPHIC	:= \
+		$(CLASS)	\
+		graphic_loop.cpp
+GRAPHIC	:= $(addprefix graphic/,$(GRAPHIC))
 override LINKER		:=	g++ -o
 
 $(OBJD)/%.o:	$(SRCD)/%.cpp
 	@mkdir -p $(dir $@)
 	g++ $(CPPFLAGS) -o $@ -c $<
 
+endif
 endif
 
 $(COR):	CFLAGS += -O3 -I./includes/corewar -ansi -pedantic -DVM $(ZAZ_FLAG)

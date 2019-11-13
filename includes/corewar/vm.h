@@ -6,18 +6,19 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 09:47:24 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/13 02:23:07 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/13 18:22:37 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VM_H
 # define VM_H
 
-#  ifdef __cplusplus
-extern "C" {
-#  endif
-
 # ifndef GRAPHIC
+#  define GRAPHIC	0
+# endif
+
+# ifdef __MACOSX__
+#  undef GRAPHIC
 #  define GRAPHIC	0
 # endif
 
@@ -79,9 +80,5 @@ t_byte			check_ocp(t_byte ocp, uint32_t opid, t_ind *off);
 t_ind			get_arg_size(t_byte ocp, uint32_t opid);
 
 void			destruct(void) __attribute__((destructor));
-
-# ifdef __cplusplus
-}
-# endif
 
 #endif
