@@ -16,7 +16,7 @@
 la dernière paire de bits est vide  
 00 (P1), 00 (P2), 00 (P3), 00 (empty)
 Par exemple : 
-`r1, 23, %label` a pour octet d'encodage `01``11``10``00` soit `0x78`
+`r1, 23, %label` a pour octet d'encodage `01` `11` `10` `00` soit `0x78`
 
 **note** : l'octet d'encodage est optionnel. Sa présence est indiquée par la variable booléenne t_op.ocp
 
