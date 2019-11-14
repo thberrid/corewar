@@ -6,12 +6,14 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 14:37:53 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/14 07:02:20 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/14 08:52:50 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <map>
 #include <chrono>
 #include <cstdlib>
+#include <sstream>
 #include <GL/glew.h>
 #include <SDL2/SDL.h>
 #include <glm/matrix.hpp>
@@ -21,6 +23,9 @@
 #include "window.hpp"
 
 using namespace std::chrono_literals;
+
+std::map<int, bool>	keys;
+std::map<int, bool>	btns;
 
 constexpr std::chrono::seconds		secstep(1s);
 constexpr std::chrono::nanoseconds	timestep(16666666ns);
@@ -145,8 +150,10 @@ void	window::events()
 	{
 		if (event.window.event == SDL_WINDOWEVENT_CLOSE)
 			this->run = false;
-		else
-			cam.move(event);
+		if (event.type == SDL_KEYUP || event.type == SDL_KEYDOWN)
+			keys[event.key.keysym.sym] = (event.type == SDL_KEYDOWN);
+		if (event.type == SDL_MOUSEBUTTONUP || event.type == SDL_MOUSEBUTTONDOWN)
+			btns[event.button.button] = (event.type == SDL_MOUSEBUTTONDOWN);
 	}
 }
 
@@ -154,6 +161,7 @@ float	i(0.0);
 
 void	window::update()
 {
+	cam.update();
 	i += 0.005;
 }
 
@@ -175,7 +183,7 @@ void	window::render()
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, vboId);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	
+
 	glEnableVertexAttribArray(1);
 	glBindBuffer(GL_ARRAY_BUFFER, cboId);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
@@ -202,11 +210,13 @@ void	window::loop(void)
 		time_start = clock::now();
 		sec = std::chrono::duration_cast<std::chrono::seconds>(time_start - sec_start);
 		lag += std::chrono::duration_cast<std::chrono::nanoseconds>(delta_time);
-		
+
 		events();
 		if (sec >= secstep)
 		{
-			std::cout << "[tps: " << tps << " | fps: " << fps << "]" << std::endl;
+			std::stringstream ss;
+			ss << title << " - [tps: " << tps << " | fps: " << fps << "]";
+			SDL_SetWindowTitle(win, ss.str().c_str());
 			sec_start = clock::now();
 			fps = 0;
 			tps = 0;
