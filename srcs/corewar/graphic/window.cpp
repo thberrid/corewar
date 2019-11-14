@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 14:37:53 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/14 01:05:23 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/14 01:49:14 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,10 +145,8 @@ constexpr std::chrono::nanoseconds timestep(16ms);
 
 void	window::loop(void)
 {
-	bool	loop;
 	using	clock = std::chrono::high_resolution_clock;
 
-	loop = true;
 	std::chrono::nanoseconds lag(0ns);
 	auto time_start = clock::now();
 
