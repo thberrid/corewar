@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 14:37:53 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/13 23:36:38 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/14 01:05:23 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ window::window(const std::string &ti, int w, int h) : title(ti), width(w), heigh
 	std::string	err;
 	GLenum		glew_status;
 
+	(void)this->events;
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
 		std::cerr << "error: can't initialize SDL: "
@@ -80,15 +81,15 @@ window::~window(void)
 	SDL_Quit();
 }
 
-static const GLfloat g_vertex_buffer_data[] = {
+
+static const GLfloat g_vertex_buffer_data[] __attribute__((unused)) = {
 	-1.0f, -1.0f,
 	1.0f, -1.0f,
 	0.0f,  1.0f,
 };
-
+/*
 void	window::loop(void)
 {
-
 	GLuint VertexArrayID;
 	glGenVertexArrays(1, &VertexArrayID);
 	glBindVertexArray(VertexArrayID);
@@ -106,7 +107,6 @@ void	window::loop(void)
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
 
 	GLuint programID = LoadShaders("/Users/abaurens/Desktop/Workspace/Algo/corewar/shaders/main.vert", "/Users/abaurens/Desktop/Workspace/Algo/corewar/shaders/main.frag");
-	(void)programID;
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
 	while (this->run)
 	{
@@ -131,6 +131,43 @@ void	window::loop(void)
 		glDisableVertexAttribArray(0);
 
 		// Actualisation de la fenêtre
+		SDL_GL_SwapWindow(this->win);
+	}
+}
+*/
+
+
+#include <chrono>
+
+using namespace std::chrono_literals;
+
+constexpr std::chrono::nanoseconds timestep(16ms);
+
+void	window::loop(void)
+{
+	bool	loop;
+	using	clock = std::chrono::high_resolution_clock;
+
+	loop = true;
+	std::chrono::nanoseconds lag(0ns);
+	auto time_start = clock::now();
+
+	while (this->run)
+	{
+		auto delta_time = clock::now() - time_start;
+		time_start = clock::now();
+		lag += std::chrono::duration_cast<std::chrono::nanoseconds>(delta_time);
+
+		SDL_PollEvent(&this->events);
+		if (this->events.window.event == SDL_WINDOWEVENT_CLOSE)
+			this->run = false;
+		while (lag >= timestep)
+		{
+			lag -= timestep;
+			// Update
+		}
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		// Render
 		SDL_GL_SwapWindow(this->win);
 	}
 }

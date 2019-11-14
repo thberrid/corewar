@@ -69,7 +69,7 @@ endif
 
 override GFLAG := -DGRAPHIC=1
 
-CPPFLAGS	:= -I./includes -MMD -MP -W -Wall -Wextra -Werror
+CPPFLAGS	:= -I./includes -MMD -MP -W -Wall -Wextra -Werror -std=c++14
 CPPFLAGS	+= -I./$(dir $(LIB))includes $(GFLAG) -O3 -I./includes/corewar
 CPPFLAGS	+= $(shell sdl2-config --cflags) -I./includes/graphic
 
