@@ -6,24 +6,27 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 14:37:53 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/14 01:49:14 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/14 02:38:15 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#define GL_SILENCE_DEPRECATION
-
+#include <chrono>
 #include <cstdlib>
 #include <GL/glew.h>
 #include <SDL2/SDL.h>
 #include "shader.hpp"
 #include "window.hpp"
 
+using namespace std::chrono_literals;
+
+constexpr std::chrono::seconds		secstep(1s);
+constexpr std::chrono::nanoseconds	timestep(16666666ns);
+
 window::window(const std::string &ti, int w, int h) : title(ti), width(w), height(h), run(true)
 {
 	std::string	err;
 	GLenum		glew_status;
 
-	(void)this->events;
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
 		std::cerr << "error: can't initialize SDL: "
@@ -81,91 +84,89 @@ window::~window(void)
 	SDL_Quit();
 }
 
-
-static const GLfloat g_vertex_buffer_data[] __attribute__((unused)) = {
-	-1.0f, -1.0f,
-	1.0f, -1.0f,
-	0.0f,  1.0f,
-};
-/*
-void	window::loop(void)
+void	window::init()
 {
-	GLuint VertexArrayID;
-	glGenVertexArrays(1, &VertexArrayID);
-	glBindVertexArray(VertexArrayID);
-
-	// This will identify our vertex buffer
-	GLuint vertexbuffer;
+	glGenVertexArrays(1, &vaoId);
+	glBindVertexArray(vaoId);
 
 	// Generate 1 buffer, put the resulting identifier in vertexbuffer
-	glGenBuffers(1, &vertexbuffer);
+	glGenBuffers(1, &vboId);
 
 	// The following commands will talk about our 'vertexbuffer' buffer
-	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, vboId);
 
+	// TODO: remove this piece of shit !
+	const GLfloat vertex[] = {
+		-1.0f, -1.0f,
+		1.0f, -1.0f,
+		0.0f,  1.0f,
+	};
 	// Give our vertices to OpenGL.
-	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertex), vertex, GL_STATIC_DRAW);
 
-	GLuint programID = LoadShaders("/Users/abaurens/Desktop/Workspace/Algo/corewar/shaders/main.vert", "/Users/abaurens/Desktop/Workspace/Algo/corewar/shaders/main.frag");
-	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
-	while (this->run)
+	shaderId = LoadShaders("shaders/main.vert", "shaders/main.frag");
+}
+
+void	window::events()
+{
+	SDL_Event	events;
+
+	while (SDL_PollEvent(&events))
 	{
-		// Recupere un evenement
-		SDL_PollEvent(&this->events);
-		if (this->events.window.event == SDL_WINDOWEVENT_CLOSE)
+		if (events.window.event == SDL_WINDOWEVENT_CLOSE)
 			this->run = false;
-		// Nettoyage de l'écran
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		// Utilise le shader
-		glUseProgram(programID);
-
-		// 1rst attribute buffer : vertices
-		glEnableVertexAttribArray(0);
-		// bind le vbo 'vertexbuffer'
-		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
-
-		// Draw the triangle !
-		glDrawArrays(GL_TRIANGLES, 0, 3);
-		glDisableVertexAttribArray(0);
-
-		// Actualisation de la fenêtre
-		SDL_GL_SwapWindow(this->win);
 	}
 }
-*/
 
+void	window::update()
+{
+	
+}
 
-#include <chrono>
-
-using namespace std::chrono_literals;
-
-constexpr std::chrono::nanoseconds timestep(16ms);
+void	window::render()
+{
+	glUseProgram(shaderId);
+	glEnableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, vboId);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
+	glDrawArrays(GL_TRIANGLES, 0, 3);
+	glDisableVertexAttribArray(0);
+}
 
 void	window::loop(void)
 {
+	std::chrono::nanoseconds	lag(0ns);
+	std::chrono::seconds		sec(0s);
+
 	using	clock = std::chrono::high_resolution_clock;
 
-	std::chrono::nanoseconds lag(0ns);
+	init();
 	auto time_start = clock::now();
-
+	auto sec_start = time_start;
 	while (this->run)
 	{
 		auto delta_time = clock::now() - time_start;
 		time_start = clock::now();
+		sec = std::chrono::duration_cast<std::chrono::seconds>(time_start - sec_start);
 		lag += std::chrono::duration_cast<std::chrono::nanoseconds>(delta_time);
-
-		SDL_PollEvent(&this->events);
-		if (this->events.window.event == SDL_WINDOWEVENT_CLOSE)
-			this->run = false;
+		
+		events();
+		if (sec >= secstep)
+		{
+			std::cout << "[tps: " << tps << " | fps: " << fps << "]" << std::endl;
+			sec_start = clock::now();
+			fps = 0;
+			tps = 0;
+		}
 		while (lag >= timestep)
 		{
+			++tps;
 			lag -= timestep;
-			// Update
+			update();
 		}
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		// Render
+		++fps;
+		render();
 		SDL_GL_SwapWindow(this->win);
 	}
 }
