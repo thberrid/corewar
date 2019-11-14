@@ -6,35 +6,81 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/14 05:47:00 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/14 08:57:10 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/14 16:47:00 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
-#include "viewer.h"
-#include "camera.hpp"
 #include <SDL2/SDL.h>
 #include <glm/gtc/matrix_transform.hpp>
+#include "ftmath.h"
+#include "viewer.h"
+#include "camera.hpp"
 
-camera::camera(void) : pos(0, 0, 0), rot(0, 0, 0), fov(45.0f), speed(3.0f), mouseSpeed(0.005f) {}
+camera::camera(void) : _pos(0, 0, -5), _rot(0, 0), _fov(45.0f), _speed(0.75f), _mouseSpeed(0.005f) {}
 
-camera::camera(vec3 pos, vec3 rot, float fov, float speed, float mouseSpeed) : pos(pos), rot(rot), fov(fov), speed(speed), mouseSpeed(mouseSpeed) {}
+camera::camera(vec3 pos, vec2 rot, float fov, float speed, float mouseSpeed) : _pos(pos), _rot(rot), _fov(fov), _speed(speed), _mouseSpeed(mouseSpeed) {}
 
 camera::~camera() {}
 
+vec3	camera::up(void) const
+{
+	return (glm::cross(right(), forward()));
+}
+
+vec3	camera::right(void) const
+{
+	return (vec3(sin(_rot.y - FT_HPI), 0, cos(_rot.y - FT_HPI)));
+}
+
+vec3	camera::forward(void) const
+{
+	return (vec3(cos(_rot.x) * sin(_rot.y), sin(_rot.x), cos(_rot.x) * cos(_rot.y)));
+}
+
 void	camera::update(void)
 {
-	if (keys[SDLK_z])
-		std::cout << "FORWARD" << std::endl;
-	if (keys[SDLK_s])
-		std::cout << "BACKWARD" << std::endl;
-	if (keys[SDLK_d])
-		std::cout << "RIGHT" << std::endl;
-	if (keys[SDLK_q])
-		std::cout << "LEFT" << std::endl;
+	vec3	dir(0, 0, 0);
+
+	if (keys[SDLK_d]) dir += right();
+	if (keys[SDLK_q]) dir -= right();
+	if (keys[SDLK_z]) dir += forward();
+	if (keys[SDLK_s]) dir -= forward();
+	if (keys[SDLK_SPACE]) dir += up();
+	if (keys[SDLK_LSHIFT]) dir -= up();
+	if ((dir.x + dir.y + dir.z) != 0.0)
+		_pos += (normalize(dir) * _speed);
+	if (keys[SDLK_a]) _rot.y += (_mouseSpeed);
+	if (keys[SDLK_e]) _rot.y -= (_mouseSpeed);
 }
 
 mat4	camera::getMatrix(void)
 {
-	return (glm::lookAt(pos, rot, glm::vec3(0,1,0)));
+	return (glm::lookAt(_pos, _pos + forward(), up()));
+}
+
+void	camera::setRot(vec2 r)
+{
+	_rot.x = r.x;
+	_rot.y = r.y;
+}
+
+void	camera::setRot(float x, float y)
+{
+	_rot.x = x;
+	_rot.y = y;
+}
+
+void	camera::setPos(vec3 p)
+{
+	_pos.x = p.x;
+	_pos.y = p.y;
+	_pos.z = p.z;
+}
+
+void	camera::setPos(float x, float y, float z)
+{
+	_pos.x = x;
+	_pos.y = y;
+	_pos.z = z;
 }

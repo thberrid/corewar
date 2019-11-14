@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 14:37:53 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/14 08:52:50 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/14 16:49:19 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ void	window::init()
 	glGenVertexArrays(1, &vaoId);
 	glBindVertexArray(vaoId);
 
+	//cam.setRot(0, 0);
 	const GLfloat vertex[] = {
 		-1.0f, -1.0f, -1.0f,		-1.0f, -1.0f,  1.0f,		-1.0f,  1.0f,  1.0f,
 		 1.0f,  1.0f, -1.0f,		-1.0f, -1.0f, -1.0f,		-1.0f,  1.0f, -1.0f,
@@ -148,8 +149,18 @@ void	window::events()
 
 	while (SDL_PollEvent(&event))
 	{
-		if (event.window.event == SDL_WINDOWEVENT_CLOSE)
+		if (event.window.event == SDL_WINDOWEVENT_CLOSE
+			|| (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_ESCAPE))
+		{
 			this->run = false;
+			break;
+		}
+		if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_BACKSPACE)
+		{
+			cam.setRot(0, 0);
+			cam.setPos(0, 0, -5);
+			break;
+		}
 		if (event.type == SDL_KEYUP || event.type == SDL_KEYDOWN)
 			keys[event.key.keysym.sym] = (event.type == SDL_KEYDOWN);
 		if (event.type == SDL_MOUSEBUTTONUP || event.type == SDL_MOUSEBUTTONDOWN)
@@ -157,12 +168,9 @@ void	window::events()
 	}
 }
 
-float	i(0.0);
-
 void	window::update()
 {
 	cam.update();
-	i += 0.005;
 }
 
 void	window::render()
@@ -171,11 +179,7 @@ void	window::render()
 
 	glm::mat4 Projection = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 0.1f, 100.0f);
 	glm::mat4 Model = glm::mat4(1.0f);
-	glm::mat4 View = glm::lookAt(
-		glm::vec3(4*(cos(i)),3,4*(sin(i))),
-		glm::vec3(0,0,0),
-		glm::vec3(0,1,0)
-	);
+	glm::mat4 View = cam.getMatrix();
 	glm::mat4 mvp = Projection * View * Model;
 
 	glUniformMatrix4fv(matrixID, 1, GL_FALSE, &mvp[0][0]);
