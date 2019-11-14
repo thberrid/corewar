@@ -24,3 +24,5 @@ tests/*
 test\.mk
 
 zork\.s
+
+*.bmp
