@@ -82,7 +82,7 @@ CLASS	:=	\
 CLASS	:=	$(addsuffix .cpp, $(CLASS))
 
 GRAPHIC	:= \
-		$(CLASS)	\
+		$(CLASS)		\
 		graphic_loop.cpp
 GRAPHIC	:= $(addprefix graphic/,$(GRAPHIC))
 override LINKER		:=	g++ -o

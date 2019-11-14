@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 14:38:10 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/14 02:29:07 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/14 05:46:04 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,11 @@ class	window
 	int					tps;
 
 	GLuint				vboId;
+	GLuint				cboId;
 	GLuint				vaoId;
 	GLuint				shaderId;
 
+	GLuint				matrixID;
 	SDL_Window			*win;
 	SDL_GLContext		context;
 
