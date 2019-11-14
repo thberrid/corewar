@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 14:38:10 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/14 05:46:04 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/14 06:59:12 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <iostream>
 #include <GL/glew.h>
 #include <SDL2/SDL.h>
+#include "camera.hpp"
 #include "viewer.h"
 
 class	window
@@ -36,6 +37,8 @@ class	window
 	GLuint				matrixID;
 	SDL_Window			*win;
 	SDL_GLContext		context;
+	
+	camera				cam;
 
 	void	init(void);
 	void	update(void);

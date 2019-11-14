@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 14:37:53 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/14 05:53:18 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/14 07:02:20 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,12 +139,14 @@ void	window::init()
 
 void	window::events()
 {
-	SDL_Event	events;
+	SDL_Event	event;
 
-	while (SDL_PollEvent(&events))
+	while (SDL_PollEvent(&event))
 	{
-		if (events.window.event == SDL_WINDOWEVENT_CLOSE)
+		if (event.window.event == SDL_WINDOWEVENT_CLOSE)
 			this->run = false;
+		else
+			cam.move(event);
 	}
 }
 
