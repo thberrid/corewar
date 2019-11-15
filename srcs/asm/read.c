@@ -6,7 +6,7 @@
 /*   By: smoreno- <smoreno-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 06:34:03 by smoreno-          #+#    #+#             */
-/*   Updated: 2019/11/08 11:08:14 by thberrid         ###   ########.fr       */
+/*   Updated: 2019/11/15 03:02:50 by thberrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,6 @@ int		ft_read(t_instruct_head *head, char *path, t_header *header)
 	char	*line;
 	int		ret;
 
-	if (!ft_strcmp(path, "/dev/zero") || !ft_strcmp(path, "/dev/random"))
-		return (0);
 	if ((fd = open(path, O_RDONLY)) <= 0)
 		return (0);
 	line = NULL;
