@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   camera.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/14 05:47:00 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/18 18:20:13 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/18 21:51:18 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
 #include <SDL2/SDL.h>
+#include <glm/trigonometric.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include "ftmath.h"
 #include "viewer.h"
@@ -59,11 +60,20 @@ void	camera::update(void)
 		_rot.x -= (float)mouse.x * _mouseSpeed * _speed;
 		_rot.y -= (float)mouse.y * _mouseSpeed * _speed;
 	}
+	if (_rot.x < -FT_HPI)
+		_rot.x = -FT_HPI;
+	if (_rot.x > FT_HPI)
+		_rot.x = FT_HPI;
 }
 
 mat4	camera::getMatrix(void)
 {
 	return (glm::lookAt(_pos, _pos + forward(), up()));
+}
+
+mat4	camera::projection(void)
+{
+	return (glm::perspective(glm::radians(_fov), (float)(16.0f / 9.0f), 0.1f, 100.0f));
 }
 
 void	camera::setRot(vec2 r)

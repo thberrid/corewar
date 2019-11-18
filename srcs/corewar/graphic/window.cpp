@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   window.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 14:37:53 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/18 19:12:05 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/18 21:54:38 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,8 @@ window::window(const std::string &ti, int w, int h) : title(ti), width(w), heigh
 
 window::~window(void)
 {
+	if (_cube)
+		delete (_cube);
 	SDL_GL_DeleteContext(this->context);
 	SDL_DestroyWindow(this->win);
 	SDL_Quit();
@@ -104,6 +106,7 @@ void	window::init(void)
 	glBindVertexArray(vaoId);
 
 	//cam.setRot(0, 0);
+/*
 	const GLfloat vertex[] = {
 		-1.0f, -1.0f, -1.0f,		-1.0f, -1.0f,  1.0f,		-1.0f,  1.0f,  1.0f,
 		 1.0f,  1.0f, -1.0f,		-1.0f, -1.0f, -1.0f,		-1.0f,  1.0f, -1.0f,
@@ -142,6 +145,8 @@ void	window::init(void)
 
 	shaderId = LoadShaders("assets/shaders/main.vert", "assets/shaders/main.frag");
 	matrixID = glGetUniformLocation(shaderId, "MVP");
+*/
+	_cube = new cube();
 }
 
 void	window::events()
@@ -200,7 +205,7 @@ void	window::update()
 
 void	window::render()
 {
-	glUseProgram(shaderId);
+/*	glUseProgram(shaderId);
 
 	glm::mat4 Projection = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 0.1f, 100.0f);
 	glm::mat4 Model = glm::mat4(1.0f);
@@ -220,7 +225,9 @@ void	window::render()
 	glDrawArrays(GL_TRIANGLES, 0, 3*12);
 
 	glDisableVertexAttribArray(1);
-	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(0);*/
+
+	_cube->render(cam);
 }
 
 void	window::loop(void)

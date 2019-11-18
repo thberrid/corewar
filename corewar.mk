@@ -79,7 +79,8 @@ $(COR):	LDFLAGS += $(shell sdl2-config --libs) $(GL) -lGLEW
 CLASS	:=	\
 			shader	\
 			window	\
-			camera
+			camera	\
+			cube
 CLASS	:=	$(addsuffix .cpp, $(CLASS))
 
 GRAPHIC	:= \

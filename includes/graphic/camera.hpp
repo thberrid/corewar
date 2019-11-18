@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   camera.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/14 05:46:28 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/18 18:06:10 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/18 21:38:01 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ class	camera
 private:
 	vec3	_pos;
 	vec2	_rot;
-	float	_fov __attribute__((unused));
+	float	_fov;
 
 	float	_speed;
 	float	_mouseSpeed;
@@ -48,6 +48,7 @@ public:
 
 	void	update(void);
 	mat4	getMatrix(void);
+	mat4	projection(void);	
 
 };
 
