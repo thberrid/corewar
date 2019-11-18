@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   camera.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/14 05:47:00 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/14 16:47:00 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/18 13:10:48 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,18 +40,26 @@ vec3	camera::forward(void) const
 
 void	camera::update(void)
 {
+	vec2	rot(0, 0);
 	vec3	dir(0, 0, 0);
+	vec3	front = normalize(vec3(forward().x + up().x, 0, forward().z + up().z));
 
 	if (keys[SDLK_d]) dir += right();
 	if (keys[SDLK_q]) dir -= right();
-	if (keys[SDLK_z]) dir += forward();
-	if (keys[SDLK_s]) dir -= forward();
-	if (keys[SDLK_SPACE]) dir += up();
-	if (keys[SDLK_LSHIFT]) dir -= up();
-	if ((dir.x + dir.y + dir.z) != 0.0)
+	if (keys[SDLK_z]) dir += front;
+	if (keys[SDLK_s]) dir -= front;
+	if (keys[SDLK_SPACE]) dir.y++;
+	if (keys[SDLK_LSHIFT]) dir.y--;
+
+	if (keys[SDLK_LEFT]) ++rot.y;
+	if (keys[SDLK_RIGHT]) --rot.y;
+	if (keys[SDLK_UP]) ++rot.x;
+	if (keys[SDLK_DOWN]) --rot.x;
+
+	if ((abs(dir.x) + abs(dir.y) + abs(dir.z)) != 0.0)
 		_pos += (normalize(dir) * _speed);
-	if (keys[SDLK_a]) _rot.y += (_mouseSpeed);
-	if (keys[SDLK_e]) _rot.y -= (_mouseSpeed);
+	if ((abs(rot.x) + abs(rot.y)) != 0.0)
+		_rot += (normalize(rot) * _mouseSpeed);
 }
 
 mat4	camera::getMatrix(void)
