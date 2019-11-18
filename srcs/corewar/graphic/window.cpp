@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 14:37:53 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/18 18:16:07 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/18 18:21:17 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ window::~window(void)
 	SDL_Quit();
 }
 
-void	window::init()
+void	window::init(void)
 {
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
