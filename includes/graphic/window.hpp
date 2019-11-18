@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 14:38:10 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/14 06:59:12 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/18 18:11:53 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <iostream>
 #include <GL/glew.h>
 #include <SDL2/SDL.h>
+#include <glm/vec2.hpp>
 #include "camera.hpp"
 #include "viewer.h"
 
@@ -39,6 +40,8 @@ class	window
 	SDL_GLContext		context;
 	
 	camera				cam;
+
+	glm::ivec2			mouse_save;
 
 	void	init(void);
 	void	update(void);

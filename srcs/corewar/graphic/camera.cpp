@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   camera.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/14 05:47:00 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/18 13:10:48 by baurens          ###   ########.fr       */
+/*   Updated: 2019/11/18 18:20:13 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,26 +40,25 @@ vec3	camera::forward(void) const
 
 void	camera::update(void)
 {
-	vec2	rot(0, 0);
+	ivec2	mouse(0, 0);
 	vec3	dir(0, 0, 0);
 	vec3	front = normalize(vec3(forward().x + up().x, 0, forward().z + up().z));
 
-	if (keys[SDLK_d]) dir += right();
-	if (keys[SDLK_q]) dir -= right();
-	if (keys[SDLK_z]) dir += front;
-	if (keys[SDLK_s]) dir -= front;
-	if (keys[SDLK_SPACE]) dir.y++;
-	if (keys[SDLK_LSHIFT]) dir.y--;
-
-	if (keys[SDLK_LEFT]) ++rot.y;
-	if (keys[SDLK_RIGHT]) --rot.y;
-	if (keys[SDLK_UP]) ++rot.x;
-	if (keys[SDLK_DOWN]) --rot.x;
-
-	if ((abs(dir.x) + abs(dir.y) + abs(dir.z)) != 0.0)
+	(void)_mouseSpeed;
+	if (keys[KEY_RIGHT]) dir += right();
+	if (keys[KEY_LEFT]) dir -= right();
+	if (keys[KEY_FRONT]) dir += front;
+	if (keys[KEY_BACK]) dir -= front;
+	if (keys[KEY_DOWN]) dir.y--;
+	if (keys[KEY_UP]) dir.y++;
+	if ((dir.x || dir.y || dir.z) != 0.0)
 		_pos += (normalize(dir) * _speed);
-	if ((abs(rot.x) + abs(rot.y)) != 0.0)
-		_rot += (normalize(rot) * _mouseSpeed);
+	SDL_GetRelativeMouseState(&mouse.y, &mouse.x);
+	if (mouse.x || mouse.y)
+	{
+		_rot.x -= (float)mouse.x * _mouseSpeed * _speed;
+		_rot.y -= (float)mouse.y * _mouseSpeed * _speed;
+	}
 }
 
 mat4	camera::getMatrix(void)

@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 01:50:25 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/14 08:50:02 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/18 17:55:36 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define VIEWER_H
 
 # include <map>
+# include <SDL2/SDL.h>
 
 # ifdef __cplusplus
 extern "C" {
@@ -31,5 +32,22 @@ extern "C" {
 
 extern std::map<int, bool>	keys;
 extern std::map<int, bool>	btns;
+
+# ifdef __APPLE__
+
+#  define KEY_FRONT		SDLK_w
+#  define KEY_LEFT		SDLK_a
+
+# else
+
+#  define KEY_FRONT		SDLK_z
+#  define KEY_LEFT		SDLK_q
+
+# endif
+
+#  define KEY_RIGHT		SDLK_d
+#  define KEY_BACK		SDLK_s
+#  define KEY_DOWN		SDLK_LSHIFT
+#  define KEY_UP		SDLK_SPACE
 
 #endif

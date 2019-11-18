@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 14:37:53 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/14 16:49:19 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/18 18:16:07 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,24 @@ void	window::events()
 
 	while (SDL_PollEvent(&event))
 	{
+		//hanle mouse grabbing
+		if (SDL_GetRelativeMouseMode())
+		{
+			if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_ESCAPE)
+			{
+				SDL_SetRelativeMouseMode(SDL_FALSE);
+				SDL_WarpMouseInWindow(win, mouse_save.x, mouse_save.y);
+				continue ;
+			}
+		}
+		else if (event.type == SDL_MOUSEBUTTONUP && event.button.button == SDL_BUTTON_LEFT)
+		{
+			SDL_GetMouseState(&mouse_save.x, &mouse_save.y);
+			SDL_SetRelativeMouseMode(SDL_TRUE);
+			SDL_GetRelativeMouseState(nullptr, nullptr);
+			continue ;
+		}
+
 		if (event.window.event == SDL_WINDOWEVENT_CLOSE
 			|| (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_ESCAPE))
 		{
@@ -161,6 +179,11 @@ void	window::events()
 			cam.setPos(0, 0, -5);
 			break;
 		}
+		if (event.type == SDL_KEYUP && (event.key.keysym.sym == SDLK_p || event.key.keysym.sym == SDLK_ESCAPE))
+		{
+			if (SDL_GetWindowGrab(win))
+				SDL_SetWindowGrab(win, SDL_TRUE);
+		}
 		if (event.type == SDL_KEYUP || event.type == SDL_KEYDOWN)
 			keys[event.key.keysym.sym] = (event.type == SDL_KEYDOWN);
 		if (event.type == SDL_MOUSEBUTTONUP || event.type == SDL_MOUSEBUTTONDOWN)
@@ -170,7 +193,8 @@ void	window::events()
 
 void	window::update()
 {
-	cam.update();
+	if (SDL_GetRelativeMouseMode())
+		cam.update();
 }
 
 void	window::render()
