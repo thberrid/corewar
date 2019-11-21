@@ -6,7 +6,7 @@
 /*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 14:38:10 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/21 00:58:01 by baurens          ###   ########.fr       */
+/*   Updated: 2019/11/21 16:20:13 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,5 +66,5 @@ public:
 	void	toggleFullscreen(void);
 
 	bool	isGrabed(void) const { return (SDL_GetRelativeMouseMode()); }
-	bool	isFullscreen(void) const { return (SDL_GetWindowFlags(win) & SDL_WINDOW_FULLSCREEN); }
+	bool	isFullscreen(void) const { return (SDL_GetWindowFlags(win) & SDL_WINDOW_FULLSCREEN_DESKTOP); }
 };

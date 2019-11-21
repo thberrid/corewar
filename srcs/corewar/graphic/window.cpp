@@ -6,7 +6,7 @@
 /*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 14:37:53 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/21 01:54:19 by baurens          ###   ########.fr       */
+/*   Updated: 2019/11/21 16:22:34 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,14 +141,14 @@ void	window::setSize(int w, int h)
 
 void	window::toggleFullscreen(void)
 {
-	if (SDL_GetWindowFlags(win) & SDL_WINDOW_FULLSCREEN)
+	if (SDL_GetWindowFlags(win) & SDL_WINDOW_FULLSCREEN_DESKTOP)
 	{
 		SDL_SetWindowFullscreen(win, 0);
 		std::cout << "leaving fullscreen mode" << std::endl;
 	}
 	else
 	{
-		SDL_SetWindowFullscreen(win, SDL_WINDOW_FULLSCREEN);
+		SDL_SetWindowFullscreen(win, SDL_WINDOW_FULLSCREEN_DESKTOP);
 		std::cout << "entering fullscreen mode" << std::endl;
 		grab();
 	}
@@ -186,6 +186,7 @@ void	window::events()
 			setSize(event.window.data1, event.window.data2);
 			continue ;
 		}
+
 		// direct event binding
 		if (event.type == SDL_KEYUP && _keyHandlers.find(event.key.keysym.sym) != _keyHandlers.end())
 			if (_keyHandlers[event.key.keysym.sym](*this))
@@ -196,6 +197,7 @@ void	window::events()
 		if (event.type == SDL_WINDOWEVENT && _windowHandlers.find(event.window.event) != _windowHandlers.end())
 			if (_windowHandlers[event.window.event](*this))
 				continue ;
+
 		// continuous event flags
 		if (event.type == SDL_KEYUP || event.type == SDL_KEYDOWN)
 			keys[event.key.keysym.sym] = (event.type == SDL_KEYDOWN);

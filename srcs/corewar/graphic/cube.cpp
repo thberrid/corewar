@@ -6,7 +6,7 @@
 /*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 21:00:33 by baurens           #+#    #+#             */
-/*   Updated: 2019/11/20 22:07:40 by baurens          ###   ########.fr       */
+/*   Updated: 2019/11/21 02:04:42 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 
 cube::cube()
 {
-	/*	// cube vertex/colors list
+	/*
+		// cube vertex/colors list
 		{
 			{-0.5, -0.5, -0.5},
 			{-0.5, -0.5, +0.5},
@@ -40,23 +41,23 @@ cube::cube()
 		}
 	*/
 	const float	v[108] = {
-		 0.5f,  0.5f, -0.5f,	-0.5f, -0.5f, -0.5f,	-0.5f,  0.5f, -0.5f, // front up
-		 0.5f,  0.5f, -0.5f,	 0.5f, -0.5f, -0.5f,	-0.5f, -0.5f, -0.5f, // front down
+		 0.5f,  0.5f, -0.5f,	-0.5f, -0.5f, -0.5f,	-0.5f,  0.5f, -0.5f,
+		 0.5f,  0.5f, -0.5f,	 0.5f, -0.5f, -0.5f,	-0.5f, -0.5f, -0.5f,
 
-		-0.5f, -0.5f, -0.5f,	-0.5f,  0.5f,  0.5f,	-0.5f,  0.5f, -0.5f, // right up
-		-0.5f, -0.5f, -0.5f,	-0.5f, -0.5f,  0.5f,	-0.5f,  0.5f,  0.5f, // right down
+		-0.5f, -0.5f, -0.5f,	-0.5f,  0.5f,  0.5f,	-0.5f,  0.5f, -0.5f,
+		-0.5f, -0.5f, -0.5f,	-0.5f, -0.5f,  0.5f,	-0.5f,  0.5f,  0.5f,
 
-		 0.5f, -0.5f,  0.5f,	-0.5f, -0.5f, -0.5f,	 0.5f, -0.5f, -0.5f, // bottom up
-		 0.5f, -0.5f,  0.5f,	-0.5f, -0.5f,  0.5f,	-0.5f, -0.5f, -0.5f, // botton down
+		 0.5f, -0.5f,  0.5f,	-0.5f, -0.5f, -0.5f,	 0.5f, -0.5f, -0.5f,
+		 0.5f, -0.5f,  0.5f,	-0.5f, -0.5f,  0.5f,	-0.5f, -0.5f, -0.5f,
 
-		 0.5f,  0.5f,  0.5f,	 0.5f, -0.5f, -0.5f,	 0.5f,  0.5f, -0.5f, // left up
-		 0.5f, -0.5f, -0.5f,	 0.5f,  0.5f,  0.5f,	 0.5f, -0.5f,  0.5f, // left down
+		 0.5f,  0.5f,  0.5f,	 0.5f, -0.5f, -0.5f,	 0.5f,  0.5f, -0.5f,
+		 0.5f, -0.5f, -0.5f,	 0.5f,  0.5f,  0.5f,	 0.5f, -0.5f,  0.5f,
 
-		 0.5f,  0.5f,  0.5f,	-0.5f,  0.5f, -0.5f,	-0.5f,  0.5f,  0.5f, // top up
-		 0.5f,  0.5f,  0.5f,	 0.5f,  0.5f, -0.5f,	-0.5f,  0.5f, -0.5f, // top down
+		 0.5f,  0.5f,  0.5f,	-0.5f,  0.5f, -0.5f,	-0.5f,  0.5f,  0.5f,
+		 0.5f,  0.5f,  0.5f,	 0.5f,  0.5f, -0.5f,	-0.5f,  0.5f, -0.5f,
 
-		 0.5f,  0.5f,  0.5f,	-0.5f,  0.5f,  0.5f,	 0.5f, -0.5f,  0.5f, // back up
-		-0.5f,  0.5f,  0.5f,	-0.5f, -0.5f,  0.5f,	 0.5f, -0.5f,  0.5f, // back down
+		 0.5f,  0.5f,  0.5f,	-0.5f,  0.5f,  0.5f,	 0.5f, -0.5f,  0.5f,
+		-0.5f,  0.5f,  0.5f,	-0.5f, -0.5f,  0.5f,	 0.5f, -0.5f,  0.5f,
 	};
 
 	const float	c[108] = {
@@ -84,17 +85,6 @@ cube::cube()
 		_vertex[i] = v[i];
 		_colors[i] = c[i];
 	}
-/*
-	glGenBuffers(1, &_vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertex), vertex, GL_STATIC_DRAW);
-
-	glGenBuffers(1, &_cbo);
-	glBindBuffer(GL_ARRAY_BUFFER, _cbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
-
-	_shader = LoadShaders("assets/shaders/cube.vert", "assets/shaders/cube.frag");
-	_matrixPos = glGetUniformLocation(_shader, "MVP");*/
 }
 
 cube::~cube()
