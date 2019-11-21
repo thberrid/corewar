@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 21:35:14 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/21 18:36:04 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/21 19:39:39 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ using namespace std;
 
 #include "shader.hpp"
 
-GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path)
+GLuint loadShaders(const char * vertex_file_path,const char * fragment_file_path)
 {
 
 	// Create the shaders

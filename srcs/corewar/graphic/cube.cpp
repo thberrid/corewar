@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 21:00:33 by baurens           #+#    #+#             */
-/*   Updated: 2019/11/21 02:04:42 by baurens          ###   ########.fr       */
+/*   Updated: 2019/11/21 19:39:59 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void	cube::init(void)
 	glBufferSubData(GL_ARRAY_BUFFER, sizeof(_vertex), sizeof(_colors), _colors);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	_shader = LoadShaders("assets/shaders/cube.vert", "assets/shaders/cube.frag");
+	_shader = loadShaders("assets/shaders/cube.vert", "assets/shaders/cube.frag");
 	_modelViewMatrixUniform = glGetUniformLocation(_shader, "modelViewMatrix");
 
 	glGenVertexArrays(1, &_vao);
