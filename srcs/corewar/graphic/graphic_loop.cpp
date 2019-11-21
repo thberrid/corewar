@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   graphic_loop.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 00:25:16 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/21 16:31:24 by baurens          ###   ########.fr       */
+/*   Updated: 2019/11/21 18:47:47 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ char	graphic_loop(t_vm *vm __attribute__((unused)))
 	win.addKeyHandler(SDLK_p, pHandler);
 	win.addKeyHandler(SDLK_ESCAPE, escapeHandler);
 	win.addKeyHandler(SDLK_F11, fullscreenHandler);
+	win.addKeyHandler(SDLK_PAGEUP, fullscreenHandler);
 
 	win.addWindowHandler(SDL_WINDOWEVENT_CLOSE, closeHandler);
 	win.addWindowHandler(SDL_WINDOWEVENT_FOCUS_LOST, loseFocus);

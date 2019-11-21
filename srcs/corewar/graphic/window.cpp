@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   window.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 14:37:53 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/21 18:40:12 by baurens          ###   ########.fr       */
+/*   Updated: 2019/11/21 19:03:38 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ window::window(const std::string &ti, int w, int h) : title(ti), width(w), heigh
 	SDL_SetHint(SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, "0");
 	
 	//	enable keyboard grab (disable system shortcut)
-	//SDL_SetHint(SDL_HINT_GRAB_KEYBOARD, "1");
+	// SDL_SetHint(SDL_HINT_GRAB_KEYBOARD, "1");
 
 	//	the app will no longer be forced on fourground when oppening on mac
 	//SDL_SetHint(SDL_HINT_MAC_BACKGROUND_APP, "0");
@@ -232,13 +232,12 @@ void	window::update()
 void	window::render()
 {
 	glDisable(GL_CULL_FACE);
-	_cube.render(cam, glm::translate(cam.pos());
+	_cube.render(cam, glm::translate(cam.pos()));
 	glClear(GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_CULL_FACE);
 	//glm::translate(glm::vec3(20.0f, 0.0f, 20.0f));
-	//glm::scale(glm::mat)
-	//_cube.render(cam, glm::scale(glm::translate(glm::vec3(20.0f, 0.0f, 20.0f), glm::vec3(10.0f, 10.0f, 10.0f))))
-	//_cube.render(cam, glm::scale(glm::translate(glm::mat4(1.0f), glm::vec3(20.0f, 0.0f, 20.0f)), glm::vec3(10.0f, 10.0f, 10.0f)));
+	//glm::scale(glm::translate(glm::vec3(20.0f, 0.0f, 20.0f)), glm::vec3(10.0f, 10.0f, 10.0f));
+	_cube.render(cam, glm::scale(glm::translate(glm::vec3(20.0f, 0.0f, 20.0f)), glm::vec3(10.0f, 10.0f, 10.0f)));
 }
 
 void	window::loop(void)

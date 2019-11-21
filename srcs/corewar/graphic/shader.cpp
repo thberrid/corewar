@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shader.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 21:35:14 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/20 22:26:44 by baurens          ###   ########.fr       */
+/*   Updated: 2019/11/21 18:36:04 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
+
 using namespace std;
 
 #include <stdlib.h>
@@ -70,8 +71,7 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
 	glGetShaderiv(VertexShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength);
 	std::vector<char> VertexShaderErrorMessage(InfoLogLength);
 	glGetShaderInfoLog(VertexShaderID, InfoLogLength, NULL, &VertexShaderErrorMessage[0]);
-	if (&VertexShaderErrorMessage[0])
-		fprintf(stdout, "%s\n", &VertexShaderErrorMessage[0]);
+	fprintf(stdout, "%s\n", &VertexShaderErrorMessage[0]);
 
 
 
@@ -87,8 +87,7 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
 	glGetShaderiv(FragmentShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength);
 	std::vector<char> FragmentShaderErrorMessage(InfoLogLength);
 	glGetShaderInfoLog(FragmentShaderID, InfoLogLength, NULL, &FragmentShaderErrorMessage[0]);
-	if (&FragmentShaderErrorMessage[0])
-		fprintf(stdout, "%s\n", &FragmentShaderErrorMessage[0]);
+	fprintf(stdout, "%s\n", &FragmentShaderErrorMessage[0]);
 
 
 
@@ -105,8 +104,7 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
 	glGetProgramiv(ProgramID, GL_INFO_LOG_LENGTH, &InfoLogLength);
 	std::vector<char> ProgramErrorMessage(InfoLogLength);
 	glGetProgramInfoLog(ProgramID, InfoLogLength, NULL, &ProgramErrorMessage[0]);
-	if (&ProgramErrorMessage[0])
-		fprintf(stdout, "'%s'\n", &ProgramErrorMessage[0]);
+	fprintf(stdout, "'%s'\n", &ProgramErrorMessage[0]);
 
 	glDeleteShader(VertexShaderID);
 	glDeleteShader(FragmentShaderID);
