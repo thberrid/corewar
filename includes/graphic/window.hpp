@@ -6,12 +6,13 @@
 /*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 14:38:10 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/18 21:53:19 by baurens          ###   ########.fr       */
+/*   Updated: 2019/11/21 00:58:01 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
+#include <map>
 #include <string>
 #include <iostream>
 #include <GL/glew.h>
@@ -20,6 +21,10 @@
 #include "camera.hpp"
 #include "cube.hpp"
 #include "viewer.h"
+
+class	window;
+
+typedef bool	(*t_keyHandler)(window &window);
 
 class	window
 {
@@ -30,18 +35,15 @@ class	window
 	int					fps;
 	int					tps;
 
-	GLuint				vaoId;
-	/*
-	GLuint				vboId;
-	GLuint				cboId;
-	GLuint				shaderId;
-	GLuint				matrixID;
-	*/
 	SDL_Window			*win;
 	SDL_GLContext		context;
 	camera				cam;
 	glm::ivec2			mouse_save;
-	cube				*_cube;
+	cube				_cube;
+
+	std::map<int, t_keyHandler>	_keyHandlers;
+	std::map<int, t_keyHandler>	_buttonHandlers;
+	std::map<int, t_keyHandler>	_windowHandlers;
 
 	void	init(void);
 	void	update(void);
@@ -52,5 +54,17 @@ public:
 	window(const std::string &ti, int w, int h);
 	~window(void);
 
+	void	addKeyHandler(int key, t_keyHandler handler);
+	void	addButtonHandler(int key, t_keyHandler handler);
+	void	addWindowHandler(int key, t_keyHandler handler);
+
 	void	loop(void);
+	void	grab(void);
+	void	close(void);
+	void	ungrab(void);
+	void	setSize(int w, int h);
+	void	toggleFullscreen(void);
+
+	bool	isGrabed(void) const { return (SDL_GetRelativeMouseMode()); }
+	bool	isFullscreen(void) const { return (SDL_GetWindowFlags(win) & SDL_WINDOW_FULLSCREEN); }
 };

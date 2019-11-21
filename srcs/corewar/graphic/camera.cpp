@@ -6,7 +6,7 @@
 /*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/14 05:47:00 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/18 21:51:18 by baurens          ###   ########.fr       */
+/*   Updated: 2019/11/20 23:23:01 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include "viewer.h"
 #include "camera.hpp"
 
-camera::camera(void) : _pos(0, 0, -5), _rot(0, 0), _fov(45.0f), _speed(0.75f), _mouseSpeed(0.005f) {}
+camera::camera(void) : _pos(0, 0, -5), _rot(0, 0), _fov(45.0f), _aspect(16.0f / 9.0f), _speed(0.75f), _mouseSpeed(0.005f) {}
 
 camera::camera(vec3 pos, vec2 rot, float fov, float speed, float mouseSpeed) : _pos(pos), _rot(rot), _fov(fov), _speed(speed), _mouseSpeed(mouseSpeed) {}
 
@@ -43,9 +43,8 @@ void	camera::update(void)
 {
 	ivec2	mouse(0, 0);
 	vec3	dir(0, 0, 0);
-	vec3	front = normalize(vec3(forward().x + up().x, 0, forward().z + up().z));
+	vec3	front = vec3(sin(_rot.y), 0, cos(_rot.y));
 
-	(void)_mouseSpeed;
 	if (keys[KEY_RIGHT]) dir += right();
 	if (keys[KEY_LEFT]) dir -= right();
 	if (keys[KEY_FRONT]) dir += front;
@@ -73,7 +72,7 @@ mat4	camera::getMatrix(void)
 
 mat4	camera::projection(void)
 {
-	return (glm::perspective(glm::radians(_fov), (float)(16.0f / 9.0f), 0.1f, 100.0f));
+	return (glm::perspective(glm::radians(_fov), _aspect, 0.1f, 100.0f));
 }
 
 void	camera::setRot(vec2 r)
@@ -100,4 +99,9 @@ void	camera::setPos(float x, float y, float z)
 	_pos.x = x;
 	_pos.y = y;
 	_pos.z = z;
+}
+
+void	camera::setAspect(float f)
+{
+	_aspect = f;
 }

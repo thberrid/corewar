@@ -6,7 +6,7 @@
 /*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/14 05:46:28 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/18 21:38:01 by baurens          ###   ########.fr       */
+/*   Updated: 2019/11/21 01:36:31 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ private:
 	vec3	_pos;
 	vec2	_rot;
 	float	_fov;
+	float	_aspect;
 
 	float	_speed;
 	float	_mouseSpeed;
@@ -50,6 +51,8 @@ public:
 	mat4	getMatrix(void);
 	mat4	projection(void);	
 
+
+	void	setAspect(float f);
 };
 
 #endif

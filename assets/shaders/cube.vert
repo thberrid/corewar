@@ -1,15 +1,15 @@
 #version 330 core
 
-layout(location = 0) in vec3 vertexPosition_modelspace;
-layout(location = 1) in vec3 vertexColor;
+layout(location = 0) in vec3 pos;
+layout(location = 1) in vec3 col;
 
-uniform mat4 MVP;
+uniform mat4 modelViewMatrix;
 
 out vec3 fragmentColor;
 
 void main()
 {
-	gl_Position =  MVP * vec4(vertexPosition_modelspace,1);
+	gl_Position =  modelViewMatrix * vec4(pos,1);
 
-	fragmentColor = vertexColor;
+	fragmentColor = col;
 }
