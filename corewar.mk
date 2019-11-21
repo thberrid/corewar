@@ -74,13 +74,15 @@ CPPFLAGS	+= -I./$(dir $(LIB))includes $(GFLAG) -O3 -I./includes/corewar
 CPPFLAGS	+= $(shell sdl2-config --cflags) -I./includes/graphic
 
 $(COR):	CFLAGS += $(GFLAG)
-$(COR):	LDFLAGS += $(shell sdl2-config --libs) $(GL) -lGLEW
+$(COR):	LDFLAGS += $(shell sdl2-config --libs) -lSDL2_image $(GL) -lGLEW
 
 CLASS	:=	\
+			texture	\
 			shader	\
 			window	\
 			camera	\
-			cube
+			cube	\
+			box
 CLASS	:=	$(addsuffix .cpp, $(CLASS))
 
 GRAPHIC	:= \

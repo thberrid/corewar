@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 21:00:33 by baurens           #+#    #+#             */
-/*   Updated: 2019/11/21 19:39:59 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/21 21:53:08 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "shader.hpp"
 #include "cube.hpp"
 
-cube::cube()
+cube::cube(void)
 {
 	/*
 		// cube vertex/colors list
@@ -85,14 +85,19 @@ cube::cube()
 		_vertex[i] = v[i];
 		_colors[i] = c[i];
 	}
+
+	vSize = sizeof(float) * 108;
+	cSize = sizeof(float) * 108;
 }
 
-cube::~cube()
+cube::~cube(void)
 {
 	if (glIsVertexArray(_vao))
 		glDeleteVertexArrays(1, &_vao);
 	if (glIsBuffer(_vbo))
 		glDeleteBuffers(1, &_vbo);
+	if (glIsShader(_shader))
+		glDeleteShader(_shader);
 }
 
 void	cube::init(void)
@@ -101,12 +106,14 @@ void	cube::init(void)
 		glDeleteVertexArrays(1, &_vao);
 	if (glIsBuffer(_vbo))
 		glDeleteBuffers(1, &_vbo);
+	if (glIsShader(_shader))
+		glDeleteShader(_shader);
 
 	glGenBuffers(1, &_vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(_vertex) + sizeof(_colors), nullptr, GL_STATIC_DRAW);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(_vertex), _vertex);
-	glBufferSubData(GL_ARRAY_BUFFER, sizeof(_vertex), sizeof(_colors), _colors);
+	glBufferData(GL_ARRAY_BUFFER, vSize + cSize, nullptr, GL_STATIC_DRAW);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, vSize, _vertex);
+	glBufferSubData(GL_ARRAY_BUFFER, vSize, cSize, _colors);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	_shader = loadShaders("assets/shaders/cube.vert", "assets/shaders/cube.frag");
@@ -119,7 +126,7 @@ void	cube::init(void)
 
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void *)(sizeof(_vertex)));
+			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void *)vSize);
 			glEnableVertexAttribArray(1);
 		
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -127,7 +134,7 @@ void	cube::init(void)
 	glBindVertexArray(0);
 }
 
-void	cube::render(camera &cam, glm::mat4 transform)
+void	cube::render(camera &cam, glm::mat4 transform) const
 {
 	glm::mat4 mvp = cam.projection() * cam.getMatrix() * transform;
 

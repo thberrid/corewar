@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 14:37:53 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/21 19:03:38 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/21 21:49:30 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ void	window::init(void)
 	cam.setAspect(((float)width / (float)height));
 
 	_cube.init();
+	_box.init();
 }
 
 void	window::grab(void)
@@ -232,7 +233,7 @@ void	window::update()
 void	window::render()
 {
 	glDisable(GL_CULL_FACE);
-	_cube.render(cam, glm::translate(cam.pos()));
+	_box.render(cam, glm::translate(cam.pos()));
 	glClear(GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_CULL_FACE);
 	//glm::translate(glm::vec3(20.0f, 0.0f, 20.0f));

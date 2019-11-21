@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 14:38:10 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/21 19:03:44 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/21 22:23:55 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include <glm/vec2.hpp>
 #include "camera.hpp"
 #include "cube.hpp"
+#include "box.hpp"
 #include "viewer.h"
 
 class	window;
@@ -40,6 +41,7 @@ class	window
 	camera				cam;
 	glm::ivec2			mouse_save;
 	cube				_cube;
+	box					_box;
 
 	std::map<int, t_keyHandler>	_keyHandlers;
 	std::map<int, t_keyHandler>	_buttonHandlers;
