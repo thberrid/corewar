@@ -6,7 +6,7 @@
 /*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 14:37:53 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/21 16:22:34 by baurens          ###   ########.fr       */
+/*   Updated: 2019/11/21 18:40:12 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <sstream>
 #include <GL/glew.h>
 #include <SDL2/SDL.h>
+#include <glm/gtx/transform.hpp>
 #include <glm/matrix.hpp>
 #include <glm/trigonometric.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -43,6 +44,20 @@ window::window(const std::string &ti, int w, int h) : title(ti), width(w), heigh
 		SDL_Quit();
 		exit(1);
 	}
+
+	SDL_SetHint(SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, "0");
+	
+	//	enable keyboard grab (disable system shortcut)
+	//SDL_SetHint(SDL_HINT_GRAB_KEYBOARD, "1");
+
+	//	the app will no longer be forced on fourground when oppening on mac
+	//SDL_SetHint(SDL_HINT_MAC_BACKGROUND_APP, "0");
+
+	//	disable screen dimming when no input are pressed for a certain time on OSX
+	//	NOTE: should prefer using SDL_DisableScreenSaver() instead of this hint
+	//SDL_SetHint(SDL_HINT_IDLE_TIMER_DISABLED, "1");
+	
+
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
@@ -110,7 +125,8 @@ void	window::grab(void)
 {
 	if (isGrabed())
 		return ;
-	SDL_GetMouseState(&mouse_save.x, &mouse_save.y);
+	//SDL_GetMouseState(&mouse_save.x, &mouse_save.y);
+	SDL_GetGlobalMouseState(&mouse_save.x, &mouse_save.y);
 	SDL_SetRelativeMouseMode(SDL_TRUE);
 	SDL_GetRelativeMouseState(nullptr, nullptr);
 	std::cout << "Capturing mouse!" << std::endl;
@@ -120,10 +136,11 @@ void	window::ungrab(void)
 {
 	if (!isGrabed())
 		return ;
-	if (isFullscreen())
-		toggleFullscreen();
+	/*if (isFullscreen())
+		toggleFullscreen();*/
 	SDL_SetRelativeMouseMode(SDL_FALSE);
-	SDL_WarpMouseInWindow(win, mouse_save.x, mouse_save.y);
+	//SDL_WarpMouseInWindow(win, mouse_save.x, mouse_save.y);
+	SDL_WarpMouseGlobal(mouse_save.x, mouse_save.y);
 	std::cout << "Releasing mouse!" << std::endl;
 }
 
@@ -215,10 +232,13 @@ void	window::update()
 void	window::render()
 {
 	glDisable(GL_CULL_FACE);
-	_cube.render(cam, glm::translate(glm::mat4(1.0f), cam.pos()));
+	_cube.render(cam, glm::translate(cam.pos());
 	glClear(GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_CULL_FACE);
-	_cube.render(cam, glm::scale(glm::translate(glm::mat4(1.0f), glm::vec3(20.0f, 0.0f, 20.0f)), glm::vec3(10.0f, 10.0f, 10.0f)));
+	//glm::translate(glm::vec3(20.0f, 0.0f, 20.0f));
+	//glm::scale(glm::mat)
+	//_cube.render(cam, glm::scale(glm::translate(glm::vec3(20.0f, 0.0f, 20.0f), glm::vec3(10.0f, 10.0f, 10.0f))))
+	//_cube.render(cam, glm::scale(glm::translate(glm::mat4(1.0f), glm::vec3(20.0f, 0.0f, 20.0f)), glm::vec3(10.0f, 10.0f, 10.0f)));
 }
 
 void	window::loop(void)
