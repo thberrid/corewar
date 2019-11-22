@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   window.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 14:37:53 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/22 07:35:39 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/22 08:58:27 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@
 #include <sstream>
 #include <GL/glew.h>
 #include <SDL2/SDL.h>
-#include <glm/gtx/transform.hpp>
 #include <glm/matrix.hpp>
 #include <glm/trigonometric.hpp>
+#include <glm/gtx/transform.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include "shader.hpp"
 #include "window.hpp"
@@ -114,7 +114,6 @@ void	window::grab(void)
 {
 	if (isGrabed())
 		return ;
-	//SDL_GetMouseState(&mouse_save.x, &mouse_save.y);
 	SDL_GetGlobalMouseState(&mouse_save.x, &mouse_save.y);
 	SDL_SetRelativeMouseMode(SDL_TRUE);
 	SDL_GetRelativeMouseState(nullptr, nullptr);
@@ -125,10 +124,7 @@ void	window::ungrab(void)
 {
 	if (!isGrabed())
 		return ;
-	/*if (isFullscreen())
-		toggleFullscreen();*/
 	SDL_SetRelativeMouseMode(SDL_FALSE);
-	//SDL_WarpMouseInWindow(win, mouse_save.x, mouse_save.y);
 	SDL_WarpMouseGlobal(mouse_save.x, mouse_save.y);
 	std::cout << "Releasing mouse!" << std::endl;
 }
@@ -136,13 +132,13 @@ void	window::ungrab(void)
 void	window::setSize(int w, int h)
 {
 	width = w;
-	height = h ? h : 1;
+	height = h;
 	glViewport(0, 0, w, h);
-	//w = max(width, height);
-	//h = min(width, height);
-	cam.setAspect((float)w / (float)(h ? h : 1));
-	std::cout << "window resized to {" <<
-				width << ", " << height << "}" << std::endl;
+	cam.setAspect((float)w / (float)(h | !h));
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	++fps;
+	render();
+	SDL_GL_SwapWindow(this->win);
 }
 
 void	window::toggleFullscreen(void)
@@ -265,21 +261,32 @@ void	window::events()
 	}
 }
 
+float	r = 0;
+
 void	window::update()
 {
 	if (isGrabed())
 		cam.update();
+	if (++r >= 360.0f)
+		r = 0.0f;
 }
 
 void	window::render()
 {
 	int	w = sqrt(MEM_SIZE) / 2;
 	glm::mat4	scale = glm::scale(glm::vec3(1.0f, 0.1f, 1.0f));
+	glm::mat4	rotate;
+	glm::mat4	translate;
+
 
 	for (int y = -w; y < w; ++y)
 	{
 		for (int x = -w; x < w; ++x)
-			_cube.render(cam, glm::translate(glm::vec3(((float)x + 0.5f) * 1.5f, 0.0f, ((float)y + 0.5f) * 1.5f)) * scale);
+		{
+			rotate = glm::rotate(glm::radians(r + ((y * w) + (x * w))), glm::vec3(0, 0, 1));
+			translate = glm::translate(glm::vec3(((float)x + 0.5f) * 1.5f, 0.0f, ((float)y + 0.5f) * 1.5f));
+			_cube.render(cam, translate * rotate * scale);
+		}
 	}
 	_box.render(cam, glm::mat4(1.0f));
 	_skybox.render(cam);

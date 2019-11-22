@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   graphic_loop.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 00:25:16 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/21 18:47:47 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/22 08:51:06 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
 #include "window.hpp"
-#include "viewer.h"
+#include "viewer.hpp"
 
 bool	escapeHandler(window &win)
 {

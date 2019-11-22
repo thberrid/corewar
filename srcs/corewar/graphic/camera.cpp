@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   camera.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/14 05:47:00 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/22 07:25:42 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/22 08:49:48 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 #include <SDL2/SDL.h>
 #include <glm/trigonometric.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include "ftmath.h"
-#include "viewer.h"
+#include "viewer.hpp"
 #include "camera.hpp"
+#include "ftmath.h"
 
 camera::camera(void) : _pos(0, 0, -5), _rot(0, 0), _fov(45.0f), _aspect(16.0f / 9.0f), _speed(0.75f), _mouseSpeed(0.005f) {}
 

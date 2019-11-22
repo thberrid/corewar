@@ -6,7 +6,7 @@
 /*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/21 21:07:31 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/22 08:28:06 by baurens          ###   ########.fr       */
+/*   Updated: 2019/11/22 08:35:25 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,15 +81,7 @@ void	box::init(void)
 
 void	box::render(camera &cam, glm::mat4 transform) const
 {
-	//cube::render(cam, transform);
-	glm::mat4 mvp = cam.projection() * cam.getMatrix() * transform;
-
-	glUseProgram(_shader);
-	glBindVertexArray(_vao);
-	glUniformMatrix4fv(_modelViewMatrixUniform, 1, GL_FALSE, &mvp[0][0]);
 	glBindTexture(GL_TEXTURE_2D, _texture);
-	glDrawArrays(GL_TRIANGLES, 0, 3*12);
+	cube::render(cam, transform);
 	glBindTexture(GL_TEXTURE_2D, 0);
-	glBindVertexArray(0);
-	glUseProgram(0);
 }

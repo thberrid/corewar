@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   window.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 14:38:10 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/22 07:32:56 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/22 08:49:27 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 #include "cube.hpp"
 #include "box.hpp"
 #include "skybox.hpp"
-#include "viewer.h"
+#include "viewer.hpp"
 #include "config.h"
 
 class	window;
