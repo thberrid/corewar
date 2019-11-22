@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/21 23:34:23 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/22 04:52:49 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/22 05:33:40 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,12 +98,12 @@ void	skybox::init(void)
 
 	_shader = loadShaders("assets/shaders/skybox.vert", "assets/shaders/skybox.frag");
 	_tex = loadCubemap(std::vector<std::string>({
-		"assets/textures/right.jpg",
-		"assets/textures/left.jpg",
-		"assets/textures/top.jpg",
-		"assets/textures/bottom.jpg",
-		"assets/textures/front.jpg",
-		"assets/textures/back.jpg",
+		"assets/textures/right.tga",
+		"assets/textures/left.tga",
+		"assets/textures/top.tga",
+		"assets/textures/bottom.tga",
+		"assets/textures/front.tga",
+		"assets/textures/back.tga",
 	}));
 
 	glGenVertexArrays(1, &_vao);
