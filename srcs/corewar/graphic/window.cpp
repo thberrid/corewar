@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 14:37:53 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/21 21:49:30 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/22 04:47:02 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,18 +110,6 @@ window::~window(void)
 	SDL_Quit();
 }
 
-void	window::init(void)
-{
-	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LESS);
-	glEnable(GL_CULL_FACE);
-
-	cam.setAspect(((float)width / (float)height));
-
-	_cube.init();
-	_box.init();
-}
-
 void	window::grab(void)
 {
 	if (isGrabed())
@@ -192,53 +180,17 @@ void	window::addWindowHandler(int key, t_keyHandler handler)
 	_windowHandlers[key] = handler;
 }
 
-void	window::events()
+void	window::init(void)
 {
-	SDL_Event	event;
-
-	while (run && SDL_PollEvent(&event))
-	{
-		// window resizing
-		if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
-		{
-			setSize(event.window.data1, event.window.data2);
-			continue ;
-		}
-
-		// direct event binding
-		if (event.type == SDL_KEYUP && _keyHandlers.find(event.key.keysym.sym) != _keyHandlers.end())
-			if (_keyHandlers[event.key.keysym.sym](*this))
-				continue ;
-		if (event.type == SDL_MOUSEBUTTONUP && _buttonHandlers.find(event.button.button) != _buttonHandlers.end())
-			if (_buttonHandlers[event.button.button](*this))
-				continue ;
-		if (event.type == SDL_WINDOWEVENT && _windowHandlers.find(event.window.event) != _windowHandlers.end())
-			if (_windowHandlers[event.window.event](*this))
-				continue ;
-
-		// continuous event flags
-		if (event.type == SDL_KEYUP || event.type == SDL_KEYDOWN)
-			keys[event.key.keysym.sym] = (event.type == SDL_KEYDOWN);
-		if (event.type == SDL_MOUSEBUTTONUP || event.type == SDL_MOUSEBUTTONDOWN)
-			btns[event.button.button] = (event.type == SDL_MOUSEBUTTONDOWN);
-	}
-}
-
-void	window::update()
-{
-	if (isGrabed())
-		cam.update();
-}
-
-void	window::render()
-{
-	glDisable(GL_CULL_FACE);
-	_box.render(cam, glm::translate(cam.pos()));
-	glClear(GL_DEPTH_BUFFER_BIT);
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);
 	glEnable(GL_CULL_FACE);
-	//glm::translate(glm::vec3(20.0f, 0.0f, 20.0f));
-	//glm::scale(glm::translate(glm::vec3(20.0f, 0.0f, 20.0f)), glm::vec3(10.0f, 10.0f, 10.0f));
-	_cube.render(cam, glm::scale(glm::translate(glm::vec3(20.0f, 0.0f, 20.0f)), glm::vec3(10.0f, 10.0f, 10.0f)));
+
+	cam.setAspect(((float)width / (float)height));
+
+	_skybox.init();
+	_cube.init();
+	_box.init();
 }
 
 void	window::loop(void)
@@ -279,4 +231,48 @@ void	window::loop(void)
 		render();
 		SDL_GL_SwapWindow(this->win);
 	}
+}
+
+void	window::events()
+{
+	SDL_Event	event;
+
+	while (run && SDL_PollEvent(&event))
+	{
+		// window resizing
+		if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
+		{
+			setSize(event.window.data1, event.window.data2);
+			continue ;
+		}
+
+		// direct event binding
+		if (event.type == SDL_KEYUP && _keyHandlers.find(event.key.keysym.sym) != _keyHandlers.end())
+			if (_keyHandlers[event.key.keysym.sym](*this))
+				continue ;
+		if (event.type == SDL_MOUSEBUTTONUP && _buttonHandlers.find(event.button.button) != _buttonHandlers.end())
+			if (_buttonHandlers[event.button.button](*this))
+				continue ;
+		if (event.type == SDL_WINDOWEVENT && _windowHandlers.find(event.window.event) != _windowHandlers.end())
+			if (_windowHandlers[event.window.event](*this))
+				continue ;
+
+		// continuous event flags
+		if (event.type == SDL_KEYUP || event.type == SDL_KEYDOWN)
+			keys[event.key.keysym.sym] = (event.type == SDL_KEYDOWN);
+		if (event.type == SDL_MOUSEBUTTONUP || event.type == SDL_MOUSEBUTTONDOWN)
+			btns[event.button.button] = (event.type == SDL_MOUSEBUTTONDOWN);
+	}
+}
+
+void	window::update()
+{
+	if (isGrabed())
+		cam.update();
+}
+
+void	window::render()
+{
+	_cube.render(cam, glm::scale(glm::translate(glm::vec3(20.0f, 0.0f, 20.0f)), glm::vec3(10.0f, 10.0f, 10.0f)));
+	_skybox.render(cam);
 }

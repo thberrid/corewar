@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 14:38:10 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/21 22:23:55 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/22 04:30:02 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 #include "camera.hpp"
 #include "cube.hpp"
 #include "box.hpp"
+#include "skybox.hpp"
 #include "viewer.h"
 
 class	window;
@@ -40,8 +41,9 @@ class	window
 	SDL_GLContext		context;
 	camera				cam;
 	glm::ivec2			mouse_save;
-	cube				_cube;
-	box					_box;
+	box					_cube;
+	cube				_box;
+	skybox				_skybox;
 
 	std::map<int, t_keyHandler>	_keyHandlers;
 	std::map<int, t_keyHandler>	_buttonHandlers;
