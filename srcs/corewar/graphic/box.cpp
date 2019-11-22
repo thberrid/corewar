@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   box.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/21 21:07:31 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/22 01:05:45 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/22 08:28:06 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "shader.hpp"
 #include "box.hpp"
 
-box::box(void) : cube(), _texture(0)
+box::box() : cube(), _texture(0)
 {
 	const float	uvs[12] = {
 		0, 0,	1, 1,	0, 1,
@@ -29,7 +29,12 @@ box::box(void) : cube(), _texture(0)
 
 box::~box()
 {
-	cube::~cube();
+	if (glIsVertexArray(_vao))
+		glDeleteVertexArrays(1, &_vao);
+	if (glIsBuffer(_vbo))
+		glDeleteBuffers(1, &_vbo);
+	if (glIsShader(_shader))
+		glDeleteShader(_shader);
 	if (glIsTexture(_texture))
 		glDeleteTextures(1, &_texture);
 }

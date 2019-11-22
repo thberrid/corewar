@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   box.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/21 20:45:57 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/21 21:49:37 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/22 08:25:22 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ private:
 	
 public:
 	box(void);
-	~box(void);
+	~box();
 
 	void	init(void);
 	void	render(camera &cam, glm::mat4 transform) const;

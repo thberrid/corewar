@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 21:00:33 by baurens           #+#    #+#             */
-/*   Updated: 2019/11/22 01:06:00 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/22 08:25:35 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "shader.hpp"
 #include "cube.hpp"
 
-cube::cube(void)
+cube::cube()
 {
 	/*
 		// cube vertex/colors list
@@ -96,7 +96,7 @@ cube::cube(void)
 	cSize = sizeof(float) * 108;
 }
 
-cube::~cube(void)
+cube::~cube()
 {
 	if (glIsVertexArray(_vao))
 		glDeleteVertexArrays(1, &_vao);

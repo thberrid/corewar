@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 20:52:15 by baurens           #+#    #+#             */
-/*   Updated: 2019/11/21 21:50:26 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/22 08:25:52 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ protected:
 	size_t	vSize, cSize;
 
 public:
-	cube(void);
-	~cube(void);
+	cube();
+	~cube();
 
 	void	init(void);
 	void	render(camera &cam, glm::mat4 transform) const;
