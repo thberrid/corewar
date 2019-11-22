@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 14:37:53 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/22 04:47:02 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/22 07:35:39 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,9 +188,9 @@ void	window::init(void)
 
 	cam.setAspect(((float)width / (float)height));
 
-	_skybox.init();
-	_cube.init();
 	_box.init();
+	_cube.init();
+	_skybox.init();
 }
 
 void	window::loop(void)
@@ -273,6 +273,14 @@ void	window::update()
 
 void	window::render()
 {
-	_cube.render(cam, glm::scale(glm::translate(glm::vec3(20.0f, 0.0f, 20.0f)), glm::vec3(10.0f, 10.0f, 10.0f)));
+	int	w = sqrt(MEM_SIZE) / 2;
+	glm::mat4	scale = glm::scale(glm::vec3(1.0f, 0.1f, 1.0f));
+
+	for (int y = -w; y < w; ++y)
+	{
+		for (int x = -w; x < w; ++x)
+			_cube.render(cam, glm::translate(glm::vec3(((float)x + 0.5f) * 1.5f, 0.0f, ((float)y + 0.5f) * 1.5f)) * scale);
+	}
+	_box.render(cam, glm::mat4(1.0f));
 	_skybox.render(cam);
 }

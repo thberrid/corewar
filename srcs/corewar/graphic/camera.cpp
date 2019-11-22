@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   camera.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/14 05:47:00 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/20 23:23:01 by baurens          ###   ########.fr       */
+/*   Updated: 2019/11/22 07:25:42 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ mat4	camera::getMatrix(void)
 
 mat4	camera::projection(void)
 {
-	return (glm::perspective(glm::radians(_fov), _aspect, 0.1f, 100.0f));
+	return (glm::perspective(glm::radians(_fov), _aspect, 0.1f, 200.0f));
 }
 
 void	camera::setRot(vec2 r)
