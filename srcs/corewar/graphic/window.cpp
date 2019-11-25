@@ -6,7 +6,7 @@
 /*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 14:37:53 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/22 08:58:27 by baurens          ###   ########.fr       */
+/*   Updated: 2019/11/25 06:49:21 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,6 +187,20 @@ void	window::init(void)
 	_box.init();
 	_cube.init();
 	_skybox.init();
+
+	for (int i = 0; i < MEM_SIZE; ++i)
+	{
+		int w = sqrt(MEM_SIZE);
+		float x = (i % w) - (w / 2);
+		float y = (i / w) - (w / 2);
+		_map[i].setScale(1.0f, 0.01f, 1.0f);
+		_map[i].setPos((x + 0.5f) * 1.5f, 0.0f, (y + 0.5f) * 1.5f);
+		//_map[i].setRot(radians(x), radians(x + y), radians(y));
+	}
+
+	// placing the camera at the final place
+	cam.setPos(-0.0f, 67.0f, -69.0f);
+	cam.setRot(-0.9f, 0.0f);
 }
 
 void	window::loop(void)
@@ -236,10 +250,15 @@ void	window::events()
 	while (run && SDL_PollEvent(&event))
 	{
 		// window resizing
-		if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
+		if (event.type == SDL_WINDOWEVENT
+			&& event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
 		{
 			setSize(event.window.data1, event.window.data2);
 			continue ;
+		}
+		if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_UP)
+		{
+			cam.moveTo(0, 10, 0, 1);
 		}
 
 		// direct event binding
@@ -261,32 +280,17 @@ void	window::events()
 	}
 }
 
-float	r = 0;
-
 void	window::update()
 {
 	if (isGrabed())
 		cam.update();
-	if (++r >= 360.0f)
-		r = 0.0f;
 }
 
 void	window::render()
 {
-	int	w = sqrt(MEM_SIZE) / 2;
-	glm::mat4	scale = glm::scale(glm::vec3(1.0f, 0.1f, 1.0f));
-	glm::mat4	rotate;
-	glm::mat4	translate;
-
-
-	for (int y = -w; y < w; ++y)
+	for (int i = 0; i < MEM_SIZE; ++i)
 	{
-		for (int x = -w; x < w; ++x)
-		{
-			rotate = glm::rotate(glm::radians(r + ((y * w) + (x * w))), glm::vec3(0, 0, 1));
-			translate = glm::translate(glm::vec3(((float)x + 0.5f) * 1.5f, 0.0f, ((float)y + 0.5f) * 1.5f));
-			_cube.render(cam, translate * rotate * scale);
-		}
+		_cube.render(cam, _map[i].getTransform());
 	}
 	_box.render(cam, glm::mat4(1.0f));
 	_skybox.render(cam);

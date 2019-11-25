@@ -77,12 +77,13 @@ $(COR):	CFLAGS += $(GFLAG)
 $(COR):	LDFLAGS += $(shell sdl2-config --libs) -lSDL2_image $(GL) -lGLEW
 
 CLASS	:=	\
-			texture	\
-			skybox	\
-			shader	\
-			window	\
-			camera	\
-			cube	\
+			transform	\
+			texture		\
+			skybox		\
+			shader		\
+			window		\
+			camera		\
+			cube		\
 			box
 CLASS	:=	$(addsuffix .cpp, $(CLASS))
 

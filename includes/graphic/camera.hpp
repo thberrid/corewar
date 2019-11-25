@@ -6,13 +6,14 @@
 /*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/14 05:46:28 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/21 01:36:31 by baurens          ###   ########.fr       */
+/*   Updated: 2019/11/25 06:48:33 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CAMERA_HPP
 # define CAMERA_HPP
 
+#include <queue>
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include <glm/mat4x4.hpp>
@@ -30,12 +31,18 @@ private:
 	float	_speed;
 	float	_mouseSpeed;
 
+	
+	int					time;
+	glm::vec3			_from;
+	std::queue<vec3>	_targets;
+
 public:
 	camera(void);
 	camera(vec3 pos, vec2 rot, float fov, float speed, float mouseSpeed);
 	~camera(void);
 
 	vec3	pos(void) const { return (_pos); }
+	vec2	rot(void) const { return (_rot); }
 
 	vec3	up(void) const;
 	vec3	right(void) const;
@@ -51,8 +58,10 @@ public:
 	mat4	getMatrix(void);
 	mat4	projection(void);	
 
-
 	void	setAspect(float f);
+
+	void	moveTo(vec3 target, int time);
+	void	moveTo(float x, float y, float z, int time);
 };
 
 #endif

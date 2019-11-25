@@ -6,7 +6,7 @@
 /*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 14:38:10 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/22 08:49:27 by baurens          ###   ########.fr       */
+/*   Updated: 2019/11/25 06:04:50 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,13 @@
 #include <GL/glew.h>
 #include <SDL2/SDL.h>
 #include <glm/vec2.hpp>
+#include "transform.hpp"
 #include "camera.hpp"
-#include "cube.hpp"
-#include "box.hpp"
 #include "skybox.hpp"
 #include "viewer.hpp"
+#include "cube.hpp"
 #include "config.h"
+#include "box.hpp"
 
 class	window;
 
@@ -45,6 +46,8 @@ class	window
 	box					_box;
 	cube				_cube;
 	skybox				_skybox;
+
+	transform			_map[MEM_SIZE];
 
 	std::map<int, t_keyHandler>	_keyHandlers;
 	std::map<int, t_keyHandler>	_buttonHandlers;

@@ -6,7 +6,7 @@
 /*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/14 05:47:00 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/22 08:49:48 by baurens          ###   ########.fr       */
+/*   Updated: 2019/11/25 06:51:16 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,20 @@ void	camera::update(void)
 	vec3	dir(0, 0, 0);
 	vec3	front = vec3(sin(_rot.y), 0, cos(_rot.y));
 
+	if (_targets.size())
+	{
+		if (time == 0)
+			_from = _pos;
+		time++;
+		_pos = glm::mix(_from, _targets.front(), (float)time / 120);
+		if (glm::all(glm::equal(_pos, _targets.front())))
+		{
+			_targets.pop();
+			time = 0;
+		}
+		return ;
+	}
+
 	if (keys[KEY_RIGHT]) dir += right();
 	if (keys[KEY_LEFT]) dir -= right();
 	if (keys[KEY_FRONT]) dir += front;
@@ -73,6 +87,18 @@ mat4	camera::getMatrix(void)
 mat4	camera::projection(void)
 {
 	return (glm::perspective(glm::radians(_fov), _aspect, 0.1f, 200.0f));
+}
+
+void	camera::moveTo(vec3 target, int time)
+{
+	(void)time;
+	_targets.push(target);
+}
+
+void	camera::moveTo(float x, float y, float z, int time)
+{
+	(void)time;
+	moveTo(vec3(x, y, z), time);
 }
 
 void	camera::setRot(vec2 r)
