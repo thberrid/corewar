@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   window.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 14:38:10 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/25 06:04:50 by baurens          ###   ########.fr       */
+/*   Updated: 2019/11/25 12:39:12 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@
 #include "camera.hpp"
 #include "skybox.hpp"
 #include "viewer.hpp"
+#include "chunk.hpp"
 #include "cube.hpp"
 #include "config.h"
-#include "box.hpp"
 
 class	window;
 
@@ -43,11 +43,11 @@ class	window
 	SDL_GLContext		context;
 	camera				cam;
 	glm::ivec2			mouse_save;
-	box					_box;
 	cube				_cube;
 	skybox				_skybox;
 
 	transform			_map[MEM_SIZE];
+	chunk				_chunks[MEM_SIZE];
 
 	std::map<int, t_keyHandler>	_keyHandlers;
 	std::map<int, t_keyHandler>	_buttonHandlers;

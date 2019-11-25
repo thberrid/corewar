@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   window.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 14:37:53 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/25 06:49:21 by baurens          ###   ########.fr       */
+/*   Updated: 2019/11/25 15:18:38 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ std::map<int, bool>	keys;
 std::map<int, bool>	btns;
 
 constexpr std::chrono::seconds		secstep(1s);
-constexpr std::chrono::nanoseconds	timestep(16666666ns);
+constexpr std::chrono::nanoseconds	timestep((long long)((1.0f / TPS) * 1000000000.0f));
 
 window::window(const std::string &ti, int w, int h) : title(ti), width(w), height(h), run(true)
 {
@@ -184,7 +184,6 @@ void	window::init(void)
 
 	cam.setAspect(((float)width / (float)height));
 
-	_box.init();
 	_cube.init();
 	_skybox.init();
 
@@ -193,9 +192,8 @@ void	window::init(void)
 		int w = sqrt(MEM_SIZE);
 		float x = (i % w) - (w / 2);
 		float y = (i / w) - (w / 2);
-		_map[i].setScale(1.0f, 0.01f, 1.0f);
-		_map[i].setPos((x + 0.5f) * 1.5f, 0.0f, (y + 0.5f) * 1.5f);
-		//_map[i].setRot(radians(x), radians(x + y), radians(y));
+		_chunks[i].setScale(1.0f, 0.3f, 1.0f);
+		_chunks[i].setPos((x + 0.5f) * 1.5f, 0.0f, (y + 0.5f) * 1.5f);
 	}
 
 	// placing the camera at the final place
@@ -256,9 +254,41 @@ void	window::events()
 			setSize(event.window.data1, event.window.data2);
 			continue ;
 		}
+		if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_DOWN)
+		{
+			cam.moveTo(-0.0f, 67.0f, -69.0f, 1);
+		}
+		if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_RIGHT)
+		{
+			cam.moveTo(-76, 67, 0.7, 1);
+		}
+		if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_LEFT)
+		{
+			cam.moveTo(73.7, 67, -0.7, 1);
+		}
 		if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_UP)
 		{
-			cam.moveTo(0, 10, 0, 1);
+			cam.moveTo(0.4, 67, 70.2, 1);
+		}
+
+		if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_r)
+		{
+			if (keys[SDLK_LCTRL])
+				for (int i = 0; i < MEM_SIZE; ++i)
+					_chunks[i].changeColor(0.3f, 0.3f, 0.3f);
+			else
+				for (int i = 0; i < MEM_SIZE; ++i)
+					_chunks[i].changeColor(1.0, 0.0, 0.0);
+		}
+		if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_g)
+		{
+			for (int i = 0; i < MEM_SIZE; ++i)
+				_chunks[i].changeColor(0.0, 1.0, 0.0);
+		}
+		if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_b)
+		{
+			for (int i = 0; i < MEM_SIZE; ++i)
+				_chunks[i].changeColor(0.0, 0.0, 1.0);
 		}
 
 		// direct event binding
@@ -280,18 +310,24 @@ void	window::events()
 	}
 }
 
+float	s = 0.0f;
+
 void	window::update()
 {
+	for (int i = 0; i < MEM_SIZE; ++i)
+		_chunks[i].update();
 	if (isGrabed())
 		cam.update();
+	if (++s >= 360.0)
+		s = 0.0f;
 }
 
 void	window::render()
 {
+	float ss = 0.8 + (((sin(radians(s)) + 1.0f) / 2.0) * 0.2);
 	for (int i = 0; i < MEM_SIZE; ++i)
 	{
-		_cube.render(cam, _map[i].getTransform());
+		_cube.render(cam, glm::scale(vec3(ss, ss, ss)) * _chunks[i].getTransform(), _chunks[i].color(), _chunks[i].backColor());
 	}
-	_box.render(cam, glm::mat4(1.0f));
 	_skybox.render(cam);
 }

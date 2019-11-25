@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   viewer.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 01:50:25 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/22 08:48:46 by baurens          ###   ########.fr       */
+/*   Updated: 2019/11/25 12:51:19 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ extern "C" {
 # define TITLE	"Corewar"
 # define WIDTH	1280
 # define HEIGHT	720
+# define TPS	60.0f
+# define ANIM	0.6f
 
 extern std::map<int, bool>	keys;
 extern std::map<int, bool>	btns;

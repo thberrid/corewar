@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   camera.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/14 05:47:00 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/25 06:51:16 by baurens          ###   ########.fr       */
+/*   Updated: 2019/11/25 11:35:37 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,17 +45,12 @@ void	camera::update(void)
 	vec3	dir(0, 0, 0);
 	vec3	front = vec3(sin(_rot.y), 0, cos(_rot.y));
 
-	if (_targets.size())
+	SDL_GetRelativeMouseState(&mouse.y, &mouse.x);
+	if (_anim.size())
 	{
-		if (time == 0)
-			_from = _pos;
-		time++;
-		_pos = glm::mix(_from, _targets.front(), (float)time / 120);
-		if (glm::all(glm::equal(_pos, _targets.front())))
-		{
-			_targets.pop();
-			time = 0;
-		}
+		_pos = _anim.front().run();
+		if (_anim.front().isOver())
+			_anim.pop();
 		return ;
 	}
 
@@ -67,7 +62,6 @@ void	camera::update(void)
 	if (keys[KEY_UP]) dir.y++;
 	if ((dir.x || dir.y || dir.z) != 0.0)
 		_pos += (normalize(dir) * _speed);
-	SDL_GetRelativeMouseState(&mouse.y, &mouse.x);
 	if (mouse.x || mouse.y)
 	{
 		_rot.x -= (float)mouse.x * _mouseSpeed * _speed;
@@ -91,14 +85,18 @@ mat4	camera::projection(void)
 
 void	camera::moveTo(vec3 target, int time)
 {
-	(void)time;
-	_targets.push(target);
+	if (!_anim.empty())
+		_anim.push(animation<vec3>(_anim.back().to(), target, time));
+	else
+		_anim.push(animation<vec3>(_pos, target, time));
 }
 
 void	camera::moveTo(float x, float y, float z, int time)
 {
-	(void)time;
-	moveTo(vec3(x, y, z), time);
+	if (!_anim.empty())
+		_anim.push(animation<vec3>(_anim.back().to(), vec3(x, y, z), time));
+	else
+		_anim.push(animation<vec3>(_pos, vec3(x, y, z), time));
 }
 
 void	camera::setRot(vec2 r)

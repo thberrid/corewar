@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   camera.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/14 05:46:28 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/25 06:48:33 by baurens          ###   ########.fr       */
+/*   Updated: 2019/11/25 11:34:55 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include <glm/mat4x4.hpp>
+#include "animation.hpp"
 
 using namespace glm;
 
@@ -31,10 +32,7 @@ private:
 	float	_speed;
 	float	_mouseSpeed;
 
-	
-	int					time;
-	glm::vec3			_from;
-	std::queue<vec3>	_targets;
+	std::queue<animation<vec3>>	_anim;
 
 public:
 	camera(void);

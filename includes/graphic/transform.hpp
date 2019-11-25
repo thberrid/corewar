@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   transform.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/25 05:34:10 by baurens           #+#    #+#             */
-/*   Updated: 2019/11/25 06:12:10 by baurens          ###   ########.fr       */
+/*   Updated: 2019/11/25 12:45:50 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ private:
 	vec3	_pos;
 	vec3	_rot;
 	vec3	_scale;
+	mat4	_mat;
 
 public:
 	transform(void);
@@ -33,9 +34,11 @@ public:
 
 	~transform();
 
-	inline mat4	getTransform(void) const {
-		return (translate(_pos) * toMat4(quat(_rot)) * scale(_scale));
-	}
+	inline mat4	getTransform(void) const { return (_mat); }
+
+	transform	translate(float x, float y, float z);
+	transform	rotate(float x, float y, float z);
+	transform	scale(float x, float y, float z);
 
 	void	setPos(vec3 pos);
 	void	setRot(vec3 rot);
@@ -44,6 +47,8 @@ public:
 	void	setPos(float x, float y, float z);
 	void	setRot(float x, float y, float z);
 	void	setScale(float x, float y, float z);
+
+	friend transform mix(transform a, transform b, float f);
 };
 
 #endif
