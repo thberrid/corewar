@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 01:50:25 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/25 12:51:19 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/25 19:36:30 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,26 @@
 
 # include <map>
 # include <SDL2/SDL.h>
+# include "chunk.hpp"
 
 # ifdef __cplusplus
 extern "C" {
 # endif
 
+# include "config.h"
 # include "vm.h"
 
 # ifdef __cplusplus
 }
 # endif
 
+extern chunk	g_chunks[MEM_SIZE];
+
 # define TITLE	"Corewar"
 # define WIDTH	1280
 # define HEIGHT	720
 # define TPS	60.0f
-# define ANIM	0.6f
+# define ANIM	0.1f
 
 extern std::map<int, bool>	keys;
 extern std::map<int, bool>	btns;

@@ -3,16 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   graphic_loop.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 00:25:16 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/22 08:51:06 by baurens          ###   ########.fr       */
+/*   Updated: 2019/11/25 19:09:44 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
 #include "window.hpp"
 #include "viewer.hpp"
+#include "chunk.hpp"
+#include "config.h"
+
+chunk	g_chunks[MEM_SIZE];
+
+void	set_color(int pos, float r, float g, float b)
+{
+	g_chunks[pos].changeColor(r, g, b);
+}
 
 bool	escapeHandler(window &win)
 {
@@ -68,9 +77,9 @@ bool	gainFocus(window &win)
 	return (true);
 }
 
-char	graphic_loop(t_vm *vm __attribute__((unused)))
+char	graphic_loop(t_vm *vm)
 {
-	window	win("Corewar", 1280, 720);
+	window	win(vm, "Corewar", 1280, 720);
 
 	win.addKeyHandler(SDLK_p, pHandler);
 	win.addKeyHandler(SDLK_ESCAPE, escapeHandler);

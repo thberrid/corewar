@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 09:47:24 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/13 18:22:37 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/25 19:04:32 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,6 @@
 # define VM_H
 
 # ifndef GRAPHIC
-#  define GRAPHIC	0
-# endif
-
-# ifdef __MACOSX__
-#  undef GRAPHIC
 #  define GRAPHIC	0
 # endif
 
@@ -56,6 +51,7 @@ struct			s_champ
 typedef struct	s_vm
 {
 	char		dmp_bol;
+	int32_t		last_check;
 	uint32_t	dump;
 	size_t		psize;
 	uint32_t	total_live;
@@ -67,8 +63,14 @@ typedef struct	s_vm
 	t_champ		*winer;
 }				t_vm;
 
+void			cycle(t_vm *vm);
 char			vm_loop(t_vm *vm);
+
+/*
+**	graphic functions
+*/
 char			graphic_loop(t_vm *vm);
+void			set_color(int pos, float r, float g, float b);
 
 void			parse_args(t_vm *vm, char **av);
 void			destruct(void) __attribute__((destructor));

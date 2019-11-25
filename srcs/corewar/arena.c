@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   arena.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/20 21:01:15 by baurens           #+#    #+#             */
-/*   Updated: 2019/11/05 16:19:46 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/25 19:18:36 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@ void	map_to_var(void *dest, t_ind pos, register size_t size)
 	bin_to_system(dest, s);
 }
 
-void	var_to_map(void *src, t_ind pos, register size_t size)
+void	var_to_map(t_proc *proc, void *src, t_ind pos, register size_t size)
 {
 	system_to_bin(src, size);
 	while (size-- > 0)
-		g_map[(pos + size) % MEM_SIZE] = ((t_byte *)src)[size];
+		write_byte(proc, (pos + size) % MEM_SIZE, ((t_byte *)src)[size]);
 }

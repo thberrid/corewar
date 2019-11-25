@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 02:51:55 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/07 14:38:48 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/25 19:19:24 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,5 +58,5 @@ t_byte	get_ind(t_proc *proc, t_ind *off, t_dir *dest)
 
 void	dir_to_map(t_proc *proc, t_ind off, t_dir val)
 {
-	var_to_map(&val, (proc->pc + off), sizeof(val));
+	var_to_map(proc, &val, (proc->pc + off), sizeof(val));
 }

@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 12:40:34 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/12 21:38:56 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/25 19:15:58 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ t_proc			*add_process(t_ind pc, t_proc *copy)
 		exit(ft_print_error("Can't allocate process: %m.\n"));
 	if (copy)
 	{
+		new->last = copy->last;
 		new->carry = copy->carry;
 		new->lives = copy->lives;
 		new->last_live = copy->last_live;

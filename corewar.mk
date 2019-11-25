@@ -41,7 +41,7 @@ PARSER	:=	$(addprefix parser/,$(PARSER))
 #	REMOVE THIS BEFORE TURN-IN
 #
 override ZAZ	?= TRUE
-override G		?= TRUE
+#override G		?= TRUE
 
 #
 #	VM compilation specific flags
@@ -110,6 +110,7 @@ SRC_COR	:=	$(PARSER)	\
 			loop.c		\
 			utils.c		\
 			arena.c		\
+			memory.c	\
 			corewar.c	\
 			process.c	\
 			arguments.c	\

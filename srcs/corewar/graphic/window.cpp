@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 14:37:53 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/25 15:18:38 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/25 19:36:44 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ std::map<int, bool>	btns;
 constexpr std::chrono::seconds		secstep(1s);
 constexpr std::chrono::nanoseconds	timestep((long long)((1.0f / TPS) * 1000000000.0f));
 
-window::window(const std::string &ti, int w, int h) : title(ti), width(w), height(h), run(true)
+window::window(t_vm *vm, const std::string &ti, int w, int h) : vm(vm), title(ti), width(w), height(h), pause(true), run(true)
 {
 	std::string	err;
 	GLenum		glew_status;
@@ -57,8 +57,6 @@ window::window(const std::string &ti, int w, int h) : title(ti), width(w), heigh
 	//	NOTE: should prefer using SDL_DisableScreenSaver() instead of this hint
 	//SDL_SetHint(SDL_HINT_IDLE_TIMER_DISABLED, "1");
 	
-
-
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
@@ -101,6 +99,12 @@ window::window(const std::string &ti, int w, int h) : title(ti), width(w), heigh
 		SDL_Quit();
 		exit(1);
 	}
+
+	// Cycles managment
+	(void)vm;
+	(void)pause;
+	cycleSpeed = 1000.0f;
+	std::cout << cycleSpeed << " cycles per second (" << TPS << " ticks) means one cycle for each " << ((float)TPS / cycleSpeed) << " ticks" << std::endl;
 }
 
 window::~window(void)
@@ -190,15 +194,19 @@ void	window::init(void)
 	for (int i = 0; i < MEM_SIZE; ++i)
 	{
 		int w = sqrt(MEM_SIZE);
-		float x = (i % w) - (w / 2);
-		float y = (i / w) - (w / 2);
-		_chunks[i].setScale(1.0f, 0.3f, 1.0f);
-		_chunks[i].setPos((x + 0.5f) * 1.5f, 0.0f, (y + 0.5f) * 1.5f);
+		float x = (w / 2) - (i % w);
+		float y = (w / 2) - (i / w);
+		g_chunks[i].setScale(1.0f, 0.1f, 1.0f);
+		g_chunks[i].setPos((x + 0.5f) * 1.5f, 0.0f, (y + 0.5f) * 1.5f);
 	}
 
 	// placing the camera at the final place
 	cam.setPos(-0.0f, 67.0f, -69.0f);
 	cam.setRot(-0.9f, 0.0f);
+
+	vm->cycles = 0;
+	vm->last_check = CYCLE_TO_DIE;
+	vm->cycle_to_die = CYCLE_TO_DIE;
 }
 
 void	window::loop(void)
@@ -275,20 +283,20 @@ void	window::events()
 		{
 			if (keys[SDLK_LCTRL])
 				for (int i = 0; i < MEM_SIZE; ++i)
-					_chunks[i].changeColor(0.3f, 0.3f, 0.3f);
+					g_chunks[i].changeColor(0.3f, 0.3f, 0.3f);
 			else
 				for (int i = 0; i < MEM_SIZE; ++i)
-					_chunks[i].changeColor(1.0, 0.0, 0.0);
+					g_chunks[i].changeColor(1.0, 0.0, 0.0);
 		}
 		if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_g)
 		{
 			for (int i = 0; i < MEM_SIZE; ++i)
-				_chunks[i].changeColor(0.0, 1.0, 0.0);
+				g_chunks[i].changeColor(0.0, 1.0, 0.0);
 		}
 		if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_b)
 		{
 			for (int i = 0; i < MEM_SIZE; ++i)
-				_chunks[i].changeColor(0.0, 0.0, 1.0);
+				g_chunks[i].changeColor(0.0, 0.0, 1.0);
 		}
 
 		// direct event binding
@@ -310,24 +318,32 @@ void	window::events()
 	}
 }
 
+/*
 float	s = 0.0f;
+*/
 
 void	window::update()
 {
 	for (int i = 0; i < MEM_SIZE; ++i)
-		_chunks[i].update();
+		g_chunks[i].update();
 	if (isGrabed())
 		cam.update();
-	if (++s >= 360.0)
-		s = 0.0f;
+	if (time++ >= ((float)TPS / cycleSpeed))
+	{
+		cycle(vm);
+		time = 0;
+	}
+	/*if (++s >= 360.0)
+		s = 0.0f;*/
 }
 
 void	window::render()
 {
-	float ss = 0.8 + (((sin(radians(s)) + 1.0f) / 2.0) * 0.2);
+	//float ss = 0.8 + (((sin(radians(s)) + 1.0f) / 2.0) * 0.2);
 	for (int i = 0; i < MEM_SIZE; ++i)
 	{
-		_cube.render(cam, glm::scale(vec3(ss, ss, ss)) * _chunks[i].getTransform(), _chunks[i].color(), _chunks[i].backColor());
+		//_cube.render(cam, glm::scale(vec3(ss, ss, ss)) * _chunks[i].getTransform(), _chunks[i].color(), _chunks[i].backColor());
+		_cube.render(cam, g_chunks[i].getTransform(), g_chunks[i].color(), g_chunks[i].backColor());
 	}
 	_skybox.render(cam);
 }

@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:05:20 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/12 22:09:21 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/25 19:21:18 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ char		op_live(t_vm *vm, t_proc *proc)
 	if ((pl = get_player(vm, -val)) && (vm->verbosity & V_LIVES))
 	{
 		live_msg(pl->pid, pl->name);
+		proc->last = pl->id;
 		vm->winer = pl;
 	}
 	move_pc(vm, proc, off);

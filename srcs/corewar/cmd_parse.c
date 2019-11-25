@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:32:56 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/07 17:00:01 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/25 19:23:27 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,9 +93,8 @@ void		parse_args(t_vm *vm, char **av)
 
 	ft_bzero(vm, sizeof(t_vm));
 	vm->players[0].pid = 1;
-	while (av && *av)
+	while ((i = 0) || (av && *av))
 	{
-		i = 0;
 		while (g_parser[i].opt && !ft_strequ(*av, g_parser[i].opt))
 			++i;
 		av = g_parser[i].callback(vm, av + !!g_parser[i].opt);
@@ -111,6 +110,7 @@ void		parse_args(t_vm *vm, char **av)
 		proc = add_process(vm->players[i].pc - g_map, NULL);
 		if (!vm->winer || vm->winer->pid < vm->players[i].pid)
 			vm->winer = vm->players + i;
+		proc->last = vm->players[i].id;
 		proc->regs[0] = -vm->players[i++].pid;
 	}
 }

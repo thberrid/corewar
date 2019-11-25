@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 15:20:59 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/13 02:21:54 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/25 18:40:35 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,23 +96,19 @@ void			cycle(t_vm *vm)
 		vm_exec(vm, proc);
 		proc = proc->next;
 	}
+	if (--vm->last_check <= 0)
+	{
+		vm_check(vm);
+		vm->last_check = vm->cycle_to_die;
+	}
 }
 
 char			vm_loop(t_vm *vm)
 {
-	int32_t		last_check;
-
 	vm->cycles = 0;
-	last_check = CYCLE_TO_DIE;
+	vm->last_check = CYCLE_TO_DIE;
 	vm->cycle_to_die = CYCLE_TO_DIE;
 	while (g_procs.size)
-	{
 		cycle(vm);
-		if (--last_check <= 0)
-		{
-			vm_check(vm);
-			last_check = vm->cycle_to_die;
-		}
-	}
 	return (0);
 }

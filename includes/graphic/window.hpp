@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 14:38:10 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/25 12:39:12 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/25 19:10:01 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,17 @@ typedef bool	(*t_keyHandler)(window &window);
 
 class	window
 {
+	t_vm				*vm;
 	const std::string	title;
 	int					width;
 	int					height;
+	bool				pause;
 	bool				run;
+
 	int					fps;
 	int					tps;
+	int					time;
+	float				cycleSpeed;
 
 	SDL_Window			*win;
 	SDL_GLContext		context;
@@ -45,9 +50,6 @@ class	window
 	glm::ivec2			mouse_save;
 	cube				_cube;
 	skybox				_skybox;
-
-	transform			_map[MEM_SIZE];
-	chunk				_chunks[MEM_SIZE];
 
 	std::map<int, t_keyHandler>	_keyHandlers;
 	std::map<int, t_keyHandler>	_buttonHandlers;
@@ -59,7 +61,7 @@ class	window
 	void	events(void);
 
 public:
-	window(const std::string &ti, int w, int h);
+	window(t_vm *vm, const std::string &ti, int w, int h);
 	~window(void);
 
 	void	addKeyHandler(int key, t_keyHandler handler);
