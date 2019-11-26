@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   op_zjmp.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:05:20 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/12 22:08:35 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/26 16:30:20 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ char		op_zjmp(t_vm *vm, t_proc *proc)
 {
 	t_ind	off;
 	t_dir	val;
+	t_dir	pc;
 
 	off = 1;
 	get_dir4(proc, &off, &val);
@@ -38,7 +39,14 @@ char		op_zjmp(t_vm *vm, t_proc *proc)
 		out(proc->pid, val, proc->carry);
 	if (!proc->carry)
 		move_pc(vm, proc, off);
-	else if ((int16_t)(proc->pc = (proc->pc + (val % IDX_MOD)) % MEM_SIZE) < 0)
-		proc->pc = MEM_SIZE - proc->pc;
+	else
+	{
+		pc = proc->pc;
+		pc += (val % IDX_MOD);
+		pc %= MEM_SIZE;
+		if (pc < 0)
+			pc += MEM_SIZE;
+		proc->pc = pc;
+	}
 	return (proc->carry);
 }
