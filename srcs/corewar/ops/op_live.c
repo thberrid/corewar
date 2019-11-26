@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   op_live.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:05:20 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/25 19:21:18 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/26 19:43:35 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,7 @@ char		op_live(t_vm *vm, t_proc *proc)
 	t_champ	*pl;
 
 	off = 1;
-	proc->lives++;
-	vm->total_live++;
+	++vm->total_live;
 	proc->last_live = vm->cycles;
 	get_dir4(proc, &off, &val);
 	if (vm->verbosity & V_OPERATONS)

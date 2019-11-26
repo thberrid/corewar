@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loop.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 15:20:59 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/25 18:40:35 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/12 19:14:31 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static t_proc	*vm_kill(t_vm *vm, t_proc *proc)
 		write(1, " hasn't lived for ", 18);
 		ft_putnbr(vm->cycles - proc->last_live);
 		write(1, " cycles (CTD ", 13);
-		ft_putlnbr(vm->cycle_to_die);
+		ft_putnbr((int)vm->cycle_to_die);
 		write(1, ")\n", 2);
 	}
 	return (kill_process(proc));
@@ -41,15 +41,12 @@ static void		vm_check(t_vm *vm)
 	proc = g_procs.head;
 	while (proc)
 	{
-		if (!proc->lives)
-		{
+		if ((vm->cycles - proc->last_live) >= vm->cycle_to_die)
 			proc = vm_kill(vm, proc);
-			continue ;
-		}
-		proc->lives = 0;
-		proc = proc->next;
+		else
+			proc = proc->next;
 	}
-	vm->last_dec++;
+	++vm->last_dec;
 	if (vm->total_live >= NBR_LIVE || vm->last_dec >= MAX_CHECKS)
 	{
 		vm->cycle_to_die -= CYCLE_DELTA;
@@ -108,7 +105,7 @@ char			vm_loop(t_vm *vm)
 	vm->cycles = 0;
 	vm->last_check = CYCLE_TO_DIE;
 	vm->cycle_to_die = CYCLE_TO_DIE;
-	while (g_procs.size)
+	while (g_procs.size && vm->cycle_to_die > -64)
 		cycle(vm);
 	return (0);
 }
