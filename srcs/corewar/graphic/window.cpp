@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   window.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 14:37:53 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/25 19:36:44 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/26 04:11:02 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "shader.hpp"
 #include "window.hpp"
+#include "process.h"
 
 using namespace std::chrono_literals;
 
@@ -318,9 +319,9 @@ void	window::events()
 	}
 }
 
-/*
+
 float	s = 0.0f;
-*/
+
 
 void	window::update()
 {
@@ -328,22 +329,24 @@ void	window::update()
 		g_chunks[i].update();
 	if (isGrabed())
 		cam.update();
-	if (time++ >= ((float)TPS / cycleSpeed))
+	if (!g_procs.size)
+		return ;
+	if (++time >= ((float)TPS / cycleSpeed))
 	{
 		cycle(vm);
 		time = 0;
 	}
-	/*if (++s >= 360.0)
-		s = 0.0f;*/
+	if (++s >= 360.0)
+		s = 0.0f;
 }
 
 void	window::render()
 {
-	//float ss = 0.8 + (((sin(radians(s)) + 1.0f) / 2.0) * 0.2);
+	float ss = 0.8 + (((sin(radians(s)) + 1.0f) / 2.0) * 0.2);
 	for (int i = 0; i < MEM_SIZE; ++i)
 	{
-		//_cube.render(cam, glm::scale(vec3(ss, ss, ss)) * _chunks[i].getTransform(), _chunks[i].color(), _chunks[i].backColor());
-		_cube.render(cam, g_chunks[i].getTransform(), g_chunks[i].color(), g_chunks[i].backColor());
+		_cube.render(cam, glm::scale(vec3(ss, ss, ss)) * g_chunks[i].getTransform(), g_chunks[i].color(), g_chunks[i].backColor());
+		//_cube.render(cam, g_chunks[i].getTransform(), g_chunks[i].color(), g_chunks[i].backColor());
 	}
 	_skybox.render(cam);
 }

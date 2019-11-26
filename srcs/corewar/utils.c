@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 02:51:55 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/25 19:19:24 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/26 03:34:06 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ t_byte	get_dir2(t_proc *proc, t_ind *off, t_dir *dest)
 
 t_byte	get_dir4(t_proc *proc, t_ind *off, t_dir *dest)
 {
-	if (g_op_tab[g_map[proc->pc % MEM_SIZE]].hdir)
+	if (g_op_tab[proc->op].hdir)
 		return (get_dir2(proc, off, dest));
 	map_to_var(dest, proc->pc + *off, sizeof(*dest));
 	*off += sizeof(*dest);

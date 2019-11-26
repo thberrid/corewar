@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   corewar.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 07:24:26 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/13 02:30:36 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/26 04:09:17 by baurens          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int			main(int ac, char **av)
 		++i;
 	}
 	if (GRAPHIC)
-		return (graphic_loop(&vm));
+		graphic_loop(&vm);
 	else
 		vm_loop(&vm);
 	ft_printf(WINMSG, vm.winer->pid, vm.winer->name);
