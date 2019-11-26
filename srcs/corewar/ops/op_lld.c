@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:05:20 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/12 22:09:04 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/14 00:08:46 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	out(long int pid, t_dir v1, t_dir v2)
 	write(1, "\n", 1);
 }
 
-char			op_lld(t_vm *vm, t_proc *proc)
+char		op_lld(t_vm *vm, t_proc *proc)
 {
 	t_args	av;
 	t_ind	tmp;
