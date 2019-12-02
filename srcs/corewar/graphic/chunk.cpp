@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/25 12:25:46 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/25 15:14:09 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/12/02 16:21:11 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,22 @@ void	chunk::setColor(float r, float g, float b)
 
 void	chunk::changeColor(glm::vec3 color)
 {
+	if (color == _color || (!_futureColors.empty() && color == _futureColors.back()))
+		return;
+	if (_futureColors.size() >= 20)
+	{
+		glm::vec3	back(_futureColors.back());
+		glm::vec3	front(_futureColors.front());
+		_futureColors.empty();
+		_futureColors.push(front);
+		_futureColors.push(back);
+	}
 	_futureColors.push(color);
 }
 
 void	chunk::changeColor(float r, float g, float b)
 {
-	_futureColors.push(vec3(r, g, b));
+	changeColor(glm::vec3(r, g, b));
 }
 
 void	chunk::setPos(vec3 pos)

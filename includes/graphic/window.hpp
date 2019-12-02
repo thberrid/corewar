@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 14:38:10 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/25 19:10:01 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/12/02 16:01:39 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ class	window
 
 	int					fps;
 	int					tps;
-	int					time;
+	float				time;
+	float				cycleStep;
 	float				cycleSpeed;
 
 	SDL_Window			*win;

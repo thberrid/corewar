@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 15:18:27 by baurens           #+#    #+#             */
-/*   Updated: 2019/12/02 14:50:08 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/12/02 16:26:22 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include <string.h>
 # include "process.h"
 # include "config.h"
+
+# define FOO 42u
 
 extern t_byte	g_map[MEM_SIZE];
 

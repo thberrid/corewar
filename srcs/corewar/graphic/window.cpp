@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   window.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 14:37:53 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/26 04:11:02 by baurens          ###   ########.fr       */
+/*   Updated: 2019/12/02 16:30:39 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,9 @@ window::window(t_vm *vm, const std::string &ti, int w, int h) : vm(vm), title(ti
 	// Cycles managment
 	(void)vm;
 	(void)pause;
-	cycleSpeed = 1000.0f;
-	std::cout << cycleSpeed << " cycles per second (" << TPS << " ticks) means one cycle for each " << ((float)TPS / cycleSpeed) << " ticks" << std::endl;
+	cycleSpeed = 200.0f;
+	cycleStep = (cycleSpeed / (float)TPS);
+	std::cout << cycleSpeed << " cycles per second (" << TPS << " ticks) means one cycle for each " << ((float)TPS / cycleSpeed) << " ticks or " << cycleStep << " cycle per tick"<< std::endl;
 }
 
 window::~window(void)
@@ -210,6 +211,8 @@ void	window::init(void)
 	vm->cycle_to_die = CYCLE_TO_DIE;
 }
 
+int		cpt = 0;
+
 void	window::loop(void)
 {
 	std::chrono::nanoseconds	lag(0ns);
@@ -236,6 +239,7 @@ void	window::loop(void)
 			sec_start = clock::now();
 			fps = 0;
 			tps = 0;
+			cpt = 0;
 		}
 		while (lag >= timestep)
 		{
@@ -320,8 +324,7 @@ void	window::events()
 }
 
 
-float	s = 0.0f;
-
+//float	s = 0.0f;
 
 void	window::update()
 {
@@ -330,23 +333,27 @@ void	window::update()
 	if (isGrabed())
 		cam.update();
 	if (!g_procs.size)
-		return ;
-	if (++time >= ((float)TPS / cycleSpeed))
 	{
-		cycle(vm);
-		time = 0;
+		return ;
 	}
-	if (++s >= 360.0)
-		s = 0.0f;
+	time += cycleStep;
+	while (time >= 1.0)
+	{
+		cpt++;
+		cycle(vm);
+		time -= 1.0f;
+	}
+	//if (++s >= 360.0)
+	//	s = 0.0f;
 }
 
 void	window::render()
 {
-	float ss = 0.8 + (((sin(radians(s)) + 1.0f) / 2.0) * 0.2);
+	//float ss = 0.8 + (((sin(radians(s)) + 1.0f) / 2.0) * 0.2);
 	for (int i = 0; i < MEM_SIZE; ++i)
 	{
-		_cube.render(cam, glm::scale(vec3(ss, ss, ss)) * g_chunks[i].getTransform(), g_chunks[i].color(), g_chunks[i].backColor());
-		//_cube.render(cam, g_chunks[i].getTransform(), g_chunks[i].color(), g_chunks[i].backColor());
+		//_cube.render(cam, glm::scale(vec3(ss, ss, ss)) * g_chunks[i].getTransform(), g_chunks[i].color(), g_chunks[i].backColor());
+		_cube.render(cam, g_chunks[i].getTransform(), g_chunks[i].color(), g_chunks[i].backColor());
 	}
 	_skybox.render(cam);
 }

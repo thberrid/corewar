@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 01:50:25 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/25 19:36:30 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/12/02 16:33:34 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ extern chunk	g_chunks[MEM_SIZE];
 # define WIDTH	1280
 # define HEIGHT	720
 # define TPS	60.0f
-# define ANIM	0.1f
+# define ANIM	0.4f
 
 extern std::map<int, bool>	keys;
 extern std::map<int, bool>	btns;
