@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 17:19:10 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/12 22:41:07 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/12/02 14:41:02 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,26 +34,30 @@ static char	*addr_to_hex(char *buf, t_ind nb)
 **	which is 54 bytes long
 */
 
-void		out_pc(t_proc *proc, const t_ind off)
+void		out_pc(t_proc *proc, register t_ind off)
 {
 	register int	i;
+	register int	j;
+	register char	out[82];
 	char			tmp;
-	char			bytes[20 + 54];
 
-	i = 0;
-	write(1, "ADV ", 4);
-	ft_putnbr(off);
-	ft_memcpy(bytes, " (0x0000 -> 0x0000) ", 20);
-	addr_to_hex(bytes + 4, proc->pc);
-	addr_to_hex(bytes + 14, proc->pc + off);
+	j = proc->pc;
+	i = (off >= 10);
+	ft_memcpy(out, "ADV ", 4);
+	ft_nbrcat(out + 4, off);
+	ft_memcpy(out + 5 + i, " (0x0000 -> 0x0000) ", 20);
+	addr_to_hex(out + 9 + i, j);
+	addr_to_hex(out + 19 + i, j + off);
+	off = off * 3 + i;
 	while (i < off)
 	{
-		tmp = g_map[(proc->pc + i) % MEM_SIZE];
-		bytes[20 + i * 3 + 0] = VM_HEXA[(tmp >> 4) & 15];
-		bytes[20 + i * 3 + 1] = VM_HEXA[tmp & 15];
-		bytes[20 + i * 3 + 2] = ' ';
-		++i;
+		tmp = g_map[j % MEM_SIZE];
+		out[25 + i] = VM_HEXA[(tmp >> 4) & 15];
+		out[26 + i] = VM_HEXA[tmp & 15];
+		out[27 + i] = ' ';
+		i += 3;
+		++j;
 	}
-	write(1, bytes, 20 + off * 3);
-	write(1, "\n", 1);
+	out[25 + i] = '\n';
+	write(1, out, 26 + i);
 }

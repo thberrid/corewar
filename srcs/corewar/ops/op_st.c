@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:05:20 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/14 00:08:35 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/12/02 13:30:01 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,10 @@
 #include "vm.h"
 #include "op.h"
 
-static void	out(long int pid, t_dir v1, t_dir v2)
+static void	out(t_proc *proc, t_dir v1, t_dir v2)
 {
-	write(1, "P     ", ft_max(4.0 - ft_numlen(pid), 0) + 2);
-	ft_putlnbr(pid);
-	write(1, " | st r", 7);
+	ft_putstr(proc->name);
+	write(1, "st r", 4);
 	ft_putnbr(v1);
 	write(1, " ", 1);
 	ft_putnbr(v2);
@@ -37,7 +36,7 @@ char		op_st(t_vm *vm, t_proc *proc)
 	if (!(off = get_arguments(vm, proc, &av)))
 		return (proc->carry);
 	if (vm->verbosity & V_OPERATONS)
-		out(proc->pid, av.v1, av.v2);
+		out(proc, av.v1, av.v2);
 	av.v1 = apply_type(proc, av.t1, 1, av.v1);
 	if (av.t2 == REG_CODE)
 		proc->regs[av.v2 - 1] = av.v1;

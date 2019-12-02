@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:32:56 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/25 19:23:27 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/12/02 12:28:10 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <stdlib.h>
 #include "endianes.h"
 #include "process.h"
+#include "output.h"
 #include "parser.h"
 #include "arena.h"
 #include "ftlib.h"
@@ -32,6 +33,20 @@
 **
 **	les nombres sont des unsigned int de 32 bit de long (uint32_t)
 */
+
+static void	gen_champ(t_champ *champ, t_header *head)
+{
+	ft_bzero(champ->live_msg, PROG_NAME_LENGTH + 55);
+	ft_strcpy(champ->comm, head->comment);
+	ft_strcpy(champ->name, head->prog_name);
+	ft_bzero(champ->live_msg, 128);
+	ft_memcpy(champ->live_msg, SPLAYER, sizeof(SPLAYER) - 1);
+	ft_nbrcat(champ->live_msg + sizeof(SPLAYER) - 1, champ->pid);
+	ft_strcat(champ->live_msg, LIVEBRAC);
+	ft_strcat(champ->live_msg, champ->name);
+	ft_strcat(champ->live_msg, SALIVE);
+	champ->live_msg_size = ft_strlen(champ->live_msg);
+}
 
 static void	load_file(t_vm *vm, t_champ *chmp, const char *path)
 {
@@ -58,8 +73,7 @@ static void	load_file(t_vm *vm, t_champ *chmp, const char *path)
 		exit(ft_print_error("can't close fd '%d': %m.\n", fd));
 	if (rd < head.prog_size)
 		exit(ft_print_error("'%s': Invalid or corrupted file.\n", path));
-	ft_strcpy(chmp->comm, head.comment);
-	ft_strcpy(chmp->name, head.prog_name);
+	gen_champ(chmp, &head);
 }
 
 static void	sort_players(t_vm *vm)

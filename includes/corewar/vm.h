@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 09:47:24 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/25 19:04:32 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/12/02 12:21:43 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ struct			s_champ
 	size_t		size;
 	char		name[PROG_NAME_LENGTH + 1];
 	char		comm[COMMENT_LENGTH + 1];
+	char		live_msg[PROG_NAME_LENGTH + 55];
+	int			live_msg_size;
 };
 
 typedef struct	s_vm

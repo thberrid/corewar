@@ -1,31 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cycles.c                                           :+:      :+:    :+:   */
+/*   ft_unbrcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/12 17:18:52 by abaurens          #+#    #+#             */
-/*   Updated: 2019/12/02 12:55:55 by abaurens         ###   ########.fr       */
+/*   Created: 2019/12/02 11:59:45 by abaurens          #+#    #+#             */
+/*   Updated: 2019/12/02 12:10:29 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include "output.h"
-#include "ftlib.h"
-#include "ftio.h"
-#include "vm.h"
+static const unsigned int	g_ten_pow[] = {
+	1000000000, 100000000, 10000000,
+	1000000, 100000, 10000, 1000,
+	100, 10, 1, 0
+};
 
-void	out_ctd(t_scycle ctd)
+char	*ft_unbrcat(char *dst, register unsigned int n)
 {
-	write(1, "Cycle to die is now ", 20);
-	ft_putlnbr(ctd);
-	write(1, "\n", 1);
-}
+	register int	i;
+	register int	j;
 
-void	out_cycles(t_cycle cycle)
-{
-	write(1, "It is now cycle ", 16);
-	ft_putunbr(cycle);
-	write(1, "\n", 1);
+	i = 0;
+	j = 0;
+	*dst = '0';
+	while (g_ten_pow[i] && !(n / g_ten_pow[i]))
+		++i;
+	while (g_ten_pow[i])
+	{
+		dst[j++] = ((n / g_ten_pow[i])) + '0';
+		n %= g_ten_pow[i++];
+	}
+	return (dst);
 }

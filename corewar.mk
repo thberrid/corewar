@@ -25,8 +25,12 @@ OPS_COR	:=	\
 OPS_COR	:=	$(addprefix ops/,$(OPS_COR))
 
 OUT_COR	:=	\
-			pc.c		\
-			cycles.c
+			pc.c			\
+			cycles.c		\
+			ft_nbrcat.c		\
+			ft_unbrcat.c	\
+			ft_lnbrcat.c	\
+			ft_lunbrcat.c
 OUT_COR	:=	$(addprefix output/,$(OUT_COR))
 
 PARSER	:=	\
@@ -100,7 +104,7 @@ $(OBJD)/%.o:	$(SRCD)/%.cpp
 
 endif
 
-$(COR):	CFLAGS += -O3 -I./includes/corewar -ansi -pedantic -DVM $(ZAZ_FLAG)
+$(COR):	CFLAGS += -march=native -O3 -I./includes/corewar -ansi -pedantic -DVM $(ZAZ_FLAG)
 
 #	general source definitions
 SRC_COR	:=	$(PARSER)	\

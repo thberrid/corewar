@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 16:42:25 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/12 22:30:17 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/12/02 14:40:59 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,11 @@
 
 void	out_ctd(t_scycle ctd);
 void	out_cycles(t_cycle cycle);
-void	out_pc(t_proc *proc, const t_ind off);
+void	out_pc(t_proc *proc, register t_ind off);
+
+char	*ft_nbrcat(char *dst, register int n);
+char	*ft_lnbrcat(char *dst, register long int n);
+char	*ft_unbrcat(char *dst, register unsigned int n);
+char	*ft_lunbrcat(char *dst, register unsigned long int n);
 
 #endif

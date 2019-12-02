@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 15:18:27 by baurens           #+#    #+#             */
-/*   Updated: 2019/11/25 19:19:01 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/12/02 14:50:08 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 extern t_byte	g_map[MEM_SIZE];
 
 void			map_to_var(void *dest, t_ind pos, register size_t size);
-void			var_to_map(t_proc *proc, void *src, t_ind pos, register size_t size);
+void			var_to_map(t_proc *p, void *s, t_ind ps, register size_t size);
 void			write_byte(t_proc *proc, int pos, t_byte val);
 void			vm_dump(uint32_t dump_len);
 

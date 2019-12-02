@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 15:50:02 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/07 21:03:53 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/12/02 14:49:25 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@
 # define MAX_ARGS_NUMBER	4
 # define MAX_PLAYERS		4
 
-# define MEM_SIZE			(4*1024)
-# define IDX_MOD			(MEM_SIZE / 8)
-# define CHAMP_MAX_SIZE		(MEM_SIZE / 6)
+# define MEM_SIZE			4096
+# define IDX_MOD			512
+# define CHAMP_MAX_SIZE		682
 
 # define COMMENT_CHAR		'#'
 # define LABEL_CHAR			':'
@@ -36,7 +36,7 @@
 # define NAME_CMD_STRING	".name"
 # define COMMENT_CMD_STRING	".comment"
 
-# define REG_NUMBER			(16)
+# define REG_NUMBER			16
 
 # define CYCLE_TO_DIE		1536
 # define CYCLE_DELTA		50
@@ -48,13 +48,13 @@
 # define T_IND				4
 # define T_LAB				8
 
-# define PROG_NAME_LENGTH	(128)
-# define COMMENT_LENGTH		(2048)
+# define PROG_NAME_LENGTH	128
+# define COMMENT_LENGTH		2048
 # define COREWAR_EXEC_MAGIC	0xea83f3
 
 # define IND_SIZE			2
 # define REG_SIZE			4
-# define DIR_SIZE			REG_SIZE
+# define DIR_SIZE			4
 
 typedef int16_t				t_ind;
 typedef int32_t				t_reg;
