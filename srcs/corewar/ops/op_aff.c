@@ -6,11 +6,12 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:05:20 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/12 22:09:41 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/12/03 03:45:59 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
+#include "output.h"
 #include "arena.h"
 #include "utils.h"
 #include "ftio.h"
@@ -19,9 +20,9 @@
 
 static void	out_aff(const char c)
 {
-	write(1, "Aff: ", 5);
-	write(1, &c, 1);
-	write(1, "\n", 1);
+	corewar_write(1, "Aff: ", 5);
+	corewar_putchar(1, c);
+	corewar_putchar(1, '\n');
 }
 
 char		op_aff(t_vm *vm, t_proc *proc)

@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 09:47:24 by abaurens          #+#    #+#             */
-/*   Updated: 2019/12/02 12:21:43 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/12/03 02:45:39 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,12 @@ typedef struct s_champ	t_champ;
 # define V_DEATHS		8
 # define V_PC			16
 # define V_AFF			32
+
+# define OUT_BUF_SIZE	4096
+# define BUFF_TRESHOLD	1
+
+extern char	g_buff[OUT_BUF_SIZE];
+extern int	g_pos;
 
 /*
 **	pc:		startpoint of the player in the arena

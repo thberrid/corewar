@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 14:37:53 by abaurens          #+#    #+#             */
-/*   Updated: 2019/12/02 16:30:39 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/12/02 17:31:01 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ window::window(t_vm *vm, const std::string &ti, int w, int h) : vm(vm), title(ti
 	// Cycles managment
 	(void)vm;
 	(void)pause;
-	cycleSpeed = 200.0f;
+	cycleSpeed = 500.0f;
 	cycleStep = (cycleSpeed / (float)TPS);
 	std::cout << cycleSpeed << " cycles per second (" << TPS << " ticks) means one cycle for each " << ((float)TPS / cycleSpeed) << " ticks or " << cycleStep << " cycle per tick"<< std::endl;
 }

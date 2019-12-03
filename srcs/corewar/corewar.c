@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   corewar.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 07:24:26 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/26 04:09:17 by baurens          ###   ########.fr       */
+/*   Updated: 2019/12/03 01:35:17 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,10 @@
 #include "ftio.h"
 #include "vm.h"
 
+char		g_buff[OUT_BUF_SIZE];
 t_byte		g_map[MEM_SIZE];
 t_lst		g_procs;
+int			g_pos;
 
 static void	print_help(char const *const n)
 {
@@ -64,8 +66,10 @@ int			main(int ac, char **av)
 	t_vm	vm;
 
 	i = 0;
+	g_pos = 0;
 	if (ac == 1)
 		print_help(*av);
+	ft_bzero(&g_buff, OUT_BUF_SIZE);
 	ft_bzero(&g_procs, sizeof(t_lst));
 	parse_args(&vm, av + 1);
 	ft_putstr("Introducing contestants...\n");

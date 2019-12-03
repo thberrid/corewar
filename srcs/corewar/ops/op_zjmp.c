@@ -6,12 +6,13 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:05:20 by abaurens          #+#    #+#             */
-/*   Updated: 2019/12/02 13:29:50 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/12/03 02:24:08 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include "ftmath.h"
+#include "output.h"
 #include "ftlib.h"
 #include "utils.h"
 #include "ftio.h"
@@ -20,10 +21,10 @@
 
 static void	out(t_proc *proc, t_dir v1, char jmp)
 {
-	ft_putstr(proc->name);
-	write(1, "zjmp ", 5);
-	ft_putnbr(v1);
-	write(1, (jmp ? " OK\n" : " FAILED\n"), jmp ? 4 : 8);
+	corewar_putstr(1, proc->name);
+	corewar_write(1, "zjmp ", 5);
+	corewar_putnbr(1, v1);
+	corewar_write(1, (jmp ? " OK\n" : " FAILED\n"), jmp ? 4 : 8);
 }
 
 char		op_zjmp(t_vm *vm, t_proc *proc)

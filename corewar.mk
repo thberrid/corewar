@@ -27,7 +27,9 @@ OPS_COR	:=	$(addprefix ops/,$(OPS_COR))
 OUT_COR	:=	\
 			pc.c			\
 			cycles.c		\
+			buffer.c		\
 			ft_nbrcat.c		\
+			buffer_num.c	\
 			ft_unbrcat.c	\
 			ft_lnbrcat.c	\
 			ft_lunbrcat.c

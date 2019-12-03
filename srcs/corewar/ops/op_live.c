@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:05:20 by abaurens          #+#    #+#             */
-/*   Updated: 2019/12/02 13:30:35 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/12/03 02:38:32 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@
 
 static void	out(t_proc *proc, t_dir v1)
 {
-	ft_putstr(proc->name);
-	write(1, "live ", 5);
-	ft_putnbr(v1);
-	write(1, "\n", 1);
+	corewar_putstr(1, proc->name);
+	corewar_write(1, "live ", 5);
+	corewar_putnbr(1, v1);
+	corewar_write(1, "\n", 1);
 }
 
 char		op_live(t_vm *vm, t_proc *proc)
@@ -42,7 +42,7 @@ char		op_live(t_vm *vm, t_proc *proc)
 		out(proc, val);
 	if ((pl = get_player(vm, -val)) && (vm->verbosity & V_LIVES))
 	{
-		write(1, pl->live_msg, pl->live_msg_size);
+		corewar_write(1, pl->live_msg, pl->live_msg_size);
 		proc->last = pl->id;
 		vm->winer = pl;
 	}

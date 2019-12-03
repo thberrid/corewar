@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 00:25:16 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/25 19:09:44 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/12/03 04:01:37 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include "viewer.hpp"
 #include "chunk.hpp"
 #include "config.h"
+
+extern "C" void	flush_buffer(int fd);
 
 chunk	g_chunks[MEM_SIZE];
 
@@ -93,5 +95,6 @@ char	graphic_loop(t_vm *vm)
 	win.addButtonHandler(SDL_BUTTON_LEFT, leftClicHandler);
 	
 	win.loop();
+	flush_buffer(1);
 	return (0);
 }

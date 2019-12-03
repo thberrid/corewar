@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 12:40:34 by abaurens          #+#    #+#             */
-/*   Updated: 2019/12/02 15:29:53 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/12/03 02:59:13 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,10 @@ static uint64_t	get_next_pid(char *buf)
 	int				i;
 	static uint64_t	max = 0;
 
+	++max;
 	i = 1 + (max >= 10) + (max >= 100) + (max >= 1000);
 	ft_lunbrcat(buf + (4 - i), max);
-	return (++max);
+	return (max);
 }
 
 t_proc			*add_process(t_ind pc, t_proc *copy)
