@@ -6,7 +6,7 @@
 /*   By: smoreno- <smoreno-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 06:05:50 by smoreno-          #+#    #+#             */
-/*   Updated: 2019/11/01 20:07:27 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/10 06:34:43 by thberrid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,14 @@
 # include "ftio.h"
 # include "config.h"
 # include "op.h"
+# include <fcntl.h>
+# include <unistd.h>
 
-# define REG_CHAR "0123456789"
+# define REG_CHAR	 	"0123456789"
+# define IS_NAME		(1U << 0U)
+# define IS_COMMENT		(1U << 1U)
+# define NAME_DONE		(1U << 2U)
+# define COMMENT_DONE	(1U << 3U)
 
 typedef struct			s_instruc
 {
@@ -43,6 +49,10 @@ typedef struct			s_instruc_head
 	size_t				length;
 	size_t				slen;
 	int					line;
+	int					cflag;
+	int					retrn_parse;
+	int					retrn_labels;
+	int					av_path;
 }						t_instruct_head;
 
 /*
@@ -50,23 +60,76 @@ typedef struct			s_instruc_head
 */
 
 int						ft_read(t_instruct_head *head, char *path,
-									t_header *header);
+							t_header *header);
 int						check_instruct(char *line, t_instruct_head *head);
+int						whilegnl(t_instruct_head *head, char **line,
+							t_header *header, int fd);
+int						check_headder(t_header *header, char *line,
+							int fd, int *rethd);
+void					ft_fixheader(t_header *header);
+int						no_empty_cor(t_instruct_head *head, char *line);
+void					set_rethd(int fl, int *rethd);
 
 /*
 ** free
 */
 
-void					instruct_free(t_instruct_head *head);
-void					ft_errors(int err, int line_n);
+void					free_split(char **params);
+int						instruct_free(t_instruct_head *head);
+int						ft_errors(int err, int line_n);
 
 /*
 ** tools
 */
 
-void					ft_bprint_fd(void *ptr, int nbits, int fd);
-void					ft_bprint_fd_rev(void *ptr, int nbits, int fd);
+int						printinst(t_instruct_head *head, int fd);
 void					instruct_display(t_instruct *this);
-void					instruct_display_all(t_instruct_head *head);
+void					instruct_display_all(t_instruct_head *head,
+							t_header *header);
+int						ft_usage(void);
+int						debug_instruct(char *line, t_instruct_head *head);
+int						is_paramtype_allowed(char param_type,
+							t_instruct *inst, int i);
+int						update_progsize(t_instruct_head *head,
+							t_instruct *inst);
+int						default_op(t_instruct *inst);
+int						strtobin(int fd, char *param, uint32_t size);
+int						ft_deflab(t_instruct *inst, int *cflag,
+							char *line, int len);
+int						default_op(t_instruct *inst);
+void					default_param(int param_type, t_instruct *inst,
+							int i_param);
+int						push_label(char **line, t_instruct *inst, int *cflag);
+int						push_param(char **line);
+int						push_paramtype(char **line, int *len);
+int						init_headder(char *line, int *rethd);
+int						param_to_inst(char **param_raw, t_instruct *inst,
+							char **line);
+t_instruct				*add_inst(t_instruct_head *head);
+t_instruct				*get_freeinst(t_instruct_head *head);
+int						push_str(char *dest, char *src, int len, int start);
+void					printheader(int fd, t_header *header);
+
+/*
+** get datas
+*/
+
+int						ft_getparams(char **line, t_instruct *inst);
+int						get_datas(char *s, t_instruct_head *hd,
+							t_instruct *inst, size_t i);
+int						get_paramlen(int opcode);
+char					get_available_type(t_instruct *inst, int param_n);
+int						get_octet(t_byte id, char param_type);
+t_arg_type				get_ocp(char **param_raw, int param_len,
+							t_instruct *inst);
+
+/*
+** check strings
+*/
+
+int						ft_strcountchar(char *str, char c);
+int						is_str_valid(char *str);
+int						ft_checkchar(char *str, char *type);
+int						is_strn_valid(char *str, int n);
 
 #endif

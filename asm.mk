@@ -7,11 +7,19 @@
 #	general source definitions
 SRC_ASM	:=	\
 			asm.c \
-			check_instru.c \
-			ft_bprint.c \
+			instruct_check.c \
+			check_get.c \
+			check_getparam.c \
+			check_str.c \
+			header.c \
 			instruct_display.c \
 			instruct_free.c \
+			instruct_get.c \
+			instruct_debug.c \
+			debug_default.c \
+			debug_push.c \
 			utils.c \
-			read.c
+			read.c \
+			read_utils.c
 
 $(ASM):	CFLAGS += -I./includes/asm

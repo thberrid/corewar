@@ -1,0 +1,21 @@
+#!/bin/zsh
+
+# with a normal .s
+# with errors
+#	no file
+#	one syntax error file
+
+# log.txt 2>&1
+
+declare -l VALG_LOGS="tmp/valgrind_logs"
+INDEX=1
+for i in inputs/*.s; do
+	echo $i
+	valgrind --log-file=$VALG_LOGS ./$ASM_NEW -a $i > /dev/null
+	# prototype : grep_logs index, .s filename, log_file, leak type {indirectly, etc}, field number {for cut -f N}, correct value 
+	grep_logs $INDEX $i $VALG_LOGS "definitely lost" 7 "0"
+	grep_logs $INDEX $i $VALG_LOGS "indirectly lost" 7 "0"
+	grep_logs $INDEX $i $VALG_LOGS "possibly lost" 9 "8,840" 
+	let "INDEX+=1"
+	echo ""
+done
