@@ -2,10 +2,13 @@
 
 TESTER='./tester'
 YOUR_VM='./corewar'
-ZAZ_VM='./documents/vm_champs/corewar -a -v 4'
+ZAZ_VM='./documents/vm_champs/corewar'
+
+# Option to be passed to both vms
+VM_OPT='-a -v 31'
 
 # The option to make your vm dump the memory as zaz's one do it (same format).
-DUMP_OPT='-zdump'
+DUMP_OPT='-d'
 
 # Files used to compare the output results.
 YOUR_OUT_FILE='yout.dump'
@@ -71,7 +74,7 @@ init_tests()
 
 	if [[ ! -f `echo $YOUR_VM | cut -d' ' -f1` ]]; then
 		echo "Compiling $YOUR_VM..."
-		make -s $YOUR_VM
+		make -s $YOUR_VM ZAZ=TRUE
 		if [[ $? -ne 0 ]]; then
 			can_run=false
 		fi
@@ -94,11 +97,14 @@ init_tests()
 print_usage()
 {
 	coma=''
-	printf "Usage:\n  $COL_GRN$0$COL_NRM [[""$COL_CYA""num$COL_NRM] ""$COL_CYA""opcode$COL_NRM] ...\n"
+	# Usage: ./run.sh [[num] opcode1|all|clear] ...
+	printf "Usage:\n  $COL_GRN$0$COL_NRM [[""$COL_CYA""num$COL_NRM] ""$COL_CYA""opcode$COL_NRM|$COL_CYA""all$COL_NRM|$COL_CYA""clear$COL_NRM] ...\n"
 	printf "      ""$COL_CYA""num$COL_NRM: repeat the next test multiple times\n"
+	printf "      ""$COL_CYA""all$COL_NRM: test all opcodes\n"
+	printf "      ""$COL_CYA""clear$COL_NRM: clears the test directory\n"
 	printf "      ""$COL_CYA""opcode$COL_NRM: the opcode to be tested\n"
 	printf "valid opcodes are ("
-	for code in `cat $op_h_file|grep -Eo '\{\"[a-z]+\"'|grep -Eo "[a-z]+"|tr '\n' ' '|sed 's: $::g'`; do
+	for code in `op_list`; do
 		printf "$coma$COL_MAG%s$COL_NRM" $code
 		coma=','
 	done
@@ -111,17 +117,24 @@ print_usage()
 #	Second is the champion file used to test
 compare_corewar()
 {
-	printf "$COL_MAG$2$COL_NRM: "
-	$YOUR_VM $DUMP_OPT $1 $2 > $YOUR_OUT_FILE && $OSX_CONTAINER $ZAZ_VM -d $1 $2 > $ZAZ_OUT_FILE
+	#$YOUR_VM $VM_OPT $DUMP_OPT $1 $2 > $YOUR_OUT_FILE && $OSX_CONTAINER $ZAZ_VM $VM_OPT -d $1 $2 > $ZAZ_OUT_FILE
+	$YOUR_VM $VM_OPT $@ > $YOUR_OUT_FILE && $OSX_CONTAINER $ZAZ_VM $@ > $ZAZ_OUT_FILE
 	if [[ $? -ne 0 ]]; then
 		exit
 	fi
-	diff --suppress-common-lines -y $YOUR_OUT_FILE $ZAZ_OUT_FILE 2>/dev/null
+	diff --suppress-common-lines -y $YOUR_OUT_FILE $ZAZ_OUT_FILE >/dev/null 2>/dev/null
 	if [[ $? -ne 0 ]]; then
-		printf "$COL_RED""FAIL!$COL_NRM\n"
+		if [[ $total -eq 0 ]]; then
+			echo
+		fi
+		printf "$COL_MAG$1$COL_NRM:\n"
+		diff --suppress-common-lines -y $YOUR_OUT_FILE $ZAZ_OUT_FILE
+		mv $1 `echo $1 | sed 's:.cor:.fail.cor:g'`
 		return 1
 	else
-		printf "$COL_GRN""OK$COL_NRM\n"
+		if [[ $VERBOSITY = true ]]; then
+			printf "$COL_MAG$1$COL_NRM: $COL_GRN""OK$COL_NRM\n"
+		fi
 		return 0
 	fi
 }
@@ -130,58 +143,32 @@ compare_corewar()
 get_op_cost()
 {
 	cat $op_h_file|grep "{\"$1\", "|tr -d ' \t'|sed -E 's:\{(((T_IND|T_DIR|T_REG|0)\|?)+,?){1,3}\},::g'|cut -d',' -f4
-#	if [ $1 = "live" ]; then
-#		echo "10"
-#	elif [ $1 = "ld" ]; then
-#		echo "5"
-#	elif [ $1 = "st" ]; then
-#		echo "5"
-#	elif [ $1 = "add" ]; then
-#		echo "10"
-#	elif [ $1 = "sub" ]; then
-#		echo "10"
-#	elif [ $1 = "and" ]; then
-#		echo "6"
-#	elif [ $1 = "or" ]; then
-#		echo "6"
-#	elif [ $1 = "xor" ]; then
-#		echo "6"
-#	elif [ $1 = "zjmp" ]; then
-#		echo "20"
-#	elif [ $1 = "ldi" ]; then
-#		echo "25"
-#	elif [ $1 = "sti" ]; then
-#		echo "25"
-#	elif [ $1 = "fork" ]; then
-#		echo "800"
-#	elif [ $1 = "lld" ]; then
-#		echo "10"
-#	elif [ $1 = "lldi" ]; then
-#		echo "50"
-#	elif [ $1 = "lfork" ]; then
-#		echo "1000"
-#	elif [ $1 = "aff" ]; then
-#		echo "2"
-#	else
-#		echo "0"
-#	fi
+}
+
+# prints the available opcodes
+op_list()
+{
+	cat $op_h_file|grep -Eo '\{\"[a-z]+\"'|grep -Eo "[a-z]+"|tr '\n' ' '|sed 's:nop ::g'
 }
 
 # Generate test files and test the vm with them
 test_opcode()
 {
+	clear_tests $1
 	./tester $1 > /dev/null
 	if [[ $? -ne 0 ]]; then
 		printf "\e[31merror:\e[0m '$1': invalid instruction\n" >&2
 		print_usage
 		exit
+	else
+		printf "$COL_CYA Testing '$COL_MAG$1$COL_CYA' %$((5-${#1}))s:$COL_NRM "
 	fi
 	total=0
 	passed=0
 	for file in `find tests/$1 -type f -name "*.cor"|sort -n -t'/' -k3`
 	do
 		#get_op_cost $1
-		compare_corewar `get_op_cost $1` $file
+		compare_corewar $file $VM_OPT $DUMP_OPT `get_op_cost $1`
 		if [[ $? -eq 0 ]]; then
 			passed=$((passed+1))
 		fi
@@ -196,42 +183,81 @@ test_opcode()
 	fi
 	TOTAL_RUN=$((TOTAL_RUN+$total))
 	PASSED_RUN=$((PASSED_RUN+$passed))
-	printf "passed %d/%d$COL_NRM" $passed $total
+	printf "%d/%d$COL_NRM" $passed $total
 	if [[ $passed -eq $total ]]; then
 		printf " Well done !"
 	fi
 	printf "\n"
 }
 
+#test_file()
+#{
+#
+#}
+
+clear_tests()
+{
+	if [[ -n $1 ]]; then
+		for f in "$@"; do
+			rm -rf "./tests/$f/"
+		done
+	else
+		rm -rf "./tests/"
+	fi
+}
+
 # Startpoint
+
+#if [[ $1 == "clear" ]]; then
+#	clear_tests
+#fi
+
+#op_list
+#exit
 init_tests $1
 
 for op in "$@"; do
-	if [[ $op =~ ^[0-9]+$ ]] ; then
+	if [[ $op == "clear" ]]; then
+		clear_tests
+	elif [[ $op =~ ^[0-9]+$ ]] ; then
 		loop=$op
 	else
-		while [[ $loop -gt 0 ]]; do
-			test_opcode $op
-			loop=$((loop-1))
-		done
-		if [[ $TOTAL_RUN -eq $PASSED_RUN ]]; then
-			PASSED_OP=$((PASSED_OP+1))
+		if [[ $op == "all" ]]; then
+			for cop in `op_list`; do
+				test_opcode $cop
+				if [[ $TOTAL_RUN -eq $PASSED_RUN ]]; then
+					PASSED_OP=$((PASSED_OP+1))
+				fi
+				TOTAL_OP=$((TOTAL_OP+1))
+			done
+		else
+			while [[ $loop -gt 0 ]]; do
+				test_opcode $op
+				loop=$((loop-1))
+			done
+			if [[ $TOTAL_RUN -eq $PASSED_RUN ]]; then
+				PASSED_OP=$((PASSED_OP+1))
+			fi
+			TOTAL_OP=$((TOTAL_OP+1))
 		fi
-		TOTAL_OP=$((TOTAL_OP+1))
 		loop=1
 	fi
 done
-if [[ $TOTAL_OP -eq $PASSED_OP ]]; then
-	printf "$COL_GRN"
-else
-	printf "$COL_RED"
-fi
-printf "%d/%d$COL_NRM(" $PASSED_OP $TOTAL_OP
 
-if [[ $TOTAL_RUN -eq $PASSED_RUN ]]; then
-	printf "$COL_CYA"
-else
-	printf "$COL_RED"
-fi
+if [[ $TOTAL_RUN -ne 0 ]]; then
+	if [[ $TOTAL_OP -eq $PASSED_OP ]]; then
+		printf "$COL_GRN"
+	else
+		printf "$COL_RED"
+	fi
 
-printf "%d/%d$COL_NRM)\n" $PASSED_RUN $TOTAL_RUN
+	printf "%d/%d$COL_NRM(" $PASSED_OP $TOTAL_OP
+
+	if [[ $TOTAL_RUN -eq $PASSED_RUN ]]; then
+		printf "$COL_CYA"
+	else
+		printf "$COL_RED"
+	fi
+
+	printf "%d/%d$COL_NRM)\n" $PASSED_RUN $TOTAL_RUN
+fi

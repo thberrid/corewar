@@ -6,7 +6,7 @@
 /*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 15:51:41 by baurens           #+#    #+#             */
-/*   Updated: 2019/11/02 17:14:28 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/09 03:08:36 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@
 # endif
 # include "config.h"
 
-typedef struct s_op	t_op;
+typedef struct s_op		t_op;
+typedef struct s_args	t_args;
 
 struct		s_op
 {
@@ -35,6 +36,18 @@ struct		s_op
 	char	ocp;
 	char	hdir;
 	char	(*fnc)();
+};
+
+struct		s_args
+{
+	t_byte	t1;
+	t_byte	t2;
+	t_byte	t3;
+	t_byte	t4;
+	t_dir	v1;
+	t_dir	v2;
+	t_dir	v3;
+	t_dir	v4;
 };
 
 enum	e_opcode
@@ -149,14 +162,14 @@ char		op_lfork(t_vm *vm, t_proc *proc);
 **			sti		no
 **			fork	no
 **			lld		yes : carry = !(v1)
-**			lldi	no
+**			lldi	yes : carry = !(*((pc + (v1 + v2)) % MEM_SIZE))
 **			lfork	no
 **			aff		no
 */
 
 static const t_op	g_op_tab[] __attribute__((unused)) =
 {
-	{"nop", 0, {0}, 0, 0, "nothing", 0, 0, 0x0},
+	{"nop", 0, {0}, 0, 1, "nothing", 0, 0, 0x0},
 	{"live", 1, {T_DIR}, 1, 10, "alive", 0, 0, OP_LIVE_F},
 	{"ld", 2, {T_DIR | T_IND, T_REG}, 2, 5, "load", 1, 0, OP_LD_F},
 	{"st", 2, {T_REG, T_IND | T_REG}, 3, 5, "store", 1, 0, OP_ST_F},

@@ -18,3 +18,11 @@ tests/*
 *.d
 *.cor
 libft/
+
+\.vscode/
+
+test\.mk
+
+zork\.s
+
+*.bmp

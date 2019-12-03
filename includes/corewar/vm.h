@@ -6,21 +6,24 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 09:47:24 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/03 17:51:08 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/12/03 02:45:39 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VM_H
 # define VM_H
 
+# ifndef GRAPHIC
+#  define GRAPHIC	0
+# endif
+
 # include <inttypes.h>
 # include <string.h>
 # include <limits.h>
 # include "config.h"
 
-# define DUMP_LEN	32
-# define VERBOSITY	(4 | 32)
-
+typedef signed long		t_scycle;
+typedef unsigned int	t_cycle;
 typedef struct s_champ	t_champ;
 
 # define V_LIVES		1
@@ -30,10 +33,11 @@ typedef struct s_champ	t_champ;
 # define V_PC			16
 # define V_AFF			32
 
-typedef enum	e_dumpm
-{
-	NONE, SUBJECT, ZAZ
-}				t_dumpm;
+# define OUT_BUF_SIZE	4096
+# define BUFF_TRESHOLD	1
+
+extern char	g_buff[OUT_BUF_SIZE];
+extern int	g_pos;
 
 /*
 **	pc:		startpoint of the player in the arena
@@ -48,31 +52,43 @@ struct			s_champ
 	size_t		size;
 	char		name[PROG_NAME_LENGTH + 1];
 	char		comm[COMMENT_LENGTH + 1];
+	char		live_msg[PROG_NAME_LENGTH + 55];
+	int			live_msg_size;
 };
 
 typedef struct	s_vm
 {
-	t_dumpm		dmp_bol;
+	char		dmp_bol;
+	int32_t		last_check;
 	uint32_t	dump;
 	size_t		psize;
+	uint32_t	total_live;
 	t_champ		players[MAX_PLAYERS];
 	t_byte		verbosity;
+	t_scycle	last_dec;
+	t_scycle	cycle_to_die;
+	t_cycle		cycles;
+	t_champ		*winer;
 }				t_vm;
 
-typedef struct	s_dispatch
-{
-	const char	*opt;
-	char		**(*callback)(t_vm *vm, char **av);
-}				t_dispatch;
+void			cycle(t_vm *vm);
+char			vm_loop(t_vm *vm);
 
-void			vm_loop(t_vm *vm);
-t_vm			parse_args(char **av);
+/*
+**	graphic functions
+*/
+char			graphic_loop(t_vm *vm);
+void			set_color(int pos, float r, float g, float b);
+
+void			parse_args(t_vm *vm, char **av);
 void			destruct(void) __attribute__((destructor));
 
 /*
 **	vm ocp functions
 */
-t_ind			check_ocp(t_byte ocp, uint32_t opid);
+t_byte			check_ocp(t_byte ocp, uint32_t opid, t_ind *off);
 t_ind			get_arg_size(t_byte ocp, uint32_t opid);
+
+void			destruct(void) __attribute__((destructor));
 
 #endif

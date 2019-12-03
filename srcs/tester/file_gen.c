@@ -6,9 +6,11 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 11:26:20 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/01 19:13:01 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/11/07 16:20:59 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#define FT_DISABLE_WARNINGS
 
 #include <unistd.h>
 #include <stdlib.h>
@@ -24,7 +26,7 @@ static const char	*g_names[] = {
 	"none", "reg", "dir", "ind"
 };
 
-static t_byte	gen_ocp(t_tst *p)
+static uint8_t	gen_ocp(t_tst *p)
 {
 	return ((p->a[0] << 6)
 		| (p->a[1] << 4)

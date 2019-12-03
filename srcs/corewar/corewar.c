@@ -6,72 +6,53 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 07:24:26 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/01 19:16:03 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/12/03 01:35:17 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#define FT_DISABLE_WARNINGS
-
-#include <unistd.h>
 #include <stdlib.h>
 #include "process.h"
-#include "arena.h"
+#include "output.h"
 #include "ftlib.h"
 #include "ftio.h"
 #include "vm.h"
 
-#define REG_COLUMNS	8
+char		g_buff[OUT_BUF_SIZE];
+t_byte		g_map[MEM_SIZE];
+t_lst		g_procs;
+int			g_pos;
 
-t_byte	g_map[MEM_SIZE];
-t_lst	g_procs;
-
-static void	print_process(void)
+static void	print_help(char const *const n)
 {
-	size_t		v;
-	size_t		l;
-	size_t		i;
-	size_t		r;
-	t_proc		*cur;
-
-	i = 0;
-	cur = g_procs.head;
-	while (cur)
-	{
-		ft_printf("\33[35m[process %zu]\33[0m\n", ++i);
-		ft_printf(" \33[31mpc:     %hu\33[0m\n", cur->pc);
-		ft_printf(" \33[33mcarry:  %d\33[0m\n", cur->carry);
-		l = 0;
-		while (l < REG_NUMBER / REG_COLUMNS)
-		{
-			r = 0;
-			while ((v = r++ * (REG_NUMBER / REG_COLUMNS) + l) < REG_NUMBER)
-				ft_printf("  [\33[3%dmr%zu:%s % d\33[0m]",
-					7 + ((r % 2 == l % 2)), v, v < 10 ? " " : "", cur->regs[v]);
-			ft_printf("\n");
-			++l;
-		}
-		cur = cur->next;
-	}
+	ft_printf("Usage: %s [[-d | -dump] N -v N -a] <champion1.cor> <...>\n", n);
+	ft_printf(UOP, "-a", "", "Prints output from \"aff\""USGAFF);
+	ft_printf(UOP, "-dump", " N", "Dumps memory after N cycles then exits");
+	ft_printf(UOP, "-d", " N", "Dumps memory after N cycles then exits (zaz)");
+	ft_printf(UOP, "-v", " N", "Verbosity levels, "\
+									"can be added together to enable several");
+	ft_printf(UVB, "- 0", "Show only essentials (default)");
+	ft_printf(UVB, "- 1", "Show lives");
+	ft_printf(UVB, "- 2", "Show cycles");
+	ft_printf(UVB, "- 4", "Show operations (Params are NOT litteral ...)");
+	ft_printf(UVB, "- 8", "Show deaths");
+	ft_printf(UVB, "- 16", "Show PC movements (Except for jumps)");
+	exit(0);
 }
 
-static void	print_vm_state(t_vm *vm)
+t_champ		*get_player(t_vm *vm, uint32_t pid)
 {
-	size_t	i;
+	uint32_t	i;
+	t_champ		*p;
 
 	i = 0;
-	ft_printf("dump:   %u\n", vm->dump);
-	ft_printf("players: %zu\n", vm->psize);
-	while (i < MAX_PLAYERS)
+	p = vm->players;
+	while (i++ < vm->psize)
 	{
-		ft_printf("champ[%zu]:\n", i);
-		ft_printf("  id:   %u\n", vm->players[i].id);
-		ft_printf("  pid:  %08x (%u)\n", vm->players[i].pid,
-											vm->players[i].pid);
-		ft_printf("  name: \"%s\"\n", vm->players[i].name);
-		++i;
+		if (p->pid == pid)
+			return (p);
+		p++;
 	}
-	ft_printf("\n");
-	print_process();
+	return (NULL);
 }
 
 void		destruct(void)
@@ -79,50 +60,30 @@ void		destruct(void)
 	clear_procs();
 }
 
-int			main(int ac __attribute__((unused)), char **av)
+int			main(int ac, char **av)
 {
 	size_t	i;
 	t_vm	vm;
 
 	i = 0;
+	g_pos = 0;
+	if (ac == 1)
+		print_help(*av);
+	ft_bzero(&g_buff, OUT_BUF_SIZE);
 	ft_bzero(&g_procs, sizeof(t_lst));
-	vm = parse_args(av + 1);
+	parse_args(&vm, av + 1);
 	ft_putstr("Introducing contestants...\n");
 	while (i < vm.psize)
 	{
-		ft_printf("* Player %lu, weighing %zu bytes, \"%s\" (\"%s\") !\n",
-				i + 1, vm.players[i].size,
+		ft_printf("* Player %u, weighing %lu bytes, \"%s\" (\"%s\") !\n",
+				vm.players[i].pid, vm.players[i].size,
 				vm.players[i].name, vm.players[i].comm);
 		++i;
 	}
-	if (0)
-		print_vm_state(&vm);
-	vm_loop(&vm);
-	if (vm.dmp_bol)
-		vm_dump(DUMP_LEN * vm.dmp_bol);
+	if (GRAPHIC)
+		graphic_loop(&vm);
+	else
+		vm_loop(&vm);
+	ft_printf(WINMSG, vm.winer->pid, vm.winer->name);
 	return (0);
 }
-
-/*
-**	#include <stdio.h>
-**	int main(void)
-**	{
-**		uint32_t	dir;
-**
-**		dir = 0xffffffffu;
-**		printf("dir = %#010x = %u\n", dir, dir);
-**		dir %= MEM_SIZE;
-**		printf("dir = %#010x = %u\n", dir, dir);
-**		dir %= IDX_MOD;
-**		printf("dir = %#010x = %u\n\n", dir, dir);
-**
-**		dir = 0xffffffffu;
-**		printf("dir = %#010x = %u\n", dir, dir);
-**		dir &= 0xffff;
-**		printf("dir = %#010x = %u\n", dir, dir);
-**		dir %= MEM_SIZE;
-**		printf("dir = %#010x = %u\n", dir, dir);
-**		dir %= IDX_MOD;
-**		printf("dir = %#010x = %u\n", dir, dir);
-**	}
-*/

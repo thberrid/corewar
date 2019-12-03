@@ -12,19 +12,6 @@ init:	ld %0, r1
 		ld %49, r3
 		ld %48, r4
 
-start:	and %0, %0, r16
-		zjmp %:ok
-
-# if zjump failed (carry == 0)
-bad:	aff r4
-		and %0, %0, r16
+start:	lldi %:void, %5, r16
 		zjmp %:end
-
-# if zjump success (carry == 1)
-ok:		aff r3
-
-# infinite loop to kill the program quickly
-end:	zjmp %:end
-
-# label to void memory (zero for indirect val)
 void:

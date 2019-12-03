@@ -6,35 +6,42 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:05:20 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/03 17:59:44 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/12/03 02:24:17 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "process.h"
-#include "arena.h"
+#include <unistd.h>
+#include "ftmath.h"
+#include "output.h"
+#include "ftlib.h"
+#include "utils.h"
 #include "ftio.h"
 #include "vm.h"
 #include "op.h"
 
-char	op_sub(t_vm *vm, t_proc *proc)
+static void	out(t_proc *proc, t_dir v1, t_dir v2, t_dir v3)
 {
-	t_byte	ocp;
-	t_ind	off;
-	t_byte	reg;
-	t_reg	v1;
-	t_reg	v2;
+	corewar_putstr(1, proc->name);
+	corewar_write(1, "sub r", 5);
+	corewar_putnbr(1, v1);
+	corewar_write(1, " r", 2);
+	corewar_putnbr(1, v2);
+	corewar_write(1, " r", 2);
+	corewar_putnbr(1, v3);
+	corewar_write(1, "\n", 1);
+}
 
-	ocp = g_map[proc->pc + 1 % MEM_SIZE];
-	if ((off = check_ocp(ocp, OP_SUB)) && (proc->pc += off))
-		return (proc->carry);
-	off = 2;
-	v1 = g_map[(proc->pc + off++) % MEM_SIZE];
-	v2 = g_map[(proc->pc + off++) % MEM_SIZE];
-	reg = g_map[(proc->pc + off++) % MEM_SIZE];
-	proc->pc += off;
-	if (reg <= 0 || reg > REG_NUMBER)
+char		op_sub(t_vm *vm, t_proc *proc)
+{
+	t_args	av;
+	t_ind	off;
+
+	if (!(off = get_arguments(vm, proc, &av)))
 		return (proc->carry);
 	if (vm->verbosity & V_OPERATONS)
-		ft_printf("P %4d | sub r%d r%d r%d\n", proc->pid, v1, v2, reg);
-	return (!(proc->regs[reg - 1] = (v1 - v2)));
+		out(proc, av.v1, av.v2, av.v3);
+	av.v1 = proc->regs[av.v1 - 1];
+	av.v2 = proc->regs[av.v2 - 1];
+	move_pc(vm, proc, off);
+	return (!(proc->regs[av.v3 - 1] = (av.v1 - av.v2)));
 }
