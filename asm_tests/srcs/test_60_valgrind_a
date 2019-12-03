@@ -16,7 +16,6 @@ for i in inputs/*.s; do
 	grep_logs $INDEX $i $VALG_LOGS "definitely lost" 7 "0"
 	grep_logs $INDEX $i $VALG_LOGS "indirectly lost" 7 "0"
 	grep_logs $INDEX $i $VALG_LOGS "possibly lost" 9 "8,840" 
-	grep_logs $INDEX $i $VALG_LOGS "still reachable" 7 "10,442"
 	let "INDEX+=1"
 	echo ""
 done
