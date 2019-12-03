@@ -17,4 +17,4 @@ tests/*
 */*.test
 *.d
 *.cor
-.clang_complete
+libft/
