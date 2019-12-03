@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loop.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 15:20:59 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/26 19:45:21 by baurens          ###   ########.fr       */
+/*   Updated: 2019/12/03 02:30:15 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@ static t_proc	*vm_kill(t_vm *vm, t_proc *proc)
 {
 	if (vm->verbosity & V_DEATHS)
 	{
-		write(1, "Process ", 8);
-		ft_putlnbr(proc->pid);
-		write(1, " hasn't lived for ", 18);
-		ft_putnbr(vm->cycles - proc->last_live);
-		write(1, " cycles (CTD ", 13);
-		ft_putnbr((int)vm->cycle_to_die);
-		write(1, ")\n", 2);
+		corewar_write(1, "Process ", 8);
+		corewar_putlnbr(1, proc->pid);
+		corewar_write(1, " hasn't lived for ", 18);
+		corewar_putnbr(1, vm->cycles - proc->last_live);
+		corewar_write(1, " cycles (CTD ", 13);
+		corewar_putnbr(1, (int)vm->cycle_to_die);
+		corewar_write(1, ")\n", 2);
 	}
 	return (kill_process(proc));
 }
@@ -79,30 +79,34 @@ static void		vm_exec(t_vm *vm, t_proc *proc)
 	}
 }
 
-void			vm_loop(t_vm *vm)
+void			cycle(t_vm *vm)
 {
 	t_proc		*proc;
-	int32_t		last_check;
 
+	if (vm->cycles++ >= vm->dump && vm->dmp_bol)
+		vm_dump(DUMP_LEN * vm->dmp_bol);
+	if (vm->verbosity & V_CYCLES)
+		out_cycles(vm->cycles);
+	proc = g_procs.head;
+	while (proc)
+	{
+		vm_exec(vm, proc);
+		proc = proc->next;
+	}
+	if (--vm->last_check <= 0)
+	{
+		vm_check(vm);
+		vm->last_check = vm->cycle_to_die;
+	}
+}
+
+char			vm_loop(t_vm *vm)
+{
 	vm->cycles = 0;
-	last_check = CYCLE_TO_DIE;
+	vm->last_check = CYCLE_TO_DIE;
 	vm->cycle_to_die = CYCLE_TO_DIE;
 	while (g_procs.size && vm->cycle_to_die > -64)
-	{
-		if (vm->cycles++ >= vm->dump && vm->dmp_bol)
-			vm_dump(DUMP_LEN * vm->dmp_bol);
-		if (vm->verbosity & V_CYCLES)
-			out_cycles(vm->cycles);
-		proc = g_procs.head;
-		while (proc)
-		{
-			vm_exec(vm, proc);
-			proc = proc->next;
-		}
-		if (--last_check <= 0)
-		{
-			vm_check(vm);
-			last_check = vm->cycle_to_die;
-		}
-	}
+		cycle(vm);
+	flush_buffer(1);
+	return (0);
 }

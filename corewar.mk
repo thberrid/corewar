@@ -25,8 +25,14 @@ OPS_COR	:=	\
 OPS_COR	:=	$(addprefix ops/,$(OPS_COR))
 
 OUT_COR	:=	\
-			pc.c		\
-			cycles.c
+			pc.c			\
+			cycles.c		\
+			buffer.c		\
+			ft_nbrcat.c		\
+			buffer_num.c	\
+			ft_unbrcat.c	\
+			ft_lnbrcat.c	\
+			ft_lunbrcat.c
 OUT_COR	:=	$(addprefix output/,$(OUT_COR))
 
 PARSER	:=	\
@@ -37,6 +43,71 @@ PARSER	:=	\
 			opt_verbosity.c
 PARSER	:=	$(addprefix parser/,$(PARSER))
 
+#
+#	REMOVE THIS BEFORE TURN-IN
+#
+override ZAZ	?= TRUE
+#override G		?= TRUE
+
+#
+#	VM compilation specific flags
+#
+override ZAZ ?= FALSE
+ifeq ($(ZAZ),TRUE)
+override ZAZ_FLAG	:= -DZAZ
+endif
+
+#
+#	Graphic (C++) part
+#
+ifdef G
+ifeq ($(shell uname), Darwin)
+
+GL	:=	-framework OpenGL
+$(COR):	CPPFLAGS	+= -I ~/.brew/include
+$(COR):	LDFLAGS +=	-L ~/.brew/lib
+
+else
+
+GL	:=	-lGL
+
+endif
+
+override GFLAG := -DGRAPHIC=1
+
+CPPFLAGS	:= -I./includes -MMD -MP -W -Wall -Wextra -Werror -std=c++14
+CPPFLAGS	+= -I./$(dir $(LIB))includes $(GFLAG) -O3 -I./includes/corewar
+CPPFLAGS	+= $(shell sdl2-config --cflags) -I./includes/graphic
+
+$(COR):	CFLAGS += $(GFLAG)
+$(COR):	LDFLAGS += $(shell sdl2-config --libs) -lSDL2_image $(GL) -lGLEW
+
+CLASS	:=	\
+			animation	\
+			transform	\
+			texture		\
+			skybox		\
+			shader		\
+			window		\
+			camera		\
+			chunk		\
+			cube
+CLASS	:=	$(addsuffix .cpp, $(CLASS))
+
+GRAPHIC	:= \
+		$(CLASS)		\
+		graphic_loop.cpp
+GRAPHIC	:= $(addprefix graphic/,$(GRAPHIC))
+override LINKER		:=	g++ -o
+
+$(OBJD)/%.o:	$(SRCD)/%.cpp
+	@mkdir -p $(dir $@)
+	g++ $(CPPFLAGS) -o $@ -c $<
+
+endif
+
+$(COR):	CFLAGS += -march=native -O3 -I./includes/corewar -ansi -pedantic -DVM $(ZAZ_FLAG)
+
 #	general source definitions
 SRC_COR	:=	$(PARSER)	\
 			$(OPS_COR)	\
@@ -45,20 +116,12 @@ SRC_COR	:=	$(PARSER)	\
 			loop.c		\
 			utils.c		\
 			arena.c		\
+			memory.c	\
 			corewar.c	\
 			process.c	\
 			arguments.c	\
-			cmd_parse.c
-
-#
-#	vm compilation specific flags
-#
-override ZAZ ?= FALSE
-ifeq ($(ZAZ),TRUE)
-override ZAZ_FLAG	:= -DZAZ
-endif
-
-$(COR):	CFLAGS += -O3 -I./includes/corewar -ansi -pedantic -DVM $(ZAZ_FLAG)
+			cmd_parse.c	\
+			$(GRAPHIC)
 
 #
 #	vm unit tests

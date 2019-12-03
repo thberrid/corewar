@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   op_live.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baurens <baurens@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:05:20 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/26 19:43:35 by baurens          ###   ########.fr       */
+/*   Updated: 2019/12/03 02:38:32 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,22 +20,12 @@
 #include "vm.h"
 #include "op.h"
 
-static void	out(long int pid, t_dir v1)
+static void	out(t_proc *proc, t_dir v1)
 {
-	write(1, "P     ", ft_max(4.0 - ft_numlen(pid), 0) + 2);
-	ft_putlnbr(pid);
-	write(1, " | live ", 8);
-	ft_putnbr(v1);
-	write(1, "\n", 1);
-}
-
-static void	live_msg(uint32_t id, const char *name)
-{
-	write(1, SPLAYER, sizeof(SPLAYER) - 1);
-	ft_putnbr(id);
-	write(1, LIVEBRAC, sizeof(LIVEBRAC) - 1);
-	ft_putstr(name);
-	write(1, SALIVE, sizeof(SALIVE) - 1);
+	corewar_putstr(1, proc->name);
+	corewar_write(1, "live ", 5);
+	corewar_putnbr(1, v1);
+	corewar_write(1, "\n", 1);
 }
 
 char		op_live(t_vm *vm, t_proc *proc)
@@ -49,10 +39,11 @@ char		op_live(t_vm *vm, t_proc *proc)
 	proc->last_live = vm->cycles;
 	get_dir4(proc, &off, &val);
 	if (vm->verbosity & V_OPERATONS)
-		out(proc->pid, val);
+		out(proc, val);
 	if ((pl = get_player(vm, -val)) && (vm->verbosity & V_LIVES))
 	{
-		live_msg(pl->pid, pl->name);
+		corewar_write(1, pl->live_msg, pl->live_msg_size);
+		proc->last = pl->id;
 		vm->winer = pl;
 	}
 	move_pc(vm, proc, off);

@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:32:56 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/07 17:00:01 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/12/02 12:28:10 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <stdlib.h>
 #include "endianes.h"
 #include "process.h"
+#include "output.h"
 #include "parser.h"
 #include "arena.h"
 #include "ftlib.h"
@@ -32,6 +33,20 @@
 **
 **	les nombres sont des unsigned int de 32 bit de long (uint32_t)
 */
+
+static void	gen_champ(t_champ *champ, t_header *head)
+{
+	ft_bzero(champ->live_msg, PROG_NAME_LENGTH + 55);
+	ft_strcpy(champ->comm, head->comment);
+	ft_strcpy(champ->name, head->prog_name);
+	ft_bzero(champ->live_msg, 128);
+	ft_memcpy(champ->live_msg, SPLAYER, sizeof(SPLAYER) - 1);
+	ft_nbrcat(champ->live_msg + sizeof(SPLAYER) - 1, champ->pid);
+	ft_strcat(champ->live_msg, LIVEBRAC);
+	ft_strcat(champ->live_msg, champ->name);
+	ft_strcat(champ->live_msg, SALIVE);
+	champ->live_msg_size = ft_strlen(champ->live_msg);
+}
 
 static void	load_file(t_vm *vm, t_champ *chmp, const char *path)
 {
@@ -58,8 +73,7 @@ static void	load_file(t_vm *vm, t_champ *chmp, const char *path)
 		exit(ft_print_error("can't close fd '%d': %m.\n", fd));
 	if (rd < head.prog_size)
 		exit(ft_print_error("'%s': Invalid or corrupted file.\n", path));
-	ft_strcpy(chmp->comm, head.comment);
-	ft_strcpy(chmp->name, head.prog_name);
+	gen_champ(chmp, &head);
 }
 
 static void	sort_players(t_vm *vm)
@@ -93,9 +107,8 @@ void		parse_args(t_vm *vm, char **av)
 
 	ft_bzero(vm, sizeof(t_vm));
 	vm->players[0].pid = 1;
-	while (av && *av)
+	while ((i = 0) || (av && *av))
 	{
-		i = 0;
 		while (g_parser[i].opt && !ft_strequ(*av, g_parser[i].opt))
 			++i;
 		av = g_parser[i].callback(vm, av + !!g_parser[i].opt);
@@ -111,6 +124,7 @@ void		parse_args(t_vm *vm, char **av)
 		proc = add_process(vm->players[i].pc - g_map, NULL);
 		if (!vm->winer || vm->winer->pid < vm->players[i].pid)
 			vm->winer = vm->players + i;
+		proc->last = vm->players[i].id;
 		proc->regs[0] = -vm->players[i++].pid;
 	}
 }

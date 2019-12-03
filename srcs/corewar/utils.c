@@ -58,5 +58,5 @@ t_byte	get_ind(t_proc *proc, t_ind *off, t_dir *dest)
 
 void	dir_to_map(t_proc *proc, t_ind off, t_dir val)
 {
-	var_to_map(&val, (proc->pc + off), sizeof(val));
+	var_to_map(proc, &val, (proc->pc + off), sizeof(val));
 }

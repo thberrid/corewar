@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 12:57:27 by abaurens          #+#    #+#             */
-/*   Updated: 2019/11/12 16:00:24 by abaurens         ###   ########.fr       */
+/*   Updated: 2019/12/02 13:01:32 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,13 @@ struct			s_proc
 	int			op;
 	uint16_t	pc;
 	long int	pid;
+	uint32_t	last;
 	t_byte		carry;
 	uint32_t	lives;
 	uint32_t	last_live;
 	int			time_to_wait;
 	t_reg		regs[REG_NUMBER];
+	char		name[16];
 	t_proc		*next;
 	t_proc		*prev;
 };
