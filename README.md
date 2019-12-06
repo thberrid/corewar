@@ -1,11 +1,14 @@
 # corewar
 
----
+Made with [abaurens](https://github.com/abaurens) and [johis](https://github.com/johis2808) 
+
+**composition**
 
 - header : magic file (4 octets), name (PROG_NAME_LENGTH), prog_size (4 octets, ne tient pas compte du poids du header), commentaires (COMMENT_LENGTH)
 - chaque instructions : son op_code (1 octet),  l'octet d'encodage (entre 0 et 1 octet), suivi des paramètres (de 1 à 3, chacun de 1, 2 ou 4 octets)
 
----
+
+**instructions**
 
 **l'octet d'encodage** : indique le type des arguments.
 
@@ -58,7 +61,7 @@ Soit au final
 **encodage des labels**
 
 - à quoi correspond la valeur d'un label donné en parametre DIR || IND ? au nombre d'octets entre l'appel et sa déclaration 
-Si la declaration précède l'appel : ff ff ff ff - N octets + 1 (ou ff ff - N octets + 1 s'il s'agit d4un parametre encodé sur 2 octets)
+Si la declaration précède l'appel : ff ff ff ff - N octets + 1 (ou ff ff - N octets + 1 s'il s'agit d'un parametre encodé sur 2 octets)
 Si la declaration suit l'appel : 0 + N octets
 
 Par exemple :
